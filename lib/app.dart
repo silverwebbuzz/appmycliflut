@@ -16,6 +16,8 @@ class EClinicProApp extends StatelessWidget {
         title: 'eClinicPro',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        themeMode: ThemeMode.system,
         routerConfig: _router,
       ),
     );

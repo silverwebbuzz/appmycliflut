@@ -72,9 +72,31 @@ flutter:
     - assets/images/onboarding/
     - assets/images/states/
     - assets/icons/
+    - assets/fonts/
 
-  # Add fonts later under assets/fonts/ and register them here.
-  # fonts:
-  #   - family: AppFont
-  #     fonts:
-  #       - asset: assets/fonts/YourFont-Regular.ttf
+  # Design fonts: Sora (headings) + Manrope (body), per the design
+  # prototype. Bundled rather than fetched so google_fonts resolves them
+  # offline and the app renders correctly with no network.
+  fonts:
+    - family: Sora
+      fonts:
+        - asset: assets/fonts/Sora-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Sora-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Sora-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Sora-ExtraBold.ttf
+          weight: 800
+    - family: Manrope
+      fonts:
+        - asset: assets/fonts/Manrope-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Manrope-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Manrope-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Manrope-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Manrope-ExtraBold.ttf
+          weight: 800
