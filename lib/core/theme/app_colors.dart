@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+/// Font families bundled in `assets/fonts/` and registered in pubspec.yaml.
+///
+/// Sora carries headings, Manrope body and UI labels. Referenced by family
+/// name so nothing is fetched at runtime.
+const String kFontHeading = 'Sora';
+const String kFontBody = 'Manrope';
+
 /// Design tokens for the eClinicPro patient app.
 ///
 /// Values are transcribed verbatim from the design prototype's CSS custom

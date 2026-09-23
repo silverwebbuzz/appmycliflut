@@ -12,5 +12,8 @@ const String kOnboardingDoneKey = 'ecp_onboarding_done';
 /// When true: Login accepts phone number only (no send_otp / no WhatsApp).
 const bool kSkipWhatsAppOtp = true;
 
+/// SharedPreferences key: 'system' | 'light' | 'dark'.
+const String kThemeModeKey = 'ecp_theme_mode';
+
 const String kTestPhoneKey = 'ecp_test_phone';
 const String kTestSessionKey = 'ecp_test_session';

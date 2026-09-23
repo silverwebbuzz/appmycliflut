@@ -3,11 +3,6 @@ import 'package:flutter/services.dart';
 import 'app_colors.dart';
 
 
-/// Font families bundled in `assets/fonts/` and registered in pubspec.yaml.
-/// Declared as plain [TextStyle]s so nothing is fetched at runtime.
-const String kFontHeading = 'Sora';
-const String kFontBody = 'Manrope';
-
 TextStyle _sora({
   double? fontSize,
   FontWeight? fontWeight,

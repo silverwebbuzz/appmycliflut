@@ -10,8 +10,10 @@ import '../../features/doctors/domain/doctor.dart';
 import '../../features/doctors/presentation/doctor_detail_screen.dart';
 import '../../features/doctors/presentation/doctors_search_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
+import '../../features/labs/presentation/labs_screen.dart';
+import '../../features/more/presentation/more_screen.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
-import '../../features/profile/presentation/profile_screen.dart';
+import '../../features/records/presentation/records_screen.dart';
 import '../../features/shell/presentation/main_shell.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -53,6 +55,7 @@ GoRouter createAppRouter() {
           return MainShell(navigationShell: navigationShell);
         },
         branches: [
+          // Tab order must match ShellTab in main_shell.dart.
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -72,20 +75,35 @@ GoRouter createAppRouter() {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/appointments',
-                builder: (context, state) => const AppointmentsScreen(),
+                path: '/labs',
+                builder: (context, state) => const LabsScreen(),
               ),
             ],
           ),
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/profile',
-                builder: (context, state) => const ProfileScreen(),
+                path: '/records',
+                builder: (context, state) => const RecordsScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/more',
+                builder: (context, state) => const MoreScreen(),
               ),
             ],
           ),
         ],
+      ),
+      // Appointments is no longer a tab, but remains a full-screen route:
+      // Home and the booking confirmation still navigate to it.
+      GoRoute(
+        path: '/appointments',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const AppointmentsScreen(),
       ),
       GoRoute(
         path: '/doctors/:id',
