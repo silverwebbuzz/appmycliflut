@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 /// The design's stroked line-icon set.
@@ -13,6 +15,11 @@ enum AppGlyph {
   flask,
   document,
   prescription,
+  search,
+  pin,
+  calendar,
+  chevronLeft,
+  star,
 }
 
 class AppIcon extends StatelessWidget {
@@ -52,6 +59,9 @@ class _GlyphPainter extends CustomPainter {
       ..strokeWidth = 1.9
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round
+      ..color = color;
+    final fill = Paint()
+      ..style = PaintingStyle.fill
       ..color = color;
 
     switch (glyph) {
@@ -111,6 +121,65 @@ class _GlyphPainter extends CustomPainter {
         canvas.drawLine(const Offset(9, 8), const Offset(15, 8), stroke);
         canvas.drawLine(const Offset(9, 12), const Offset(15, 12), stroke);
         canvas.drawLine(const Offset(9, 16), const Offset(13, 16), stroke);
+
+      case AppGlyph.star:
+        // Filled five-point star. Neither Sora nor Manrope ships U+2605,
+        // so the rating mark is drawn rather than typed.
+        final star = Path();
+        const cx = 12.0, cy = 12.0, outer = 8.4, inner = 3.6;
+        for (var i = 0; i < 10; i++) {
+          final r = i.isEven ? outer : inner;
+          final a = -math.pi / 2 + i * math.pi / 5;
+          final x = cx + r * math.cos(a);
+          final y = cy + r * math.sin(a);
+          i == 0 ? star.moveTo(x, y) : star.lineTo(x, y);
+        }
+        star.close();
+        canvas.drawPath(star, fill);
+
+      case AppGlyph.chevronLeft:
+        canvas.drawPath(
+          Path()
+            ..moveTo(14.5, 5.5)
+            ..lineTo(8, 12)
+            ..lineTo(14.5, 18.5),
+          Paint()
+            ..style = PaintingStyle.stroke
+            ..strokeWidth = 2.2
+            ..strokeCap = StrokeCap.round
+            ..strokeJoin = StrokeJoin.round
+            ..color = color,
+        );
+
+      case AppGlyph.search:
+        canvas.drawCircle(const Offset(11, 11), 6.5, stroke);
+        canvas.drawLine(const Offset(16, 16), const Offset(21, 21), stroke);
+
+      case AppGlyph.pin:
+        // Map pin: teardrop body with an inner circle.
+        canvas.drawPath(
+          Path()
+            ..moveTo(12, 21)
+            ..cubicTo(12, 21, 18.5, 14.8, 18.5, 10.5)
+            ..cubicTo(18.5, 6.9, 15.6, 4, 12, 4)
+            ..cubicTo(8.4, 4, 5.5, 6.9, 5.5, 10.5)
+            ..cubicTo(5.5, 14.8, 12, 21, 12, 21)
+            ..close(),
+          stroke,
+        );
+        canvas.drawCircle(const Offset(12, 10.3), 2.4, stroke);
+
+      case AppGlyph.calendar:
+        canvas.drawRRect(
+          RRect.fromRectAndRadius(
+            const Rect.fromLTWH(4, 5.5, 16, 15),
+            const Radius.circular(2.5),
+          ),
+          stroke,
+        );
+        canvas.drawLine(const Offset(8, 3.5), const Offset(8, 7), stroke);
+        canvas.drawLine(const Offset(16, 3.5), const Offset(16, 7), stroke);
+        canvas.drawLine(const Offset(4, 10), const Offset(20, 10), stroke);
 
       case AppGlyph.prescription:
         // Rx mark: stem, bowl and the descending stroke.

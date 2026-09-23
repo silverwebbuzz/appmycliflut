@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/network/api_result.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/widgets/app_states.dart';
+import '../../../core/widgets/app_icon.dart';
+import '../../../core/widgets/app_scaffold.dart';
 import '../data/doctors_providers.dart';
 import '../domain/doctor.dart';
 import 'widgets/doctor_card.dart';
@@ -70,84 +71,132 @@ class _DoctorsSearchScreenState extends ConsumerState<DoctorsSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Find doctors'),
+    final t = AppTokens.of(context);
+
+    return ListView(
+      padding: EdgeInsets.fromLTRB(
+        20,
+        MediaQuery.paddingOf(context).top + 16,
+        20,
+        110 + MediaQuery.paddingOf(context).bottom,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: Column(
-              children: [
-                TextField(
-                  controller: _qController,
-                  textInputAction: TextInputAction.search,
-                  onSubmitted: (_) => _search(),
-                  decoration: InputDecoration(
-                    hintText: 'Search name or specialty',
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.arrow_forward),
-                      onPressed: _search,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                TextField(
-                  controller: _cityController,
-                  textInputAction: TextInputAction.search,
-                  onSubmitted: (_) => _search(),
-                  decoration: const InputDecoration(
-                    hintText: 'City',
-                    prefixIcon: Icon(Icons.location_city_outlined),
-                  ),
-                ),
-              ],
+      children: [
+        Text(
+          'Find a doctor',
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
+        const SizedBox(height: 14),
+        _SearchField(
+          controller: _qController,
+          hint: 'Doctor, specialty or clinic',
+          glyph: AppGlyph.search,
+          onSubmitted: (_) => _search(),
+        ),
+        const SizedBox(height: 10),
+        _SearchField(
+          controller: _cityController,
+          hint: 'City',
+          glyph: AppGlyph.pin,
+          onSubmitted: (_) => _search(),
+        ),
+        const SizedBox(height: 14),
+        if (_loading)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 60),
+            child: Center(child: CircularProgressIndicator()),
+          )
+        else if (_error != null)
+          AppPlaceholder(
+            icon: AppGlyph.person,
+            title: 'Could not load doctors',
+            message: _error!,
+            action: FilledButton(
+              onPressed: _search,
+              child: const Text('Try again'),
+            ),
+          )
+        else ...[
+          Text(
+            '${_result?.total ?? 0} results',
+            style: TextStyle(
+              fontFamily: kFontBody,
+              fontSize: 12.5,
+              fontWeight: FontWeight.w600,
+              color: t.sub,
             ),
           ),
-          Expanded(child: _buildBody()),
+          const SizedBox(height: 10),
+          if ((_result?.items ?? []).isEmpty)
+            const AppPlaceholder(
+              icon: AppGlyph.person,
+              title: 'No doctors found',
+              message: 'Try another city or a different search term.',
+            )
+          else
+            ...(_result!.items).map((d) => DoctorCard(doctor: d)),
         ],
-      ),
+      ],
     );
   }
+}
 
-  Widget _buildBody() {
-    if (_loading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    if (_error != null) {
-      return AppErrorState(message: _error!, onRetry: _search);
-    }
-    final items = _result?.items ?? [];
-    if (items.isEmpty) {
-      return AppEmptyState(
-        title: 'No doctors found',
-        subtitle: 'Try another city or search term.',
-        icon: Icons.person_search_outlined,
-        actionLabel: 'Search again',
-        onAction: _search,
-      );
-    }
+/// Search input styled as the prototype's card field: a `--card` surface with
+/// a `--line` border, a leading stroked glyph and no Material underline.
+class _SearchField extends StatelessWidget {
+  const _SearchField({
+    required this.controller,
+    required this.hint,
+    required this.glyph,
+    required this.onSubmitted,
+  });
 
-    return RefreshIndicator(
-      onRefresh: _search,
-      child: ListView.builder(
-        padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
-        itemCount: items.length + 1,
-        itemBuilder: (context, index) {
-          if (index == 0) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Text(
-                '${_result!.total} results',
-                style: Theme.of(context).textTheme.bodyMedium,
+  final TextEditingController controller;
+  final String hint;
+  final AppGlyph glyph;
+  final ValueChanged<String> onSubmitted;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppTokens.of(context);
+
+    return Container(
+      decoration: t.cardDecoration.copyWith(
+        borderRadius: BorderRadius.circular(AppRadii.md),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 14),
+      child: Row(
+        children: [
+          AppIcon(glyph, color: t.sub, size: 17),
+          const SizedBox(width: 10),
+          Expanded(
+            child: TextField(
+              controller: controller,
+              textInputAction: TextInputAction.search,
+              onSubmitted: onSubmitted,
+              style: TextStyle(
+                fontFamily: kFontBody,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: t.ink,
               ),
-            );
-          }
-          return DoctorCard(doctor: items[index - 1]);
-        },
+              decoration: InputDecoration(
+                hintText: hint,
+                hintStyle: TextStyle(
+                  fontFamily: kFontBody,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: t.sub,
+                ),
+                filled: false,
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                isDense: true,
+                contentPadding: const EdgeInsets.symmetric(vertical: 14),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
