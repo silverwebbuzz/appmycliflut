@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 
 import '../config/api_config.dart';
@@ -89,6 +92,96 @@ class ApiClient {
     }
   }
 
+  /// Multipart upload. The binary part is named exactly `file`, which is what
+  /// prescriptions/lab_reports `add` and profile `photo` require — these are
+  /// NOT JSON endpoints.
+  ///
+  /// [filePath] is optional: prescriptions and lab reports accept metadata
+  /// with no attachment.
+  Future<ApiResult<Map<String, dynamic>>> upload(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    Map<String, String> fields = const {},
+    String? filePath,
+    String? fileName,
+  }) async {
+    try {
+      final form = FormData.fromMap({
+        ...fields,
+        if (filePath != null)
+          'file': await MultipartFile.fromFile(filePath, filename: fileName),
+      });
+
+      final response = await _dio.post<dynamic>(
+        path,
+        data: form,
+        queryParameters: queryParameters,
+        // Let Dio set the multipart boundary; the JSON default would break it.
+        options: Options(headers: {'Content-Type': 'multipart/form-data'}),
+      );
+      return _mapResponse(response);
+    } on DioException catch (e) {
+      return _mapDioError(e);
+    }
+  }
+
+  /// Fetches raw bytes from an authed binary route (`?action=file`,
+  /// `?action=photo`).
+  ///
+  /// These require the Bearer header, so `Image.network` cannot read them —
+  /// callers render from memory instead.
+  Future<ApiResult<Uint8List>> bytes(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
+      final response = await _dio.get<List<int>>(
+        path,
+        queryParameters: queryParameters,
+        options: Options(responseType: ResponseType.bytes),
+      );
+
+      final data = response.data;
+      if (data == null || data.isEmpty) {
+        return const ApiFailure(
+          error: 'empty_file',
+          message: 'The server returned no file data.',
+        );
+      }
+      return ApiSuccess(Uint8List.fromList(data));
+    } on DioException catch (e) {
+      // Error bodies come back as bytes here; decode so the real code shows.
+      final body = e.response?.data;
+      if (body is List<int>) {
+        try {
+          final decoded = jsonDecode(utf8.decode(body));
+          if (decoded is Map<String, dynamic>) {
+            final parsed =
+                parseEnvelope(decoded, statusCode: e.response?.statusCode);
+            if (parsed is ApiFailure<Map<String, dynamic>>) {
+              return ApiFailure(
+                error: parsed.error,
+                statusCode: parsed.statusCode,
+                message: parsed.message,
+              );
+            }
+          }
+        } on FormatException {
+          // Not JSON — fall through to the generic mapping below.
+        }
+      }
+      final mapped = _mapDioError(e);
+      return switch (mapped) {
+        ApiFailure(:final error, :final statusCode, :final message) =>
+          ApiFailure(error: error, statusCode: statusCode, message: message),
+        ApiSuccess() => const ApiFailure(
+            error: 'invalid_response',
+            message: 'Unexpected response shape',
+          ),
+      };
+    }
+  }
+
   ApiResult<Map<String, dynamic>> _mapResponse(Response<dynamic> response) {
     final status = response.statusCode;
     final body = response.data;
@@ -98,10 +191,19 @@ class ApiClient {
     if (body is Map) {
       return parseEnvelope(Map<String, dynamic>.from(body), statusCode: status);
     }
+    // A non-JSON body almost always means the route is missing: Apache
+    // strips `.php`, redirects to the extensionless path and the SPA answers
+    // with an HTML 404. Name that explicitly so it is not mistaken for a
+    // parsing bug in the app.
+    final looksLikeHtml =
+        body is String && body.trimLeft().toLowerCase().startsWith('<');
     return ApiFailure(
-      error: 'invalid_response',
+      error: looksLikeHtml ? 'endpoint_not_deployed' : 'invalid_response',
       statusCode: status,
-      message: 'Unexpected response shape',
+      message: looksLikeHtml
+          ? 'Server returned a web page instead of JSON — this endpoint is '
+              'probably not deployed yet.'
+          : 'Unexpected response shape',
     );
   }
 
@@ -111,6 +213,14 @@ class ApiClient {
     if (body is Map) {
       final map = Map<String, dynamic>.from(body);
       return parseEnvelope(map, statusCode: status);
+    }
+    if (status != null && status >= 300 && status < 400) {
+      return ApiFailure(
+        error: 'endpoint_not_deployed',
+        statusCode: status,
+        message: 'Endpoint redirected instead of answering — it is probably '
+            'not deployed yet.',
+      );
     }
     if (e.type == DioExceptionType.connectionTimeout ||
         e.type == DioExceptionType.receiveTimeout ||
