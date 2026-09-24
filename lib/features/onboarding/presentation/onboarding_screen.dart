@@ -51,7 +51,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final isLast = _index == _pages.length - 1;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppTokens.of(context).bg,
       body: SafeArea(
         child: Column(
           children: [
@@ -91,7 +91,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           child: AspectRatio(
                             aspectRatio: 1.15,
                             child: ColoredBox(
-                              color: AppColors.primarySoft,
+                              color: AppTokens.of(context).brandSoft,
                               child: Image.asset(
                                 page.image,
                                 fit: BoxFit.contain,
@@ -127,7 +127,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   height: 8,
                   width: active ? 22 : 8,
                   decoration: BoxDecoration(
-                    color: active ? AppColors.primary : AppColors.border,
+                    color: active
+                        ? AppTokens.of(context).brand
+                        : AppTokens.of(context).line,
                     borderRadius: BorderRadius.circular(8),
                   ),
                 );

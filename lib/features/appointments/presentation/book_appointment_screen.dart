@@ -122,7 +122,8 @@ class _BookAppointmentScreenState extends ConsumerState<BookAppointmentScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Icon(Icons.check_circle, color: AppColors.success, size: 72),
+              Icon(Icons.check_circle,
+                  color: AppTokens.of(context).ink, size: 72),
               const SizedBox(height: 16),
               Text('Request submitted', style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(height: 8),
@@ -144,7 +145,7 @@ class _BookAppointmentScreenState extends ConsumerState<BookAppointmentScreen> {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppTokens.of(context).bg,
       appBar: AppBar(title: const Text('Request appointment')),
       body: ListView(
         padding: const EdgeInsets.all(20),
@@ -196,7 +197,8 @@ class _BookAppointmentScreenState extends ConsumerState<BookAppointmentScreen> {
           ),
           if (_error != null) ...[
             const SizedBox(height: 12),
-            Text(_error!, style: const TextStyle(color: AppColors.error)),
+            Text(_error!,
+                style: TextStyle(color: AppTokens.of(context).red)),
           ],
           const SizedBox(height: 24),
           FilledButton(

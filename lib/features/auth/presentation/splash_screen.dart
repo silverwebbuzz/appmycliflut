@@ -70,7 +70,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.splashBg,
+      backgroundColor: AppColors.brandDeep,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -101,7 +101,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               height: 28,
               child: CircularProgressIndicator(
                 strokeWidth: 2.5,
-                color: AppColors.primary,
+                color: AppColorsLight.onBrand,
               ),
             ),
           ],

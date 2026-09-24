@@ -151,14 +151,20 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                 const SizedBox(height: 12),
                 Text(
                   'Dev mode code prefilled: ${widget.devCode}',
-                  style: const TextStyle(color: AppColors.secondary, fontSize: 12),
+                  style: TextStyle(
+                    color: AppTokens.of(context).sub,
+                    fontSize: 12,
+                  ),
                 ),
               ],
               if (_error != null) ...[
                 const SizedBox(height: 12),
                 Text(
                   _error!,
-                  style: const TextStyle(color: AppColors.error, fontSize: 13),
+                  style: TextStyle(
+                    color: AppTokens.of(context).red,
+                    fontSize: 13,
+                  ),
                 ),
               ],
               const Spacer(),

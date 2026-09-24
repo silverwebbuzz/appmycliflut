@@ -86,9 +86,9 @@ class AppColorsDark {
 
 /// Light-mode token constants, usable in `const` contexts.
 ///
-/// Also carries the legacy names the pre-re-skin screens were written
-/// against, remapped onto the monochrome palette so those screens compile
-/// and look correct until each is rebuilt.
+/// Prefer [AppTokens.of] in widgets so a surface follows light/dark. These
+/// are for the few places that need a compile-time constant, or that are
+/// deliberately always-light (e.g. text drawn on the dark brand surface).
 class AppColors {
   const AppColors._();
 
@@ -110,27 +110,6 @@ class AppColors {
   static const onBrand = AppColorsLight.onBrand;
   static const onAccent = AppColorsLight.onAccent;
   static const shadow = AppColorsLight.shadow;
-
-  // ---------------------------------------------------------------------
-  // Legacy aliases. The green brand is gone; these now point at the
-  // monochrome equivalents. Remove each as its screen is rebuilt.
-  // ---------------------------------------------------------------------
-
-  /// Was #00A86B. Primary action colour is now near-black ink.
-  static const primary = brand;
-  static const primaryDark = brandDeep;
-  static const primarySoft = brandSoft;
-  static const secondary = sub;
-  static const background = bg;
-  static const surface = card;
-  static const textPrimary = ink;
-  static const textSecondary = sub;
-  static const error = red;
-
-  /// The design has no green success colour; success reads as plain ink.
-  static const success = ink;
-  static const border = line;
-  static const splashBg = brandDeep;
 }
 
 /// Theme-aware access to the design tokens.

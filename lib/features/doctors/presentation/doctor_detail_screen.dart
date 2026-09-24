@@ -1,13 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/network/api_result.dart';
-import '../../../core/theme/app_assets.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/widgets/app_states.dart';
+import '../../../core/widgets/app_icon.dart';
+import '../../../core/widgets/app_scaffold.dart';
 import '../data/doctors_providers.dart';
 import '../domain/doctor.dart';
 
@@ -68,15 +67,24 @@ class _DoctorDetailScreenState extends ConsumerState<DoctorDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final t = AppTokens.of(context);
+
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(title: const Text('Doctor')),
+      backgroundColor: t.bg,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: AppIcon(AppGlyph.chevronLeft, color: t.ink, size: 20),
+          onPressed: () =>
+              context.canPop() ? context.pop() : context.go('/doctors'),
+        ),
+        title: const Text('Doctor'),
+      ),
       body: _buildBody(),
       bottomNavigationBar: _doctor == null
           ? null
           : SafeArea(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
                 child: FilledButton(
                   onPressed: _doctor!.canRequestAppointment
                       ? () => context.push('/book/${_doctor!.id}', extra: _doctor)
@@ -91,27 +99,49 @@ class _DoctorDetailScreenState extends ConsumerState<DoctorDetailScreen> {
   Widget _buildBody() {
     if (_loading) return const Center(child: CircularProgressIndicator());
     if (_error != null) {
-      return AppErrorState(message: _error!, onRetry: _load);
+      return ListView(
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+        children: [
+          AppPlaceholder(
+            icon: AppGlyph.person,
+            title: 'Could not load this doctor',
+            message: _error!,
+            action: FilledButton(
+              onPressed: _load,
+              child: const Text('Try again'),
+            ),
+          ),
+        ],
+      );
     }
     final d = _doctor!;
+    final t = AppTokens.of(context);
+    final text = Theme.of(context).textTheme;
+
     return ListView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: SizedBox(
-                width: 88,
-                height: 88,
-                child: d.photoUrl != null && d.photoUrl!.isNotEmpty
-                    ? CachedNetworkImage(
-                        imageUrl: d.photoUrl!,
-                        fit: BoxFit.cover,
-                        errorWidget: (_, __, ___) => Image.asset(AppAssets.doctorAvatar),
-                      )
-                    : Image.asset(AppAssets.doctorAvatar, fit: BoxFit.cover),
+            // Initials tile, matching DoctorCard and the prototype, rather
+            // than a photo: the directory has no reliable doctor imagery.
+            Container(
+              width: 72,
+              height: 72,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: t.brandSoft,
+                borderRadius: BorderRadius.circular(AppRadii.xl),
+              ),
+              child: Text(
+                _initialsFor(d),
+                style: TextStyle(
+                  fontFamily: kFontHeading,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                  color: t.brand,
+                ),
               ),
             ),
             const SizedBox(width: 14),
@@ -119,37 +149,52 @@ class _DoctorDetailScreenState extends ConsumerState<DoctorDetailScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(d.displayName, style: Theme.of(context).textTheme.headlineMedium),
+                  Text(d.displayName, style: text.headlineMedium),
                   if (d.specLabel != null) ...[
                     const SizedBox(height: 4),
-                    Text(d.specLabel!, style: Theme.of(context).textTheme.bodyMedium),
+                    Text(d.specLabel!, style: text.bodySmall),
                   ],
                   if (d.clinicName != null) ...[
                     const SizedBox(height: 4),
-                    Text(d.clinicName!, style: const TextStyle(fontWeight: FontWeight.w600)),
+                    Text(d.clinicName!, style: text.labelLarge),
                   ],
-                  const SizedBox(height: 8),
-                  if (d.rating != null)
+                  if (d.rating != null) ...[
+                    const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Icon(Icons.star_rounded, color: Color(0xFFF59E0B), size: 18),
-                        Text(' ${d.rating!.toStringAsFixed(1)}'),
-                        if (d.reviews != null) Text(' · ${d.reviews} reviews'),
+                        AppIcon(AppGlyph.star, color: t.ink, size: 13),
+                        const SizedBox(width: 4),
+                        Text(
+                          d.rating!.toStringAsFixed(1),
+                          style: text.labelLarge,
+                        ),
+                        if (d.reviews != null)
+                          Text(' · ${d.reviews} reviews',
+                              style: text.bodySmall),
                       ],
                     ),
+                  ],
                 ],
               ),
             ),
           ],
         ),
         const SizedBox(height: 20),
-        _InfoTile(icon: Icons.payments_outlined, title: 'Consultation fee', value: d.feeLabel),
-        if (d.locationLine.isNotEmpty)
-          _InfoTile(icon: Icons.place_outlined, title: 'Location', value: d.locationLine),
-        if (d.address != null && d.address!.isNotEmpty)
-          _InfoTile(icon: Icons.home_work_outlined, title: 'Address', value: d.address!),
-        if (d.nextLabel != null)
-          _InfoTile(icon: Icons.schedule, title: 'Availability', value: d.nextLabel!),
+        Container(
+          decoration: t.cardDecoration,
+          padding: const EdgeInsets.symmetric(horizontal: 14),
+          child: Column(
+            children: [
+              _InfoRow(title: 'Consultation fee', value: d.feeLabel),
+              if (d.locationLine.isNotEmpty)
+                _InfoRow(title: 'Location', value: d.locationLine),
+              if (d.address != null && d.address!.isNotEmpty)
+                _InfoRow(title: 'Address', value: d.address!),
+              if (d.nextLabel != null)
+                _InfoRow(title: 'Availability', value: d.nextLabel!, last: true),
+            ],
+          ),
+        ),
         const SizedBox(height: 12),
         Row(
           children: [
@@ -187,23 +232,71 @@ class _DoctorDetailScreenState extends ConsumerState<DoctorDetailScreen> {
   }
 }
 
-class _InfoTile extends StatelessWidget {
-  const _InfoTile({required this.icon, required this.title, required this.value});
+/// One labelled value inside the details card, with a hairline separator.
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({
+    required this.title,
+    required this.value,
+    this.last = false,
+  });
 
-  final IconData icon;
   final String title;
   final String value;
+  final bool last;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      leading: CircleAvatar(
-        backgroundColor: AppColors.primarySoft,
-        child: Icon(icon, color: AppColors.primary, size: 20),
+    final t = AppTokens.of(context);
+
+    return Container(
+      decoration: BoxDecoration(
+        border: last ? null : Border(bottom: BorderSide(color: t.line)),
       ),
-      title: Text(title, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-      subtitle: Text(value, style: const TextStyle(fontSize: 14, color: AppColors.textPrimary)),
+      padding: const EdgeInsets.symmetric(vertical: 13),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 120,
+            child: Text(
+              title,
+              style: TextStyle(
+                fontFamily: kFontBody,
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+                color: t.sub,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(
+                fontFamily: kFontBody,
+                fontSize: 13.5,
+                fontWeight: FontWeight.w700,
+                color: t.ink,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
+}
+
+/// Initials from the API when present, else derived from the display name.
+String _initialsFor(Doctor d) {
+  final given = d.initials?.trim();
+  if (given != null && given.isNotEmpty) return given.toUpperCase();
+
+  final words = d.displayName
+      .replaceAll(RegExp(r'^(Dr\.?|Prof\.?)\s+', caseSensitive: false), '')
+      .split(RegExp(r'\s+'))
+      .where((w) => w.isNotEmpty)
+      .toList();
+  if (words.isEmpty) return '?';
+  if (words.length == 1) return words.first.characters.first.toUpperCase();
+  return (words.first.characters.first + words[1].characters.first)
+      .toUpperCase();
 }

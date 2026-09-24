@@ -86,7 +86,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppTokens.of(context).bg,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -140,7 +140,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: 12),
                 Text(
                   _error!,
-                  style: const TextStyle(color: AppColors.error, fontSize: 13),
+                  style: TextStyle(
+                    color: AppTokens.of(context).red,
+                    fontSize: 13,
+                  ),
                 ),
               ],
               const Spacer(),
