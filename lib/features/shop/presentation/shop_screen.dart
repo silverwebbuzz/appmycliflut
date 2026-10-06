@@ -50,21 +50,6 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
     context.push(ListingQuery(scope: 'search', q: text).location);
   }
 
-  /// Maps a banner's website path to a screen; unknown links do nothing.
-  void _openBannerLink(String? link) {
-    if (link == null) return;
-    final seg = Uri.parse(link).pathSegments;
-    if (seg.length >= 3 && seg[0] == 'store' && seg[1] == 'p') {
-      context.push('/shop/p/${seg[2]}');
-    } else if (seg.length >= 3 && seg[0] == 'store' && seg[1] == 'c') {
-      context.push(ListingQuery(
-        scope: 'category',
-        slug: seg[2],
-        sub: seg.length > 3 ? seg[3] : null,
-      ).location);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final r = _result;
@@ -110,23 +95,7 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
   List<Widget> _sections(BuildContext context, StoreHome h) {
     return [
       if (h.banners.isNotEmpty) ...[
-        SizedBox(
-          height: 150,
-          child: PageView(
-            padEnds: false,
-            controller: PageController(viewportFraction: 0.92),
-            children: [
-              for (final b in h.banners)
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: GestureDetector(
-                    onTap: () => _openBannerLink(b.link),
-                    child: AppNetImage(b.image, radius: AppRadii.xl),
-                  ),
-                ),
-            ],
-          ),
-        ),
+        PromoBannerCarousel(banners: h.banners),
         const SizedBox(height: 4),
       ],
       if (h.needs.isNotEmpty) ...[

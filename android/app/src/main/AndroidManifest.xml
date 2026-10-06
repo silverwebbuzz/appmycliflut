@@ -2,7 +2,7 @@
     <!-- Release builds need this too; only the debug manifest declared it. -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="eclinicpro_patient"
+        android:label="eClinicPro"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

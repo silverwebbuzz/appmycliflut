@@ -1,6 +1,6 @@
 {
-    "name": "eclinicpro_patient",
-    "short_name": "eclinicpro_patient",
+    "name": "eClinicPro",
+    "short_name": "eClinicPro",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

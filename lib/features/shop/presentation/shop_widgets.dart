@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/format/format.dart';
 import '../../../core/theme/app_colors.dart';
@@ -548,6 +551,146 @@ class ProductGrid extends StatelessWidget {
               ),
             ),
           ),
+      ],
+    );
+  }
+}
+
+/// Opens an admin-entered link (store banners) in the right screen.
+///
+/// Understands the website's store paths (`/store/p/{slug}`, `/store/c/{dept}`
+/// `[/{sub}]`, `/store/need|goal|brand|seller/{slug}`, `/store/search?q=`,
+/// `/store/cart|orders|wishlist|categories`), also given as full
+/// `https://eclinicpro.com/…` URLs; plain app paths (`/doctors`, `/records`,
+/// `/appointments`, …); and opens any other https link in the browser.
+/// Unknown store paths fall back to the Shop tab rather than doing nothing.
+void openPromoLink(BuildContext context, String? link) {
+  final raw = link?.trim() ?? '';
+  if (raw.isEmpty) return;
+  final uri = Uri.tryParse(raw);
+  if (uri == null) return;
+
+  final external = uri.hasScheme && !uri.host.endsWith('eclinicpro.com');
+  if (external) {
+    launchUrl(uri, mode: LaunchMode.externalApplication);
+    return;
+  }
+
+  final seg = uri.pathSegments.where((s) => s.isNotEmpty).toList();
+  if (seg.isEmpty) return;
+
+  if (seg.first != 'store') {
+    // An in-app path such as /doctors or /records.
+    const tabs = {'home', 'doctors', 'records', 'more', 'shop'};
+    final path = '/${seg.join('/')}';
+    tabs.contains(seg.first) ? context.go(path) : context.push(path);
+    return;
+  }
+
+  final kind = seg.length > 1 ? seg[1] : '';
+  final a = seg.length > 2 ? seg[2] : null;
+  final b = seg.length > 3 ? seg[3] : null;
+  final location = switch (kind) {
+    'p' when a != null => '/shop/p/$a',
+    'c' when a != null =>
+      ListingQuery(scope: 'category', slug: a, sub: b).location,
+    'need' || 'goal' || 'brand' || 'seller' when a != null =>
+      ListingQuery(scope: kind, slug: a).location,
+    'search' => ListingQuery(scope: 'search', q: uri.queryParameters['q']).location,
+    'cart' => '/shop/cart',
+    'orders' => '/shop/orders',
+    'wishlist' => '/shop/wishlist',
+    'categories' => '/shop/categories',
+    _ => null,
+  };
+  location == null ? context.go('/shop') : context.push(location);
+}
+
+/// Admin-managed promo banners (`/admin/store/banners`): full-width images,
+/// swipeable, auto-advancing every 5 s, with page dots. Hidden when empty.
+class PromoBannerCarousel extends StatefulWidget {
+  const PromoBannerCarousel({super.key, required this.banners});
+
+  final List<StoreBanner> banners;
+
+  @override
+  State<PromoBannerCarousel> createState() => _PromoBannerCarouselState();
+}
+
+class _PromoBannerCarouselState extends State<PromoBannerCarousel> {
+  final _controller = PageController();
+  Timer? _timer;
+  int _index = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.banners.length > 1) {
+      _timer = Timer.periodic(const Duration(seconds: 5), (_) {
+        if (!_controller.hasClients) return;
+        final next = (_index + 1) % widget.banners.length;
+        _controller.animateToPage(
+          next,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeOut,
+        );
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppTokens.of(context);
+    final banners = widget.banners;
+    if (banners.isEmpty) return const SizedBox.shrink();
+    return Column(
+      children: [
+        AspectRatio(
+          // Admin uploads are wide promo images; 2:1 keeps them legible.
+          aspectRatio: 2,
+          child: PageView.builder(
+            controller: _controller,
+            itemCount: banners.length,
+            onPageChanged: (i) => setState(() => _index = i),
+            itemBuilder: (context, i) {
+              final b = banners[i];
+              return Semantics(
+                button: b.link != null,
+                label: b.title,
+                child: GestureDetector(
+                  onTap: () => openPromoLink(context, b.link),
+                  child: AppNetImage(b.image, radius: AppRadii.xl),
+                ),
+              );
+            },
+          ),
+        ),
+        if (banners.length > 1) ...[
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              for (var i = 0; i < banners.length; i++)
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: i == _index ? 16 : 6,
+                  height: 6,
+                  margin: const EdgeInsets.symmetric(horizontal: 3),
+                  decoration: BoxDecoration(
+                    color: i == _index ? t.brand : t.line,
+                    borderRadius: BorderRadius.circular(3),
+                  ),
+                ),
+            ],
+          ),
+        ],
       ],
     );
   }

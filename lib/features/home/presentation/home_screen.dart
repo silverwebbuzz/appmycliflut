@@ -94,8 +94,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const SizedBox(height: 14),
           ],
 
-          _NextAppointmentCard(summary: _summary),
-          const SizedBox(height: 14),
+          // The visit card only when there is a real visit; otherwise the
+          // slot goes to admin promo banners (/admin/store/banners). With
+          // neither, nothing is shown.
+          if (_summary?.nextAppointment != null) ...[
+            _NextAppointmentCard(summary: _summary),
+            const SizedBox(height: 14),
+          ] else if (_store?.banners.isNotEmpty ?? false) ...[
+            PromoBannerCarousel(banners: _store!.banners),
+            const SizedBox(height: 14),
+          ],
+          if (_summary?.nextAppointment == null &&
+              (_summary?.pendingRequests ?? 0) > 0) ...[
+            _PendingRequestsRow(count: _summary!.pendingRequests),
+            const SizedBox(height: 10),
+          ],
 
           // 2x2 quick actions, as in the prototype.
           Row(
@@ -405,6 +418,48 @@ class _HeroButton extends StatelessWidget {
             fontWeight: FontWeight.w800,
             color: primary ? AppColorsLight.brandDeep : AppColorsLight.onBrand,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// One-line reminder of requests a clinic has not confirmed yet.
+class _PendingRequestsRow extends StatelessWidget {
+  const _PendingRequestsRow({required this.count});
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    final t = AppTokens.of(context);
+    return GestureDetector(
+      onTap: () => context.push('/appointments'),
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        decoration: BoxDecoration(
+          color: t.amberSoft,
+          borderRadius: BorderRadius.circular(AppRadii.md),
+        ),
+        child: Row(
+          children: [
+            AppIcon(AppGlyph.clock, color: t.amber, size: 18),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                '$count appointment request${count == 1 ? '' : 's'} waiting '
+                'for the clinic to confirm',
+                style: TextStyle(
+                  fontFamily: kFontBody,
+                  fontSize: 12.5,
+                  fontWeight: FontWeight.w700,
+                  color: t.amber,
+                ),
+              ),
+            ),
+            AppIcon(AppGlyph.chevronRight, color: t.amber, size: 16),
+          ],
         ),
       ),
     );

@@ -241,8 +241,8 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
           Center(
             child: Text(
               switch (ref.watch(appVersionLabelProvider)) {
-                AsyncData(:final value) => 'eClinicPro Patient · Version $value',
-                _ => 'eClinicPro Patient',
+                AsyncData(:final value) => 'eClinicPro · Version $value',
+                _ => 'eClinicPro',
               },
               style: Theme.of(context).textTheme.bodySmall,
             ),

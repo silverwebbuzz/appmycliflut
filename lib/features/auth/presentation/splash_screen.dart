@@ -75,18 +75,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Image.asset(
-                AppAssets.logoOnDark,
-                height: 64,
-                fit: BoxFit.contain,
-                errorBuilder: (_, __, ___) => Image.asset(
-                  AppAssets.logoMark,
-                  height: 88,
-                ),
-              ),
-            ),
+            // Same tile and size (512px @4x = 128) as the native launch
+            // screen, so the hand-over from native to Flutter is seamless.
+            Image.asset(AppAssets.appIconTile, width: 128, height: 128),
             const SizedBox(height: 16),
             Text(
               'Your clinic, in your pocket',

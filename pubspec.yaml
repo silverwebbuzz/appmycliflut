@@ -60,6 +60,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -108,3 +110,30 @@ flutter:
           weight: 700
         - asset: assets/fonts/Manrope-ExtraBold.ttf
           weight: 800
+
+# App icon — regenerate with: dart run flutter_launcher_icons
+# Source art lives in assets/images/brand/. The App Store rejects icons with
+# transparency, so iOS gets the tile flattened onto white.
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/brand/app_icon_1024.png"
+  remove_alpha_ios: true
+  background_color_ios: "#FFFFFF"
+  # Android 8+ adaptive icon: the padded tile keeps the logo inside the
+  # safe zone that launchers crop to circles/squircles.
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/brand/app_icon_foreground.png"
+  min_sdk_android: 21
+
+# Native launch screen (shown before Flutter starts) — regenerate with:
+# dart run flutter_native_splash:create
+# Matches the in-app splash: the logo tile on --brand-deep.
+flutter_native_splash:
+  color: "#0E0E10"
+  image: "assets/images/brand/app_icon_512.png"
+  android_12:
+    color: "#0E0E10"
+    image: "assets/images/brand/app_icon_foreground.png"
+    icon_background_color: "#0E0E10"
+  web: false

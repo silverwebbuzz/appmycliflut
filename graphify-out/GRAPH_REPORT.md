@@ -1,16 +1,16 @@
 # Graph Report - appmycliflut  (2026-10-06)
 
 ## Corpus Check
-- 131 files · ~393,245 words
+- 132 files · ~532,537 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2215 nodes · 3056 edges · 139 communities (125 shown, 14 thin omitted)
+- 2242 nodes · 3091 edges · 136 communities (122 shown, 14 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `56d7793f`
+- Built from commit: `8d9fa454`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -137,9 +137,6 @@
 - [[_COMMUNITY_Community 132|Community 132]]
 - [[_COMMUNITY_Community 133|Community 133]]
 - [[_COMMUNITY_Community 134|Community 134]]
-- [[_COMMUNITY_Community 135|Community 135]]
-- [[_COMMUNITY_Community 136|Community 136]]
-- [[_COMMUNITY_Community 137|Community 137]]
 - [[_COMMUNITY_Community 138|Community 138]]
 
 ## God Nodes (most connected - your core abstractions)
@@ -155,6 +152,8 @@
 10. `11 — Mobile API Reference (v1, as built)` - 14 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `_open` --references--> `sessionStorageProvider`  [EXTRACTED]
+  lib/features/shop/presentation/invoice_screen.dart → lib/core/network/providers.dart
 - `_load` --references--> `storeRepositoryProvider`  [EXTRACTED]
   lib/features/shop/presentation/orders_screen.dart → lib/features/shop/data/store_repository.dart
 - `_load` --references--> `storeRepositoryProvider`  [EXTRACTED]
@@ -163,13 +162,11 @@
   lib/features/shop/presentation/wishlist_screen.dart → lib/features/shop/data/store_repository.dart
 - `build` --references--> `themeModeProvider`  [EXTRACTED]
   lib/app.dart → lib/core/theme/theme_mode_provider.dart
-- `_CartScreenState` --references--> `sessionStorageProvider`  [EXTRACTED]
-  lib/features/shop/presentation/cart_screen.dart → lib/core/network/providers.dart
 
 ## Import Cycles
 - None detected.
 
-## Communities (139 total, 14 thin omitted)
+## Communities (136 total, 14 thin omitted)
 
 ### Community 0 - "Community 0"
 Cohesion: 0.01
@@ -185,20 +182,20 @@ Nodes (62): app_scaffold.dart, BoxFit, ../network/api_result.dart, package:cache
   String, TextInputType?, actions, AppTone (+54 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.07
-Nodes (27): DateTime? get, ahead, appointment, appointmentId, _asInt, _asString, checkedAt, clinicId (+19 more)
+Cohesion: 0.04
+Nodes (47): ../data/queue_providers.dart, DateTime? get, ahead, appointment, appointmentId, _asInt, _asString, checkedAt (+39 more)
 
 ### Community 4 - "Community 4"
 Cohesion: 0.04
 Nodes (45): OrderDetail, OrderItem, OrderPackage, ReturnReason, _addPhoto, _body, build, _busy (+37 more)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.06
-Nodes (37): BoxDecoration get, _, amber, amberSoft, AppColors, AppColorsDark, AppColorsLight, AppRadii (+29 more)
+Cohesion: 0.05
+Nodes (41): @immutable, BoxDecoration get, _, amber, amberSoft, AppColors, AppColorsDark, AppColorsLight (+33 more)
 
 ### Community 6 - "Community 6"
 Cohesion: 0.06
-Nodes (37): _actions, _add, address, AddressCard, AddressesScreen, _AddressesScreenState, AddressFormScreen, _AddressFormScreenState (+29 more)
+Nodes (33): _actions, _add, address, AddressCard, _book, build, _busyId, _city (+25 more)
 
 ### Community 7 - "Community 7"
 Cohesion: 0.05
@@ -221,20 +218,20 @@ Cohesion: 0.06
 Nodes (32): Appointment, AppointmentList, _asInt, _asString, clinicAddress, clinicName, clinicPhone, doctorName (+24 more)
 
 ### Community 12 - "Community 12"
-Cohesion: 0.08
-Nodes (24): ../data/family_providers.dart, ../data/family_repository.dart, _abha, _blood, build, createState, dispose, _dob (+16 more)
+Cohesion: 0.07
+Nodes (30): ../data/family_providers.dart, familyRepositoryProvider, ../data/family_repository.dart, _abha, _blood, build, createState, dispose (+22 more)
 
 ### Community 13 - "Community 13"
 Cohesion: 0.06
 Nodes (31): abhaId, addressLine1, addressLine2, allergies, _api, bloodGroup, chronicConditions, city (+23 more)
 
 ### Community 14 - "Community 14"
-Cohesion: 0.06
-Nodes (31): ProductCard, avg, _brandLine, _brandStyle, count, CountBadge, enabled, from (+23 more)
+Cohesion: 0.04
+Nodes (44): ProductCard, a, avg, b, banners, _brandLine, _brandStyle, _controller (+36 more)
 
 ### Community 15 - "Community 15"
 Cohesion: 0.08
-Nodes (28): cartControllerProvider, ../data/cart_controller.dart, CartLine, _applyCoupon, build, _CartLineCard, CartScreen, _CartScreenState (+20 more)
+Nodes (29): cartControllerProvider, ../data/cart_controller.dart, CartLine, _applyCoupon, build, _CartLineCard, CartScreen, _CartScreenState (+21 more)
 
 ### Community 16 - "Community 16"
 Cohesion: 0.09
@@ -250,19 +247,19 @@ Nodes (31): 12 — Store (Marketplace) API Reference (v1, as built), Actions, Ad
 
 ### Community 19 - "Community 19"
 Cohesion: 0.06
-Nodes (30): ../../appointments/data/appointments_repository.dart, ../../appointments/domain/appointment.dart, ../../doctors/data/doctors_providers.dart, ../../doctors/presentation/widgets/doctor_card.dart, StoreHome, createState, _error, _featured (+22 more)
+Nodes (32): ../../appointments/data/appointments_repository.dart, ../../appointments/domain/appointment.dart, ../../doctors/data/doctors_providers.dart, ../../doctors/presentation/widgets/doctor_card.dart, StoreHome, count, createState, _error (+24 more)
 
 ### Community 20 - "Community 20"
-Cohesion: 0.10
-Nodes (19): _buildBody, _call, createState, _doctor, doctorId, _error, given, _InfoRow (+11 more)
+Cohesion: 0.09
+Nodes (25): doctorsRepositoryProvider, _buildBody, _call, createState, _doctor, DoctorDetailScreen, _DoctorDetailScreenState, doctorId (+17 more)
 
 ### Community 21 - "Community 21"
-Cohesion: 0.09
-Nodes (22): Address, address_screens.dart, ../data/payment_flow.dart, int get, _addAddress, _addresses, _addressId, build (+14 more)
+Cohesion: 0.08
+Nodes (24): Address, address_screens.dart, ../data/payment_flow.dart, int get, _addAddress, _addresses, _addressId, build (+16 more)
 
 ### Community 22 - "Community 22"
-Cohesion: 0.10
-Nodes (20): ListingChip, ListingQuery, NamedRef, SellerInfo, SortOption, build, _content, createState (+12 more)
+Cohesion: 0.09
+Nodes (22): ListingChip, ListingQuery, NamedRef, SellerInfo, SortOption, build, CategoriesScreen, _CategoriesScreenState (+14 more)
 
 ### Community 23 - "Community 23"
 Cohesion: 0.08
@@ -278,7 +275,7 @@ Nodes (23): ../../family/domain/family_member.dart, build, _clinic, createState,
 
 ### Community 26 - "Community 26"
 Cohesion: 0.08
-Nodes (24): _ActionChip, _ItemRow, _QtyPicker, _SheetFrame, _TrackingCard, StatelessWidget, AppBottomBar, AppChoiceChips (+16 more)
+Nodes (26): _ActionChip, _ItemRow, _QtyPicker, _SheetFrame, _TrackingCard, ProductGridCard, ProductRowCard, StatelessWidget (+18 more)
 
 ### Community 27 - "Community 27"
 Cohesion: 0.09
@@ -313,12 +310,12 @@ Cohesion: 0.10
 Nodes (21): DoctorSearchResult, build, _cityController, controller, createState, dispose, DoctorsSearchScreen, _DoctorsSearchScreenState (+13 more)
 
 ### Community 35 - "Community 35"
-Cohesion: 0.08
-Nodes (41): ConsumerState, ConsumerStatefulWidget, storeRepositoryProvider, _load, _lookupPin, _makeDefault, _remove, _save (+33 more)
+Cohesion: 0.09
+Nodes (36): ConsumerState, ConsumerStatefulWidget, appointmentsRepositoryProvider, storeRepositoryProvider, AddressesScreen, _AddressesScreenState, AddressFormScreen, _AddressFormScreenState (+28 more)
 
 ### Community 36 - "Community 36"
-Cohesion: 0.11
-Nodes (18): _content, createState, _Gallery, _image, images, index, initState, onChanged (+10 more)
+Cohesion: 0.10
+Nodes (20): _content, createState, _Gallery, _image, images, index, initState, onChanged (+12 more)
 
 ### Community 37 - "Community 37"
 Cohesion: 0.11
@@ -330,11 +327,11 @@ Nodes (14): Appointment, ../data/appointments_repository.dart, ../domain/appoint
 
 ### Community 39 - "Community 39"
 Cohesion: 0.12
-Nodes (15): Cart, add, adopt, applyCoupon, build, busy, cart, copyWith (+7 more)
+Nodes (16): Cart, add, adopt, applyCoupon, build, busy, cart, CartController (+8 more)
 
 ### Community 40 - "Community 40"
 Cohesion: 0.11
-Nodes (19): MedicalRecord, RecordKind, _add, build, createState, fromSlug, initState, onTap (+11 more)
+Nodes (19): ../data/records_providers.dart, MedicalRecord, RecordKind, _add, build, createState, fromSlug, initState (+11 more)
 
 ### Community 41 - "Community 41"
 Cohesion: 0.10
@@ -345,12 +342,12 @@ Cohesion: 0.33
 Nodes (5): ../config/api_config.dart, package:shared_preferences/shared_preferences.dart, build, _restore, setDark
 
 ### Community 43 - "Community 43"
-Cohesion: 0.10
-Nodes (20): ../../app_update/data/app_update_repository.dart, ../../auth/data/auth_providers.dart, ../../family/data/family_providers.dart, ../../family/data/family_repository.dart, createState, _family, initState, onChanged (+12 more)
+Cohesion: 0.08
+Nodes (26): ../../app_update/data/app_update_repository.dart, ../../auth/data/auth_providers.dart, appVersionLabelProvider, ../../family/data/family_providers.dart, ../../family/data/family_repository.dart, Notifier, createState, _family (+18 more)
 
 ### Community 44 - "Community 44"
 Cohesion: 0.11
-Nodes (17): c, done, message, outcome, payForOrder, paymentInProgress, PayOutcome, PayResult (+9 more)
+Nodes (18): c, done, message, outcome, payForOrder, paymentInProgress, PayOutcome, PayResult (+10 more)
 
 ### Community 45 - "Community 45"
 Cohesion: 0.12
@@ -358,11 +355,11 @@ Nodes (16): bool get, dart:io, allowPdf, choice, isPdf, name, openBytesExternall
 
 ### Community 46 - "Community 46"
 Cohesion: 0.10
-Nodes (22): ../../../core/files/file_actions.dart, ../data/records_providers.dart, recordsRepositoryProvider, build, _bytes, _content, createState, _fetchFile (+14 more)
+Nodes (22): ../../../core/files/file_actions.dart, recordsRepositoryProvider, build, _bytes, _content, createState, _fetchFile, _fileError (+14 more)
 
 ### Community 47 - "Community 47"
-Cohesion: 0.18
-Nodes (10): ../../../core/format/format.dart, ../data/store_repository.dart, OrderListItem, createState, initState, _load, onTap, order (+2 more)
+Cohesion: 0.17
+Nodes (12): ../../../core/format/format.dart, ../domain/store_models.dart, OrderListItem, createState, initState, _load, onTap, order (+4 more)
 
 ### Community 48 - "Community 48"
 Cohesion: 0.12
@@ -377,16 +374,16 @@ Cohesion: 0.13
 Nodes (15): build, _codeController, createState, devCode, dispose, _error, exists, _friendlyError (+7 more)
 
 ### Community 51 - "Community 51"
-Cohesion: 0.14
-Nodes (13): ../../../core/network/providers.dart, AuthRepository, ../data/auth_repository.dart, DoctorsRepository, FamilyRepository, ProfileRepository, queueRepositoryProvider, QueueRepository (+5 more)
+Cohesion: 0.12
+Nodes (15): ../../../core/network/providers.dart, AuthRepository, ../data/auth_repository.dart, DoctorsRepository, FamilyRepository, ProfileRepository, queueRepositoryProvider, QueueRepository (+7 more)
 
 ### Community 52 - "Community 52"
 Cohesion: 0.13
 Nodes (14): _api, canAdd, detail, FamilyListResult, fromJson, list, maxMembers, _member (+6 more)
 
 ### Community 53 - "Community 53"
-Cohesion: 0.15
-Nodes (13): package:webview_flutter/webview_flutter.dart, build, _controller, createState, _error, initState, InvoiceScreen, _InvoiceScreenState (+5 more)
+Cohesion: 0.14
+Nodes (14): package:webview_flutter/webview_flutter.dart, build, _controller, createState, _error, initState, InvoiceScreen, _InvoiceScreenState (+6 more)
 
 ### Community 54 - "Community 54"
 Cohesion: 0.14
@@ -418,27 +415,27 @@ Nodes (13): _int, int?, ApiFailure, ApiResult, ApiSuccess, error, isLoginRequire
 
 ### Community 61 - "Community 61"
 Cohesion: 0.15
-Nodes (13): ../../../core/storage/session_storage.dart, ../../../core/theme/app_assets.dart, build, _controller, createState, dispose, _index, OnboardingScreen (+5 more)
+Nodes (12): static const, AppAssets, appIcon, appIconTile, clinicPlaceholder, doctorAvatar, logo, logoMark (+4 more)
 
 ### Community 62 - "Community 62"
-Cohesion: 0.14
-Nodes (13): app.dart, ../../../core/theme/app_colors.dart, Doctor, main, package:flutter/material.dart, package:go_router/go_router.dart, build, createState (+5 more)
+Cohesion: 0.18
+Nodes (9): app.dart, ../../../core/theme/app_colors.dart, Doctor, main, package:flutter/material.dart, build, doctor, DoctorCard (+1 more)
 
 ### Community 63 - "Community 63"
 Cohesion: 0.18
 Nodes (10): Color, dart:math, AppGlyph, AppIcon, build, color, glyph, paint (+2 more)
 
 ### Community 64 - "Community 64"
-Cohesion: 0.17
-Nodes (12): ../../../core/config/api_config.dart, ../data/auth_providers.dart, package:flutter/services.dart, build, createState, dispose, _error, _friendlyError (+4 more)
+Cohesion: 0.20
+Nodes (10): ../../../core/config/api_config.dart, build, createState, dispose, _error, _friendlyError, _loading, LoginScreen (+2 more)
 
 ### Community 65 - "Community 65"
 Cohesion: 0.20
 Nodes (9): ../../../core/network/api_client.dart, ../../../core/network/api_result.dart, _api, AppointmentsRepository, home, list, _api, status (+1 more)
 
 ### Community 66 - "Community 66"
-Cohesion: 0.14
-Nodes (12): dart:typed_data, add, _api, detail, file, list, _parseItem, _parseItems (+4 more)
+Cohesion: 0.18
+Nodes (10): dart:typed_data, add, _api, detail, file, list, _parseItem, _parseItems (+2 more)
 
 ### Community 67 - "Community 67"
 Cohesion: 0.18
@@ -453,16 +450,16 @@ Cohesion: 0.20
 Nodes (7): Any, FlutterAppDelegate, FlutterImplicitEngineBridge, FlutterImplicitEngineDelegate, Bool, AppDelegate, UIApplication
 
 ### Community 70 - "Community 70"
-Cohesion: 0.40
-Nodes (5): appointmentsRepositoryProvider, AppointmentsScreen, _AppointmentsScreenState, _load, _load
+Cohesion: 0.16
+Nodes (14): build, build, build, _sections, Route /appointments, Route /labs, Route /more, Route /queue (+6 more)
 
 ### Community 71 - "Community 71"
-Cohesion: 0.18
-Nodes (12): app_colors.dart, static ThemeData get, _, AppTheme, _build, dark, eyebrow, _inputBorder (+4 more)
+Cohesion: 0.17
+Nodes (13): app_colors.dart, package:flutter/services.dart, static ThemeData get, _, AppTheme, _build, dark, eyebrow (+5 more)
 
 ### Community 72 - "Community 72"
-Cohesion: 0.17
-Nodes (11): ../../../core/widgets/app_icon.dart, ../../../core/widgets/app_scaffold.dart, ../../../core/widgets/app_ui.dart, ../data/doctors_providers.dart, ../data/doctors_repository.dart, build, LabsScreen, createState (+3 more)
+Cohesion: 0.22
+Nodes (9): ../../../core/widgets/app_ui.dart, ../data/doctors_providers.dart, ../data/doctors_repository.dart, createState, initState, _result, SavedDoctorsScreen, _SavedDoctorsScreenState (+1 more)
 
 ### Community 73 - "Community 73"
 Cohesion: 0.20
@@ -481,8 +478,8 @@ Cohesion: 0.20
 Nodes (9): kApiBaseUrl, kCartTokenKey, kLabsEnabled, kOnboardingDoneKey, kSessionTokenKey, kSkipWhatsAppOtp, kTestPhoneKey, kTestSessionKey (+1 more)
 
 ### Community 77 - "Community 77"
-Cohesion: 0.14
-Nodes (18): authRepositoryProvider, sessionStorageProvider, build, _checkout, _open, _continue, _logout, _finish (+10 more)
+Cohesion: 0.29
+Nodes (10): authRepositoryProvider, sessionStorageProvider, _checkout, _continue, _logout, _verify, _bootstrap, Route /home (+2 more)
 
 ### Community 78 - "Community 78"
 Cohesion: 0.13
@@ -493,16 +490,16 @@ Cohesion: 0.22
 Nodes (8): email, firstName, fromJson, id, name, Patient, phone, String?
 
 ### Community 80 - "Community 80"
-Cohesion: 0.22
-Nodes (9): _list, build, build, _content, build, Route /doctors, Route /labs, Route /more (+1 more)
+Cohesion: 0.40
+Nodes (5): _list, build, _content, build, Route /doctors
 
 ### Community 81 - "Community 81"
-Cohesion: 0.11
-Nodes (17): ../data/queue_providers.dart, QueueAppointment, QueueInfo, appointment, appointmentId, build, _ClinicCard, _clock (+9 more)
+Cohesion: 0.40
+Nodes (4): images, info, author, version
 
 ### Community 82 - "Community 82"
-Cohesion: 0.18
-Nodes (11): ../../../core/router/app_router.dart, core/theme/app_theme.dart, ../../../core/theme/theme_mode_provider.dart, features/app_update/presentation/app_update_gate.dart, GoRouter, _AppRoot, build, EClinicProApp (+3 more)
+Cohesion: 0.17
+Nodes (12): ../../../core/router/app_router.dart, core/theme/app_theme.dart, ../../../core/theme/theme_mode_provider.dart, features/app_update/presentation/app_update_gate.dart, GoRouter, _AppRoot, build, EClinicProApp (+4 more)
 
 ### Community 84 - "Community 84"
 Cohesion: 0.20
@@ -565,16 +562,16 @@ Cohesion: 0.50
 Nodes (4): `GET ?action=list` · `GET ?action=detail&id=` · `GET ?action=file&id=`  *(Bearer)*, Lab reports — `lab_reports.php`, `POST ?action=add`  *(Bearer)* — **multipart/form-data**, `POST ?action=remove`  *(Bearer)* — Body `{ "id": 8 }`.
 
 ### Community 101 - "Community 101"
-Cohesion: 0.29
-Nodes (8): build, _sections, Route /queue, Route /saved-doctors, Route /shop/addresses, Route /shop/categories, Route /shop/orders, Route /shop/wishlist
+Cohesion: 0.17
+Nodes (11): ../../../core/storage/session_storage.dart, ../../../core/theme/app_assets.dart, build, _controller, createState, dispose, _finish, _index (+3 more)
 
 ### Community 105 - "Community 105"
 Cohesion: 0.33
 Nodes (7): ConsumerWidget, cartCountProvider, build, _ShellNavBar, _ProfileCard, CartButton, FloatingCartBar
 
 ### Community 109 - "Community 109"
-Cohesion: 0.10
-Nodes (19): ../data/app_update_repository.dart, build, _checking, child, createState, _dialogOpen, didChangeAppLifecycleState, dispose (+11 more)
+Cohesion: 0.09
+Nodes (24): appUpdateRepositoryProvider, ../data/app_update_repository.dart, AppUpdateGate, _AppUpdateGateState, build, _check, _checking, child (+16 more)
 
 ### Community 110 - "Community 110"
 Cohesion: 0.11
@@ -589,53 +586,41 @@ Cohesion: 0.18
 Nodes (10): dart:async, _api, AppUpdateRepository, check, info, platform, ../domain/app_update.dart, package:flutter/foundation.dart (+2 more)
 
 ### Community 123 - "Community 123"
-Cohesion: 0.22
-Nodes (9): appVersionLabelProvider, familyRepositoryProvider, _load, _remove, _save, _load, MoreScreen, _MoreScreenState (+1 more)
+Cohesion: 0.33
+Nodes (6): ../data/auth_providers.dart, build, createState, initState, SplashScreen, _SplashScreenState
 
 ### Community 125 - "Community 125"
 Cohesion: 0.67
 Nodes (3): CustomPainter, _TabIconPainter, _GlyphPainter
 
 ### Community 132 - "Community 132"
-Cohesion: 0.25
-Nodes (7): ../domain/store_models.dart, createState, initState, _load, _remove, _result, shop_widgets.dart
+Cohesion: 0.22
+Nodes (9): ../data/store_repository.dart, createState, initState, _load, _remove, _result, WishlistScreen, _WishlistScreenState (+1 more)
 
 ### Community 133 - "Community 133"
 Cohesion: 0.40
-Nodes (5): CartController, CartState, Notifier, ThemeModeNotifier, ThemeMode
+Nodes (6): OnboardingScreen, _OnboardingScreenState, PromoBannerCarousel, _PromoBannerCarouselState, State, StatefulWidget
 
 ### Community 134 - "Community 134"
-Cohesion: 0.18
-Nodes (10): AppAssets, appIcon, clinicPlaceholder, doctorAvatar, logo, logoMark, logoOnDark, onboardingBooking (+2 more)
-
-### Community 135 - "Community 135"
-Cohesion: 0.33
-Nodes (6): doctorsRepositoryProvider, DoctorDetailScreen, _DoctorDetailScreenState, _load, _loadSaved, _load
-
-### Community 136 - "Community 136"
 Cohesion: 0.40
-Nodes (5): appUpdateRepositoryProvider, AppUpdateGate, _AppUpdateGateState, _check, WidgetsBindingObserver
-
-### Community 137 - "Community 137"
-Cohesion: 0.67
-Nodes (4): @immutable, AppTokens, AppTokensDecoration, ThemeExtension
+Nodes (4): ../../../core/widgets/app_icon.dart, ../../../core/widgets/app_scaffold.dart, build, LabsScreen
 
 ## Knowledge Gaps
-- **1426 isolated node(s):** `allow`, `allow`, `SBFrame`, `SBDebugger`, `flutter_export_environment.sh script` (+1421 more)
+- **1446 isolated node(s):** `allow`, `allow`, `SBFrame`, `SBDebugger`, `flutter_export_environment.sh script` (+1441 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **14 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `_` connect `Community 5` to `Community 137`, `Community 58`, `Community 61`, `Community 62`, `Community 63`?**
-  _High betweenness centrality (0.047) - this node is a cross-community bridge._
-- **Why does `_int` connect `Community 60` to `Community 0`, `Community 2`, `Community 3`, `Community 6`, `Community 7`, `Community 9`, `Community 10`, `Community 11`, `Community 12`, `Community 14`, `Community 81`, `Community 21`, `Community 29`?**
-  _High betweenness centrality (0.033) - this node is a cross-community bridge._
-- **Why does `_` connect `Community 9` to `Community 79`, `Community 52`, `Community 58`, `Community 60`, `Community 61`?**
-  _High betweenness centrality (0.026) - this node is a cross-community bridge._
+- **Why does `_` connect `Community 5` to `Community 58`, `Community 61`, `Community 62`, `Community 63`?**
+  _High betweenness centrality (0.039) - this node is a cross-community bridge._
+- **Why does `_int` connect `Community 60` to `Community 0`, `Community 2`, `Community 3`, `Community 6`, `Community 7`, `Community 9`, `Community 10`, `Community 11`, `Community 12`, `Community 14`, `Community 21`, `Community 29`?**
+  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+- **Why does `_` connect `Community 71` to `Community 62`?**
+  _High betweenness centrality (0.027) - this node is a cross-community bridge._
 - **What connects `allow`, `allow`, `SBFrame` to the rest of the system?**
-  _1427 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1447 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
   _Cohesion score 0.00975609756097561 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**

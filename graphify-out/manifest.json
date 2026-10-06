@@ -40,18 +40,18 @@
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Flutter/ephemeral/Packages/.packages/FlutterFramework/Package.swift": {
-    "mtime": 1791264938.7037475,
+    "mtime": 1791286600.0202484,
     "ast_hash": "0be97e7c440958734803cc9f1f14cd7f",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Flutter/ephemeral/Packages/.packages/FlutterFramework/Sources/FlutterFramework/FlutterFramework.swift": {
-    "mtime": 1791264938.697448,
+    "mtime": 1791286599.977713,
     "ast_hash": "e6366d8685ad56268730656aa0a6e00c",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift": {
-    "mtime": 1791264938.7093587,
-    "ast_hash": "7362fbfa716e25ffe0946582261d763c",
+    "mtime": 1791286656.8322363,
+    "ast_hash": "a541d9fb32140a3a053b379df98c5f49",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Sources/FlutterGeneratedPluginSwiftPackage/FlutterGeneratedPluginSwiftPackage.swift": {
@@ -65,7 +65,7 @@
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Flutter/flutter_export_environment.sh": {
-    "mtime": 1791264723.0371244,
+    "mtime": 1791286656.8115375,
     "ast_hash": "5de8cdaf4e3da661d03b9d0db4b56cb9",
     "semantic_hash": ""
   },
@@ -75,13 +75,13 @@
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json": {
-    "mtime": 1783620868.0,
-    "ast_hash": "c3cdf9688b604d14f2e76a8287e16167",
+    "mtime": 1791270631.2388344,
+    "ast_hash": "c870f277d0c83d1af12f8dc2d368879a",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json": {
-    "mtime": 1783620868.0,
-    "ast_hash": "770f4f65e02ca2fc57f46f4f4148d15d",
+    "mtime": 1791270640.0688517,
+    "ast_hash": "0827e8a9ba504cc1db6605cbd01fc656",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/GeneratedPluginRegistrant.h": {
@@ -155,8 +155,8 @@
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/lib/core/theme/app_assets.dart": {
-    "mtime": 1784088906.917587,
-    "ast_hash": "a16ba522913cbde16416474429bd1c5b",
+    "mtime": 1791270667.044836,
+    "ast_hash": "02912b83d565b152dd0c75ce96d3f353",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/lib/core/theme/app_colors.dart": {
@@ -240,8 +240,8 @@
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/lib/features/auth/presentation/splash_screen.dart": {
-    "mtime": 1790246166.4200764,
-    "ast_hash": "7ed905e096633f563165d76f0dc74c39",
+    "mtime": 1791270667.0462344,
+    "ast_hash": "418d659caf7b06c5fb1f68c66f206fd7",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/lib/features/doctors/data/doctors_providers.dart": {
@@ -300,8 +300,8 @@
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/lib/features/home/presentation/home_screen.dart": {
-    "mtime": 1791204596.6853929,
-    "ast_hash": "68991c2f3841d67b492eb94661f4f7bd",
+    "mtime": 1791286402.8541389,
+    "ast_hash": "6f6bcec4f651e0e29cfdc6fcfca510c7",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/lib/features/labs/presentation/labs_screen.dart": {
@@ -310,8 +310,8 @@
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/lib/features/more/presentation/more_screen.dart": {
-    "mtime": 1791263893.3356457,
-    "ast_hash": "5521b6078a2508c33ecc5732a8f4a7c8",
+    "mtime": 1791270657.1921897,
+    "ast_hash": "a8624f0574fd334d8b076a4dc62c8576",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/lib/features/onboarding/presentation/onboarding_screen.dart": {
@@ -460,13 +460,13 @@
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/lib/features/shop/presentation/shop_screen.dart": {
-    "mtime": 1791204596.6834254,
-    "ast_hash": "57c8dd33b13500efa3b8db335b5c55e3",
+    "mtime": 1791284071.135381,
+    "ast_hash": "c1d6dbcc833d461bfc2f6d9de622f9d0",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/lib/features/shop/presentation/shop_widgets.dart": {
-    "mtime": 1791204637.1684747,
-    "ast_hash": "30aa86eab4cc64c69b8ad6155c4001c7",
+    "mtime": 1791284071.1327145,
+    "ast_hash": "f7122516d0fb642bb40cc77382a4ce64",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/lib/features/shop/presentation/wishlist_screen.dart": {
@@ -495,8 +495,8 @@
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/web/manifest.json": {
-    "mtime": 1783678462.9996004,
-    "ast_hash": "8e30096c1e003b4311638be142be8e3e",
+    "mtime": 1791270657.1674523,
+    "ast_hash": "d1dd2ecb4ff1321271b3833984dab895",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/README.md": {
@@ -590,38 +590,38 @@
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/pubspec.yaml": {
-    "mtime": 1791263789.6707418,
-    "ast_hash": "f43f69be90a4628064214d49ab9ab190",
+    "mtime": 1791270622.8772724,
+    "ast_hash": "bb33e2e545ae99f0a8d79d7ead483f6a",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/web/index.html": {
-    "mtime": 1783678462.9954474,
-    "ast_hash": "33cd1a0481217e800f4c7a7f54f51716",
+    "mtime": 1791270657.1792488,
+    "ast_hash": "833f5a844e63e1ec2fd126db69cd35e1",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/android/app/src/main/res/mipmap-hdpi/ic_launcher.png": {
-    "mtime": 1783620868.0,
-    "ast_hash": "13e9c72ec37fac220397aa819fa1ef2d",
+    "mtime": 1791270628.4780173,
+    "ast_hash": "738ae933fcc3b422af0e82c30aa5ad0d",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/android/app/src/main/res/mipmap-mdpi/ic_launcher.png": {
-    "mtime": 1783620868.0,
-    "ast_hash": "6270344430679711b81476e29878caa7",
+    "mtime": 1791270628.4777682,
+    "ast_hash": "53234a01a836f9a14d76c215d27ae4b0",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png": {
-    "mtime": 1783620868.0,
-    "ast_hash": "a0a8db5985280b3679d99a820ae2db79",
+    "mtime": 1791270628.477995,
+    "ast_hash": "2b4df643f3ee838f0bb32d4146b9bad3",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png": {
-    "mtime": 1783620868.0,
-    "ast_hash": "afe1b655b9f32da22f9a4301bb8e6ba8",
+    "mtime": 1791270628.4780843,
+    "ast_hash": "137bf17e2cf75e13a91178deba035c41",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png": {
-    "mtime": 1783620868.0,
-    "ast_hash": "57838d52c318faff743130c3fcfae0c6",
+    "mtime": 1791270628.4783359,
+    "ast_hash": "39ed5e249482b6565184a8162e01c8e5",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/assets/images/brand/app_icon.png": {
@@ -685,93 +685,93 @@
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png": {
-    "mtime": 1783678417.127304,
-    "ast_hash": "c785f8932297af4acd5f5ccb7630f01c",
+    "mtime": 1791270631.2159662,
+    "ast_hash": "e0f4d592d49f523d3b30135f1888dbda",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png": {
-    "mtime": 1783678417.1278675,
-    "ast_hash": "a2f8558fb1d42514111fbbb19fb67314",
+    "mtime": 1791270631.1994147,
+    "ast_hash": "4ec847dc4716ceeac7c2c1fad34b6ed7",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png": {
-    "mtime": 1783678417.1261694,
-    "ast_hash": "2247a840b6ee72b8a069208af170e5b1",
+    "mtime": 1791270631.199441,
+    "ast_hash": "eb6b92079676f73932d6812384da5be3",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png": {
-    "mtime": 1783678417.1289518,
-    "ast_hash": "1b3b1538136316263c7092951e923e9d",
+    "mtime": 1791270631.1994653,
+    "ast_hash": "786d19cc99a2b40705a7ea5c07520527",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png": {
-    "mtime": 1783678417.1305091,
-    "ast_hash": "be8887071dd7ec39cb754d236aa9584f",
+    "mtime": 1791270631.1994946,
+    "ast_hash": "48374a2f97cc652bbf1c2021f70b1a23",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png": {
-    "mtime": 1783678417.1238437,
-    "ast_hash": "043119ef4faa026ff82bd03f241e5338",
+    "mtime": 1791270631.1995137,
+    "ast_hash": "b4b0a463b669d4817941bec1684ee4ab",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png": {
-    "mtime": 1783678417.1284177,
-    "ast_hash": "2b1452c4c1bda6177b4fbbb832df217f",
+    "mtime": 1791270631.199534,
+    "ast_hash": "3c26a69c31a7f1a5571448b12c50df6f",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png": {
-    "mtime": 1783678417.1244915,
-    "ast_hash": "2247a840b6ee72b8a069208af170e5b1",
+    "mtime": 1791270631.199543,
+    "ast_hash": "eb6b92079676f73932d6812384da5be3",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png": {
-    "mtime": 1783678417.1299353,
-    "ast_hash": "8245359312aea1b0d2412f79a07b0ca5",
+    "mtime": 1791270631.1995625,
+    "ast_hash": "b66c771e3b7407276b8a6803afcb5966",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png": {
-    "mtime": 1783678417.125087,
-    "ast_hash": "5b3c0902200ce596e9848f22e1f0fe0e",
+    "mtime": 1791270631.1998737,
+    "ast_hash": "ebc6aabf5e4f2f3123b44564fd894880",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png": {
-    "mtime": 1783678417.126673,
-    "ast_hash": "5b3c0902200ce596e9848f22e1f0fe0e",
+    "mtime": 1791270631.2028341,
+    "ast_hash": "ebc6aabf5e4f2f3123b44564fd894880",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png": {
-    "mtime": 1783678417.1232708,
-    "ast_hash": "e419d22a37bc40ba185aca1acb6d4ac6",
+    "mtime": 1791270631.202877,
+    "ast_hash": "a020b1fa312b510b00a341d608965b8c",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png": {
-    "mtime": 1783678417.1256292,
-    "ast_hash": "36c0d7a7132bdde18898ffdfcfcdc4d2",
+    "mtime": 1791270631.2028613,
+    "ast_hash": "600c39ae3c120c8e6a1e3b0cc6b9b0b4",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png": {
-    "mtime": 1783678417.13113,
-    "ast_hash": "643842917530acf4c5159ae851b0baf2",
+    "mtime": 1791270631.2028484,
+    "ast_hash": "5b5812044a87cb990f2d3f261cd2cdf2",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png": {
-    "mtime": 1783678417.129463,
-    "ast_hash": "665cb5e3c5729da6d639d26eff47a503",
+    "mtime": 1791270631.2028918,
+    "ast_hash": "e6c1004a73525fb5fac684e2dc916128",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png": {
-    "mtime": 1783678417.122302,
-    "ast_hash": "978c1bee49d7ad5fc1a4d81099b13e18",
+    "mtime": 1791270640.09934,
+    "ast_hash": "c2b7a48554729df2cd52dee6b04a9762",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png": {
-    "mtime": 1783678417.1214447,
-    "ast_hash": "978c1bee49d7ad5fc1a4d81099b13e18",
+    "mtime": 1791270640.1329675,
+    "ast_hash": "b63706ad3c7f31c3ab6b7b929eb593b6",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png": {
-    "mtime": 1783678417.1204152,
-    "ast_hash": "978c1bee49d7ad5fc1a4d81099b13e18",
+    "mtime": 1791270640.1929054,
+    "ast_hash": "6aa36080fc78842a1025c0e76d5830be",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/web/favicon.png": {
@@ -850,8 +850,8 @@
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/.claude/settings.json": {
-    "mtime": 1791264935.6912029,
-    "ast_hash": "2a6594ca9a92f32802c5181ffe279a11",
+    "mtime": 1791283998.6410067,
+    "ast_hash": "1d1208cbfdbb9f0833828edddb5581bd",
     "semantic_hash": ""
   },
   "/Users/apple/appmycliflut/lib/features/app_update/data/app_update_repository.dart": {
@@ -872,6 +872,171 @@
   "/Users/apple/appmycliflut/test/app_update_test.dart": {
     "mtime": 1791263930.4590926,
     "ast_hash": "16a2fba5f9bee1b9b5d50c528a7f1cae",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/LaunchBackground.imageset/Contents.json": {
+    "mtime": 1791270640.1792257,
+    "ast_hash": "b5f36b5cc2eecbd74b7cfcb6a89fe6d1",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-hdpi/android12splash.png": {
+    "mtime": 1791270639.4315412,
+    "ast_hash": "9cc964e7ed89527a0394fa150348f793",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-hdpi/ic_launcher_foreground.png": {
+    "mtime": 1791270628.7196095,
+    "ast_hash": "3f888c07895bcd9a62e67a5ae6ef11a2",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-hdpi/splash.png": {
+    "mtime": 1791270639.1406622,
+    "ast_hash": "eb71b9aaa5606dfc703509bc43b6c6cf",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-mdpi/android12splash.png": {
+    "mtime": 1791270639.438589,
+    "ast_hash": "4e35ac6a4b467c8b7f6882f5760463bc",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-mdpi/ic_launcher_foreground.png": {
+    "mtime": 1791270628.7194757,
+    "ast_hash": "e07680b9252615f5c34a5950f5ac32c7",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-mdpi/splash.png": {
+    "mtime": 1791270639.1248958,
+    "ast_hash": "c2b7a48554729df2cd52dee6b04a9762",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-night-hdpi/android12splash.png": {
+    "mtime": 1791270639.665246,
+    "ast_hash": "9cc964e7ed89527a0394fa150348f793",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-night-mdpi/android12splash.png": {
+    "mtime": 1791270639.6256912,
+    "ast_hash": "4e35ac6a4b467c8b7f6882f5760463bc",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-night-xhdpi/android12splash.png": {
+    "mtime": 1791270639.7905917,
+    "ast_hash": "430abe9d2e3aa8f4b6761f84c83d824b",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-night-xxhdpi/android12splash.png": {
+    "mtime": 1791270639.8492599,
+    "ast_hash": "3edc764842ee8c36f7c1aa8661f07b7f",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-night-xxxhdpi/android12splash.png": {
+    "mtime": 1791270639.9620159,
+    "ast_hash": "2843b1d19701dc0afbc1d51c59d663e6",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-v21/background.png": {
+    "mtime": 1791270639.5519183,
+    "ast_hash": "4af5a1940a3f6de9e9cdb2d6281bb515",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-xhdpi/android12splash.png": {
+    "mtime": 1791270639.4412997,
+    "ast_hash": "430abe9d2e3aa8f4b6761f84c83d824b",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-xhdpi/ic_launcher_foreground.png": {
+    "mtime": 1791270628.7196999,
+    "ast_hash": "97547d64e7ba57b941d1289f1307ff8a",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-xhdpi/splash.png": {
+    "mtime": 1791270639.1662226,
+    "ast_hash": "b63706ad3c7f31c3ab6b7b929eb593b6",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-xxhdpi/android12splash.png": {
+    "mtime": 1791270639.5192618,
+    "ast_hash": "3edc764842ee8c36f7c1aa8661f07b7f",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-xxhdpi/ic_launcher_foreground.png": {
+    "mtime": 1791270628.7197351,
+    "ast_hash": "3c277dd03d71022d1ebeb072a2ca9995",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-xxhdpi/splash.png": {
+    "mtime": 1791270639.2331116,
+    "ast_hash": "6aa36080fc78842a1025c0e76d5830be",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-xxxhdpi/android12splash.png": {
+    "mtime": 1791270639.497194,
+    "ast_hash": "2843b1d19701dc0afbc1d51c59d663e6",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-xxxhdpi/ic_launcher_foreground.png": {
+    "mtime": 1791270628.7196715,
+    "ast_hash": "38115078cf8eb64661783895f32824e7",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable-xxxhdpi/splash.png": {
+    "mtime": 1791270639.3483014,
+    "ast_hash": "64ecf35d08ac334e473d5bbd0298198f",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/drawable/background.png": {
+    "mtime": 1791270639.5437264,
+    "ast_hash": "4af5a1940a3f6de9e9cdb2d6281bb515",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/brand/app_icon_1024.png": {
+    "mtime": 1791270603.722833,
+    "ast_hash": "ea56e2264de73f01e97fc9148765a5cb",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/brand/app_icon_512.png": {
+    "mtime": 1791270603.742424,
+    "ast_hash": "f5f04e6bce3406d598bec8e858689379",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/brand/app_icon_foreground.png": {
+    "mtime": 1791270603.7344115,
+    "ast_hash": "8b7af987c08754af0696c687355794fe",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-50x50@1x.png": {
+    "mtime": 1791270631.2028296,
+    "ast_hash": "ea7920adf0ec2e23b73ef5d7e0f11d56",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-50x50@2x.png": {
+    "mtime": 1791270631.2027013,
+    "ast_hash": "a31239d4e0afe230b245350f37beb237",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-57x57@1x.png": {
+    "mtime": 1791270631.202734,
+    "ast_hash": "89ef0a6fcaf256954e9bafaae6adf90e",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-57x57@2x.png": {
+    "mtime": 1791270631.2027924,
+    "ast_hash": "e41367e776d6a3a5593d293526a4233b",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-72x72@1x.png": {
+    "mtime": 1791270631.2028234,
+    "ast_hash": "e97ab8922be1663a466d1ecf4528b7ea",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-72x72@2x.png": {
+    "mtime": 1791270631.2026987,
+    "ast_hash": "1c59624ff0328ee26b02cdb8de3e31ea",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/LaunchBackground.imageset/background.png": {
+    "mtime": 1791270640.1785576,
+    "ast_hash": "4af5a1940a3f6de9e9cdb2d6281bb515",
     "semantic_hash": ""
   }
 }

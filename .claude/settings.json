@@ -5,7 +5,25 @@
       "Bash(python3 -)",
       "Bash(flutter analyze *)",
       "Bash(flutter test *)",
-      "Bash(graphify update *)"
+      "Bash(graphify update *)",
+      "Bash(grep -o '<image[^>]\\\\{0,80\\\\}' EclinicPro-Logos/logo-1024.svg)",
+      "Bash(python3 -c ' *)",
+      "Bash(sips -g pixelWidth -g pixelHeight app_icon.png logo_on_dark.png logo_mark.png)",
+      "Bash(grep -v \"^$\")",
+      "Bash(dart run *)",
+      "Bash(sips -g hasAlpha -g pixelWidth ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png)",
+      "Bash(plutil -replace CFBundleDisplayName -string \"eClinicPro\" ios/Runner/Info.plist)",
+      "Bash(plutil -replace CFBundleName -string \"eClinicPro\" ios/Runner/Info.plist)",
+      "Bash(sed -i '' 's/android:label=\"eclinicpro_patient\"/android:label=\"eClinicPro\"/' android/app/src/main/AndroidManifest.xml)",
+      "Bash(sed -i '' 's/\"name\": \"eclinicpro_patient\"/\"name\": \"eClinicPro\"/; s/\"short_name\": \"eclinicpro_patient\"/\"short_name\": \"eClinicPro\"/' web/manifest.json)",
+      "Bash(sed -i '' 's/content=\"eclinicpro_patient\"/content=\"eClinicPro\"/; s#<title>eclinicpro_patient</title>#<title>eClinicPro</title>#' web/index.html)",
+      "Bash([ -f $S/brand_home.png ])",
+      "Bash(cd ~/myclinic && grep -n \"banner\" api/mobile/v1/store.php | head -8; grep -rln \"store_banners\\\\|banners\" --include='*.php' app/app app/views 2>/dev/null | head; grep -n \"banner\" app/routes/web.php | head)",
+      "Read(//Users/apple/myclinic/**)",
+      "Bash(cd ~/myclinic && grep -rn \"function store_home_banners\" -A25 --include='*.php' . 2>/dev/null | grep -v vendor | head -30; sed -n 40,50p api/mobile/v1/store.php; grep -n \"input\\\\|name=\\\\\"\" app/views/admin/store_banners.php | head -20)",
+      "Bash(curl -s \"https://eclinicpro.com/api/mobile/v1/store.php?action=home\")",
+      "Bash(python3 -c \"import json,sys;print\\(json.load\\(sys.stdin\\)['banners']\\)\")",
+      "Bash(git add *)"
     ]
   }
 }
