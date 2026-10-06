@@ -7,6 +7,7 @@ import '../../../core/network/api_result.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/app_scaffold.dart';
+import '../../../core/widgets/app_ui.dart';
 import '../data/doctors_providers.dart';
 import '../domain/doctor.dart';
 
@@ -23,6 +24,10 @@ class _DoctorDetailScreenState extends ConsumerState<DoctorDetailScreen> {
   bool _loading = true;
   String? _error;
   Doctor? _doctor;
+
+  /// Null until known (signed out, or the saved list has not loaded).
+  bool? _saved;
+  bool _savingToggle = false;
 
   @override
   void initState() {
@@ -45,11 +50,47 @@ class _DoctorDetailScreenState extends ConsumerState<DoctorDetailScreen> {
         });
         // Fire-and-forget analytics
         ref.read(doctorsRepositoryProvider).trackView(widget.doctorId);
+        _loadSaved();
       case ApiFailure(:final message, :final error):
         setState(() {
           _loading = false;
           _error = message ?? error;
         });
+    }
+  }
+
+  /// `detail` has no saved flag, so look the doctor up in the saved list.
+  Future<void> _loadSaved() async {
+    final r = await ref.read(doctorsRepositoryProvider).saved();
+    if (!mounted) return;
+    if (r case ApiSuccess(:final value)) {
+      setState(() => _saved = value.items.any((d) => d.id == widget.doctorId));
+    }
+  }
+
+  Future<void> _toggleSaved() async {
+    final next = !(_saved ?? false);
+    setState(() => _savingToggle = true);
+    final r = await ref
+        .read(doctorsRepositoryProvider)
+        .setSaved(widget.doctorId, saved: next);
+    if (!mounted) return;
+    setState(() => _savingToggle = false);
+    switch (r) {
+      case ApiSuccess(:final value):
+        setState(() => _saved = value);
+        showAppSnack(context, value ? 'Saved to your doctors' : 'Removed');
+      case ApiFailure(:final isLoginRequired, :final error):
+        if (isLoginRequired) {
+          promptSignIn(context, reason: 'Sign in to save doctors.');
+        } else {
+          showAppSnack(
+            context,
+            error == 'limit_reached'
+                ? 'You can save up to 5 doctors. Remove one first.'
+                : friendlyMessage(r),
+          );
+        }
     }
   }
 
@@ -78,6 +119,19 @@ class _DoctorDetailScreenState extends ConsumerState<DoctorDetailScreen> {
               context.canPop() ? context.pop() : context.go('/doctors'),
         ),
         title: const Text('Doctor'),
+        actions: [
+          if (_doctor != null)
+            IconButton(
+              tooltip: _saved == true ? 'Remove from saved' : 'Save doctor',
+              onPressed: _savingToggle ? null : _toggleSaved,
+              icon: AppIcon(
+                _saved == true ? AppGlyph.heartFilled : AppGlyph.heart,
+                color: t.ink,
+                size: 21,
+              ),
+            ),
+          const SizedBox(width: 8),
+        ],
       ),
       body: _buildBody(),
       bottomNavigationBar: _doctor == null

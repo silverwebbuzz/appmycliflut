@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_mode_provider.dart';
+import 'features/app_update/presentation/app_update_gate.dart';
 
 class EClinicProApp extends StatelessWidget {
   EClinicProApp({super.key});
@@ -22,7 +24,7 @@ class EClinicProApp extends StatelessWidget {
 class _AppRoot extends ConsumerWidget {
   const _AppRoot({required this.router});
 
-  final RouterConfig<Object> router;
+  final GoRouter router;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,6 +35,10 @@ class _AppRoot extends ConsumerWidget {
       darkTheme: AppTheme.dark,
       themeMode: ref.watch(themeModeProvider),
       routerConfig: router,
+      // Update prompts are checked once the first frame is up, in the
+      // background, so they never hold up startup.
+      builder: (context, child) =>
+          AppUpdateGate(router: router, child: child ?? const SizedBox.shrink()),
     );
   }
 }

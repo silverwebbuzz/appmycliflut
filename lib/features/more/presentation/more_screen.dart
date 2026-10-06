@@ -1,135 +1,289 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/network/api_result.dart';
 import '../../../core/network/providers.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/theme_mode_provider.dart';
-import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/app_scaffold.dart';
+import '../../../core/widgets/app_ui.dart';
+import '../../app_update/data/app_update_repository.dart';
+import '../../auth/data/auth_providers.dart';
+import '../../family/data/family_providers.dart';
+import '../../family/data/family_repository.dart';
+import '../../profile/data/profile_providers.dart';
+import '../../profile/data/profile_repository.dart';
+import '../../profile/presentation/profile_avatar.dart';
+import '../../shop/data/cart_controller.dart';
 
-/// More tab — profile summary, family, settings and sign-out.
+/// More tab — profile, family, shop and health shortcuts, settings, sign-out.
 ///
-/// Replaces the old 47-line Profile placeholder. The profile card and the
-/// family list are rendered from local state here; profile.php and family.php
-/// are wired in a later step, at which point the hardcoded shell below is
-/// replaced by real data rather than extended.
-class MoreScreen extends ConsumerWidget {
+/// Profile and family come from `profile.php` / `family.php`. Signed out (or
+/// in test mode) the cards fall back to a sign-in prompt; the settings and
+/// legal links still work.
+class MoreScreen extends ConsumerStatefulWidget {
   const MoreScreen({super.key});
 
-  Future<void> _logout(BuildContext context, WidgetRef ref) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: const Text('Log out?'),
-        content: const Text(
-          'You will need your mobile number to sign back in.',
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: const Text('Cancel'),
+  @override
+  ConsumerState<MoreScreen> createState() => _MoreScreenState();
+}
+
+class _MoreScreenState extends ConsumerState<MoreScreen> {
+  ApiResult<ProfileResult>? _profile;
+  ApiResult<FamilyListResult>? _family;
+
+  /// Switch value while a save is in flight (optimistic); null otherwise.
+  bool? _waPending;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final profileFuture = ref.read(profileRepositoryProvider).get();
+    final family = await ref.read(familyRepositoryProvider).list();
+    final profile = await profileFuture;
+    if (!mounted) return;
+    setState(() {
+      _profile = profile;
+      _family = family;
+    });
+  }
+
+  Future<void> _push(String location) async {
+    await context.push(location);
+    // Edits happen on the pushed screen; refresh on return.
+    if (mounted) _load();
+  }
+
+  /// Off stops every WhatsApp message to the login number (reminders,
+  /// booking and order updates); the OTP still arrives.
+  Future<void> _setWhatsApp(bool on) async {
+    setState(() => _waPending = on);
+    final r = await ref
+        .read(profileRepositoryProvider)
+        .save({ProfileFields.waOptIn: on});
+    if (!mounted) return;
+    switch (r) {
+      case ApiSuccess(:final value):
+        setState(() {
+          _waPending = null;
+          if (_profile case ApiSuccess(value: final old)) {
+            _profile = ApiSuccess(ProfileResult(profile: value, options: old.options));
+          }
+        });
+        showAppSnack(
+          context,
+          on
+              ? 'WhatsApp updates are on.'
+              : 'WhatsApp updates are off. You will still get login codes.',
+        );
+      case ApiFailure():
+        setState(() => _waPending = null);
+        showAppSnack(context, friendlyMessage(r));
+    }
+  }
+
+  Future<void> _logout() async {
+    final ok = await confirmAction(
+      context,
+      title: 'Log out?',
+      message: 'You will need your mobile number to sign back in.',
+      confirmLabel: 'Log out',
+    );
+    if (!ok) return;
+
+    // Revoke the server session first; local data is wiped either way.
+    if (await ref.read(sessionStorageProvider).hasToken()) {
+      await ref.read(authRepositoryProvider).logout();
+    }
+    await ref.read(sessionStorageProvider).clearAllSession();
+    ProfileAvatar.evict();
+    ref.invalidate(cartControllerProvider);
+    if (mounted) context.go('/login');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final mode = ref.watch(themeModeProvider);
+    final family = _family;
+
+    return RefreshIndicator(
+      onRefresh: _load,
+      child: AppTabPage(
+        title: 'Profile',
+        children: [
+          _ProfileCard(
+            result: _profile,
+            onEdit: () => _push('/profile/edit'),
           ),
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: const Text('Log out'),
+
+          if (family is ApiSuccess<FamilyListResult>) ...[
+            const AppSectionLabel('Family members'),
+            AppGroup(
+              children: [
+                for (final m in family.value.members.where((m) => !m.isSelf))
+                  AppGroupRow(
+                    label: m.name,
+                    sub: m.subtitle,
+                    leading: AppInitialsTile(
+                      text: m.initials ?? m.name[0],
+                      size: 38,
+                      tone: AppTone.warn,
+                    ),
+                    onTap: () => _push('/family/${m.id}'),
+                  ),
+                if (family.value.canAdd)
+                  AppGroupRow(
+                    label: 'Add family member',
+                    emphasised: true,
+                    last: true,
+                    onTap: () => _push('/family/new'),
+                  )
+                else
+                  AppGroupRow(
+                    label: 'Family is full (${family.value.maxMembers} max)',
+                    last: true,
+                  ),
+              ],
+            ),
+          ],
+
+          const AppSectionLabel('Health'),
+          AppGroup(
+            children: [
+              AppGroupRow(
+                label: 'My visits',
+                onTap: () => context.push('/appointments'),
+              ),
+              AppGroupRow(
+                label: 'Live queue',
+                onTap: () => context.push('/queue'),
+              ),
+              AppGroupRow(
+                label: 'Saved doctors',
+                last: true,
+                onTap: () => context.push('/saved-doctors'),
+              ),
+            ],
+          ),
+
+          const AppSectionLabel('Shop'),
+          AppGroup(
+            children: [
+              AppGroupRow(
+                label: 'My orders',
+                onTap: () => context.push('/shop/orders'),
+              ),
+              AppGroupRow(
+                label: 'Wishlist',
+                onTap: () => context.push('/shop/wishlist'),
+              ),
+              AppGroupRow(
+                label: 'Saved addresses',
+                last: true,
+                onTap: () => context.push('/shop/addresses'),
+              ),
+            ],
+          ),
+
+          const AppSectionLabel('Settings'),
+          AppGroup(
+            children: [
+              AppGroupRow(
+                label: 'Appearance',
+                trailing: _ThemeModePicker(
+                  value: mode,
+                  onChanged: (m) => ref.read(themeModeProvider.notifier).set(m),
+                ),
+                last: _profile is! ApiSuccess<ProfileResult>,
+              ),
+              if (_profile case ApiSuccess(:final value))
+                AppGroupRow(
+                  label: 'WhatsApp updates',
+                  sub: 'Appointment reminders and order updates',
+                  last: true,
+                  trailing: Switch.adaptive(
+                    value: _waPending ?? value.profile.waOptIn,
+                    onChanged: _waPending == null ? _setWhatsApp : null,
+                  ),
+                ),
+            ],
+          ),
+
+          const AppSectionLabel('Legal'),
+          AppGroup(
+            children: [
+              for (final (label, path, last) in const [
+                ('Privacy policy', 'privacy-policy', false),
+                ('Terms of use', 'terms', false),
+                ('Refund policy', 'refund-policy', true),
+              ])
+                AppGroupRow(
+                  label: label,
+                  last: last,
+                  onTap: () => launchUrl(
+                    Uri.parse('https://eclinicpro.com/$path'),
+                    mode: LaunchMode.externalApplication,
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Destructive action uses --red-soft / --red, per the prototype.
+          AppSoftButton(label: 'Log out', tone: AppTone.err, onTap: _logout),
+          const SizedBox(height: 14),
+          Center(
+            child: Text(
+              switch (ref.watch(appVersionLabelProvider)) {
+                AsyncData(:final value) => 'eClinicPro Patient · Version $value',
+                _ => 'eClinicPro Patient',
+              },
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
           ),
         ],
       ),
     );
-    if (confirmed != true) return;
-
-    await ref.read(sessionStorageProvider).clearAllSession();
-    if (context.mounted) context.go('/login');
   }
+}
+
+class _ProfileCard extends ConsumerWidget {
+  const _ProfileCard({required this.result, required this.onEdit});
+
+  final ApiResult<ProfileResult>? result;
+  final VoidCallback onEdit;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final t = AppTokens.of(context);
-    final mode = ref.watch(themeModeProvider);
-    return AppTabPage(
-      title: 'More',
-      children: [
-        const _ProfileCard(),
-        const SizedBox(height: 20),
-
-        _SectionLabel('Family members'),
-        const SizedBox(height: 8),
-        _Group(
-          children: [
-            _Row(
-              label: 'Add family member',
-              emphasised: true,
-              onTap: () => _notYet(context, 'Family members'),
-            ),
-          ],
-        ),
-        const SizedBox(height: 20),
-
-        _SectionLabel('Settings'),
-        const SizedBox(height: 8),
-        _Group(
-          children: [
-            _Row(
-              label: 'Appearance',
-              trailing: _ThemeModePicker(
-                value: mode,
-                onChanged: (m) => ref.read(themeModeProvider.notifier).set(m),
-              ),
-              last: true,
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-
-        // Destructive action uses --red-soft / --red, per the prototype.
-        GestureDetector(
-          onTap: () => _logout(context, ref),
-          behavior: HitTestBehavior.opaque,
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: t.redSoft,
-              borderRadius: BorderRadius.circular(AppRadii.card),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 15),
-            child: Text(
-              'Log out',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: kFontBody,
-                fontSize: 14,
-                fontWeight: FontWeight.w800,
-                color: t.red,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 14),
-        Center(
-          child: Text(
-            'eClinicPro Patient',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ),
-      ],
-    );
-  }
-
-  void _notYet(BuildContext context, String what) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$what is coming in the next update.')),
-    );
-  }
-}
-
-class _ProfileCard extends StatelessWidget {
-  const _ProfileCard();
-
-  @override
-  Widget build(BuildContext context) {
-    final t = AppTokens.of(context);
     final text = Theme.of(context).textTheme;
+    final r = result;
+
+    final (Widget avatar, String title, String sub, bool canEdit) = switch (r) {
+      ApiSuccess(:final value) => (
+          ProfileAvatar(profile: value.profile),
+          value.profile.name.isEmpty ? 'Your profile' : value.profile.name,
+          value.profile.summary.isEmpty
+              ? (value.profile.phone ?? 'Add your details')
+              : value.profile.summary,
+          true,
+        ),
+      ApiFailure(:final isLoginRequired) => (
+          const ProfileAvatarPlaceholder(),
+          'Your profile',
+          isLoginRequired
+              ? 'Sign in with WhatsApp to edit your profile'
+              : friendlyMessage(r),
+          false,
+        ),
+      null => (const ProfileAvatarPlaceholder(), 'Loading…', '', false),
+    };
 
     return Container(
       decoration: t.cardDecoration.copyWith(
@@ -138,120 +292,21 @@ class _ProfileCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          Container(
-            width: 56,
-            height: 56,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: t.brandSoft,
-              borderRadius: BorderRadius.circular(AppRadii.lg),
-            ),
-            child: AppIcon(AppGlyph.person, color: t.ink, size: 24),
-          ),
+          avatar,
           const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Your profile', style: text.titleLarge),
+                Text(title, style: text.titleLarge),
                 const SizedBox(height: 2),
-                Text('Tap edit to add your details', style: text.bodySmall),
+                Text(sub, style: text.bodySmall),
               ],
             ),
           ),
+          if (canEdit)
+            TextButton(onPressed: onEdit, child: const Text('Edit')),
         ],
-      ),
-    );
-  }
-}
-
-class _SectionLabel extends StatelessWidget {
-  const _SectionLabel(this.text);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = AppTokens.of(context);
-    return Text(
-      text.toUpperCase(),
-      style: TextStyle(
-        fontFamily: kFontBody,
-        fontSize: 11,
-        fontWeight: FontWeight.w800,
-        letterSpacing: 0.12 * 11,
-        color: t.sub,
-      ),
-    );
-  }
-}
-
-/// Card that groups rows with hairline separators, as in the prototype.
-class _Group extends StatelessWidget {
-  const _Group({required this.children});
-
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: AppTokens.of(context).cardDecoration,
-      padding: const EdgeInsets.symmetric(horizontal: 14),
-      child: Column(children: children),
-    );
-  }
-}
-
-class _Row extends StatelessWidget {
-  const _Row({
-    required this.label,
-    this.trailing,
-    this.onTap,
-    this.emphasised = false,
-    this.last = false,
-  });
-
-  final String label;
-  final Widget? trailing;
-  final VoidCallback? onTap;
-
-  /// Renders the label in brand ink, for affordances like "+ Add member".
-  final bool emphasised;
-  final bool last;
-
-  @override
-  Widget build(BuildContext context) {
-    final t = AppTokens.of(context);
-
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Container(
-        decoration: BoxDecoration(
-          border: last
-              ? null
-              : Border(bottom: BorderSide(color: t.line)),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 13),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                emphasised ? '+ $label' : label,
-                style: TextStyle(
-                  fontFamily: kFontBody,
-                  fontSize: 13.5,
-                  fontWeight: FontWeight.w700,
-                  color: emphasised ? t.brand : t.ink,
-                ),
-              ),
-            ),
-            if (trailing != null)
-              trailing!
-            else if (onTap != null)
-              AppIcon(AppGlyph.chevronRight, color: t.sub, size: 18),
-          ],
-        ),
       ),
     );
   }

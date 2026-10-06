@@ -38,6 +38,14 @@ class ApiClient {
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           }
+          // Guest store cart. Sent alongside the Bearer token after sign-in
+          // too: that is what makes the server merge the guest cart.
+          if (options.path.contains('/store')) {
+            final cartToken = await _sessionStorage.readCartToken();
+            if (cartToken != null && cartToken.isNotEmpty) {
+              options.headers['X-Cart-Token'] = cartToken;
+            }
+          }
           handler.next(options);
         },
         onError: (error, handler) async {
@@ -105,13 +113,30 @@ class ApiClient {
     String? filePath,
     String? fileName,
   }) async {
+    final FormData form;
     try {
-      final form = FormData.fromMap({
+      form = FormData.fromMap({
         ...fields,
         if (filePath != null)
           'file': await MultipartFile.fromFile(filePath, filename: fileName),
       });
+    } on Exception {
+      return const ApiFailure(
+        error: 'file_unreadable',
+        message: 'Could not read that file. Please pick it again.',
+      );
+    }
+    return postForm(path, form, queryParameters: queryParameters);
+  }
 
+  /// Posts an arbitrary multipart form, for uploads whose part names are not
+  /// `file` (store returns use `photos[]`).
+  Future<ApiResult<Map<String, dynamic>>> postForm(
+    String path,
+    FormData form, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    try {
       final response = await _dio.post<dynamic>(
         path,
         data: form,

@@ -66,5 +66,33 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<!-- Razorpay checkout: lets the payment sheet open installed UPI apps. -->
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>tez</string>
+		<string>phonepe</string>
+		<string>paytmmp</string>
+		<string>credpay</string>
+		<string>bhim</string>
+		<string>mobikwik</string>
+		<string>amazonpay</string>
+		<string>whatsapp</string>
+		<string>in.fampay.app</string>
+		<string>navi</string>
+		<string>kiwi</string>
+		<string>payzapp</string>
+		<string>jupiter</string>
+		<string>popclub</string>
+		<string>sbiyono</string>
+		<string>myjio</string>
+		<string>slice-upi</string>
+		<string>bobupi</string>
+		<string>icici</string>
+		<string>upi</string>
+	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Choose a photo for your profile, a prescription or lab report, or a return request.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Take a photo of a prescription, a lab report, or an item you are returning.</string>
 </dict>
 </plist>

@@ -1,25 +1,37 @@
 import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/config/api_config.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../shop/data/cart_controller.dart';
+import '../../shop/presentation/shop_widgets.dart';
 
 /// The five primary destinations, in tab order.
 ///
-/// Matches the design prototype's bottom nav, minus the Shop tab (no
-/// products system) and with Profile folded into More.
+/// Matches the design prototype's six-tab bottom nav. The Profile tab is
+/// still routed at `/more`: it holds profile, family, settings and links.
 enum ShellTab {
   home('Home', '/home'),
   doctors('Doctors', '/doctors'),
   labs('Labs', '/labs'),
+  shop('Shop', '/shop'),
   records('Records', '/records'),
-  more('More', '/more');
+  more('Profile', '/more');
 
   const ShellTab(this.label, this.path);
 
   final String label;
   final String path;
+
+  /// Tabs actually shown, in order. The router builds one branch per entry,
+  /// so branch index == position in this list.
+  static List<ShellTab> get visible => [
+        for (final t in values)
+          if (t != ShellTab.labs || kLabsEnabled) t,
+      ];
 }
 
 /// Bottom tab scaffold for the signed-in app.
@@ -55,16 +67,17 @@ class MainShell extends StatelessWidget {
   }
 }
 
-class _ShellNavBar extends StatelessWidget {
+class _ShellNavBar extends ConsumerWidget {
   const _ShellNavBar({required this.currentIndex, required this.onTap});
 
   final int currentIndex;
   final ValueChanged<int> onTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final t = AppTokens.of(context);
     final bottomInset = MediaQuery.paddingOf(context).bottom;
+    final cartCount = ref.watch(cartCountProvider);
 
     return ClipRect(
       child: BackdropFilter(
@@ -85,11 +98,12 @@ class _ShellNavBar extends StatelessWidget {
             ),
             child: Row(
               children: [
-                for (final (i, tab) in ShellTab.values.indexed)
+                for (final (i, tab) in ShellTab.visible.indexed)
                   Expanded(
                     child: _NavItem(
                       tab: tab,
                       selected: i == currentIndex,
+                      badge: tab == ShellTab.shop ? cartCount : 0,
                       onTap: () => onTap(i),
                     ),
                   ),
@@ -107,11 +121,15 @@ class _NavItem extends StatelessWidget {
     required this.tab,
     required this.selected,
     required this.onTap,
+    this.badge = 0,
   });
 
   final ShellTab tab;
   final bool selected;
   final VoidCallback onTap;
+
+  /// Cart count on the Shop tab; 0 hides it.
+  final int badge;
 
   @override
   Widget build(BuildContext context) {
@@ -130,12 +148,19 @@ class _NavItem extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(
-                height: 21,
-                width: 21,
-                child: CustomPaint(
-                  painter: _TabIconPainter(tab: tab, color: color),
-                ),
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  SizedBox(
+                    height: 21,
+                    width: 21,
+                    child: CustomPaint(
+                      painter: _TabIconPainter(tab: tab, color: color),
+                    ),
+                  ),
+                  if (badge > 0)
+                    Positioned(top: -6, right: -12, child: CountBadge(badge)),
+                ],
               ),
               const SizedBox(height: 4),
               Text(
@@ -222,6 +247,21 @@ class _TabIconPainter extends CustomPainter {
         );
         canvas.drawLine(const Offset(8, 3), const Offset(16, 3), stroke);
 
+      case ShellTab.shop:
+        // Prototype cart: M4 5h2.2l2.2 10.5h9.1L20 8H7 + two wheels.
+        canvas.drawPath(
+          Path()
+            ..moveTo(4, 5)
+            ..lineTo(6.2, 5)
+            ..lineTo(8.4, 15.5)
+            ..lineTo(17.5, 15.5)
+            ..lineTo(20, 8)
+            ..lineTo(7, 8),
+          stroke,
+        );
+        canvas.drawCircle(const Offset(10, 19.2), 1.4, fill);
+        canvas.drawCircle(const Offset(17, 19.2), 1.4, fill);
+
       case ShellTab.records:
         // rect(5,3,14,18,r2.5) + three rules
         canvas.drawRRect(
@@ -236,11 +276,15 @@ class _TabIconPainter extends CustomPainter {
         canvas.drawLine(const Offset(9, 16), const Offset(13, 16), stroke);
 
       case ShellTab.more:
-        // Three dots; the prototype uses a person glyph for Profile, but this
-        // tab is More (Profile + family + settings), so dots read truer.
-        for (final dx in const [6.0, 12.0, 18.0]) {
-          canvas.drawCircle(Offset(dx, 12), 1.6, fill);
-        }
+        // Prototype Profile glyph: circle(12,8,4) + shoulders.
+        canvas.drawCircle(const Offset(12, 8), 4, stroke);
+        canvas.drawPath(
+          Path()
+            ..moveTo(4.5, 20.5)
+            ..cubicTo(6, 16.5, 9, 15, 12, 15)
+            ..cubicTo(15, 15, 18, 16.5, 19.5, 20.5),
+          stroke,
+        );
     }
   }
 

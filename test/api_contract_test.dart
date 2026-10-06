@@ -3,6 +3,7 @@
 // These endpoints are not deployed yet, so this is the only check available
 // that the client models match the frozen contract. When the PHP files go
 // live, a mismatch here points at either the doc or the server.
+import 'package:eclinicpro_patient/features/appointments/domain/appointment.dart';
 import 'package:eclinicpro_patient/features/family/domain/family_member.dart';
 import 'package:eclinicpro_patient/features/profile/domain/patient_profile.dart';
 import 'package:eclinicpro_patient/features/queue/domain/queue_status.dart';
@@ -211,9 +212,64 @@ void main() {
       expect(p.photoTag, 'v3', reason: 'cache-buster for a replaced avatar');
     });
 
+    test('wa_opt_in defaults to on and reads false', () {
+      expect(PatientProfile.fromJson({'name': 'A'}).waOptIn, isTrue);
+      expect(PatientProfile.fromJson({'name': 'A', 'wa_opt_in': false}).waOptIn, isFalse);
+    });
+
     test('treats blank strings as absent', () {
       final p = PatientProfile.fromJson({'name': 'A', 'email': '   '});
       expect(p.email, isNull);
+    });
+
+    // The save whitelist (ecp_profile_map_fields) drops unknown keys
+    // silently, so the model must read the real DB column names.
+    test('reads the DB column names for address and emergency contact', () {
+      final p = PatientProfile.fromJson({
+        'name': 'A',
+        'address_line1': '12 MG Road',
+        'address_city': 'Ahmedabad',
+        'address_state': 'Gujarat',
+        'address_postal_code': '380009',
+        'emergency_contact_name': 'Ravi',
+        'emergency_contact_phone': '9876543210',
+        'chronic_conditions': 'Asthma',
+        'dob': '0000-00-00',
+      });
+      expect(p.city, 'Ahmedabad');
+      expect(p.pincode, '380009');
+      expect(p.emergencyName, 'Ravi');
+      expect(p.chronicConditions, 'Asthma');
+      expect(p.dob, isNull, reason: 'a zero date means unset');
+    });
+  });
+
+  group('appointments.php', () {
+    test('parses the list with leads under pending_leads', () {
+      final l = AppointmentList.fromJson({
+        'ok': true,
+        'upcoming': [
+          {
+            'kind': 'appointment',
+            'id': 41,
+            'when_date': 'Fri, 3 Oct 2026',
+            'when_time': '5:40 PM',
+            'status': 'confirmed',
+            'token_number': null,
+            'doctor_name': 'Dr. Arjun Shah',
+            'clinic_name': 'Shah Family Clinic',
+          },
+        ],
+        'past': [],
+        'pending_leads': [
+          {'kind': 'lead', 'id': 9, 'status': 'awaiting_clinic', 'clinic_name': 'X'},
+        ],
+      });
+      expect(l.upcoming.single.whenLabel, 'Fri, 3 Oct 2026 · 5:40 PM');
+      expect(l.upcoming.single.initials, 'AS');
+      expect(l.upcoming.single.tokenNumber, isNull);
+      expect(l.pending.single.isLead, isTrue);
+      expect(l.pending.single.statusLabel, 'Request sent');
     });
   });
 }

@@ -6,17 +6,18 @@ import '../../../core/config/api_config.dart';
 import '../../../core/network/api_result.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_icon.dart';
-import '../../doctors/data/doctors_providers.dart';
-import '../../doctors/domain/doctor.dart';
-import '../../doctors/presentation/widgets/doctor_card.dart';
+import '../../appointments/data/appointments_repository.dart';
+import '../../appointments/domain/appointment.dart';
+import '../../shop/data/store_repository.dart';
+import '../../shop/domain/store_models.dart';
+import '../../shop/presentation/shop_widgets.dart';
 
 /// Home tab, rebuilt against the design prototype.
 ///
 /// Layout follows the prototype's home: a greeting header, the dark
 /// "next appointment" hero, a 2x2 quick-action grid, then featured doctors.
-/// The hero is currently a prompt to book — appointments.php wiring lands
-/// with the rest of the API work, at which point it renders the real next
-/// visit and queue token.
+/// The hero renders `home.php`'s `next_appointment`; with none (or signed
+/// out) it prompts the user to book instead of inventing a visit.
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -27,7 +28,8 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool _loading = true;
   String? _error;
-  List<Doctor> _featured = [];
+  StoreHome? _store;
+  HomeSummary? _summary;
 
   @override
   void initState() {
@@ -41,16 +43,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       _error = null;
     });
 
-    final result = await ref.read(doctorsRepositoryProvider).search(
-          city: 'Ahmedabad',
-          perPage: 5,
-        );
+    final homeFuture = ref.read(appointmentsRepositoryProvider).home();
+    final result = await ref.read(storeRepositoryProvider).home();
+    final home = await homeFuture;
 
     if (!mounted) return;
+    // Signed out (or test mode) is normal here: the hero just prompts.
+    _summary = home is ApiSuccess<HomeSummary> ? home.value : null;
     switch (result) {
       case ApiSuccess(:final value):
         setState(() {
-          _featured = value.items;
+          _store = value;
           _loading = false;
         });
       case ApiFailure(:final message, :final error):
@@ -83,7 +86,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           110 + MediaQuery.paddingOf(context).bottom,
         ),
         children: [
-          _Header(greeting: _greeting),
+          _Header(greeting: _greeting, firstName: _summary?.firstName),
           const SizedBox(height: 18),
 
           if (kSkipWhatsAppOtp) ...[
@@ -91,7 +94,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             const SizedBox(height: 14),
           ],
 
-          const _NextAppointmentCard(),
+          _NextAppointmentCard(summary: _summary),
           const SizedBox(height: 14),
 
           // 2x2 quick actions, as in the prototype.
@@ -107,12 +110,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               const SizedBox(width: 10),
               Expanded(
-                child: _QuickAction(
-                  glyph: AppGlyph.flask,
-                  label: 'Book lab test',
-                  tint: _QuickTint.amber,
-                  onTap: () => context.go('/labs'),
-                ),
+                // Labs is not offered yet (kLabsEnabled). My orders takes
+                // its slot: My visits is already on the hero card above.
+                child: kLabsEnabled
+                    ? _QuickAction(
+                        glyph: AppGlyph.flask,
+                        label: 'Book lab test',
+                        tint: _QuickTint.amber,
+                        onTap: () => context.go('/labs'),
+                      )
+                    : _QuickAction(
+                        glyph: AppGlyph.truck,
+                        label: 'My orders',
+                        tint: _QuickTint.amber,
+                        onTap: () => context.push('/shop/orders'),
+                      ),
               ),
             ],
           ),
@@ -130,26 +142,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               const SizedBox(width: 10),
               Expanded(
                 child: _QuickAction(
-                  glyph: AppGlyph.document,
-                  label: 'My visits',
+                  glyph: AppGlyph.cart,
+                  label: 'Wellness shop',
                   tint: _QuickTint.amber,
-                  onTap: () => context.push('/appointments'),
+                  onTap: () => context.go('/shop'),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 24),
 
+          // Product promotion leads Home; doctors live under their own tab.
           Row(
             children: [
               Expanded(
-                child: Text('Doctors near you', style: text.headlineSmall),
+                child: Text('Featured products', style: text.headlineSmall),
               ),
               GestureDetector(
-                onTap: () => context.go('/doctors'),
+                onTap: () => context.go('/shop'),
                 behavior: HitTestBehavior.opaque,
                 child: Text(
-                  'See all',
+                  'Shop all',
                   style: TextStyle(
                     fontFamily: kFontBody,
                     fontSize: 12.5,
@@ -169,10 +182,18 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             )
           else if (_error != null)
             _InlineError(message: _error!, onRetry: _load)
-          else if (_featured.isEmpty)
-            Text('No doctors found nearby.', style: text.bodySmall)
-          else
-            ..._featured.map((d) => DoctorCard(doctor: d)),
+          else if (_store == null || _store!.featured.isEmpty && _store!.newArrivals.isEmpty)
+            Text('New products are on their way.', style: text.bodySmall)
+          else ...[
+            if (_store!.featured.isNotEmpty)
+              ProductGrid(products: _store!.featured.take(6).toList()),
+            if (_store!.newArrivals.isNotEmpty) ...[
+              const SizedBox(height: 14),
+              Text('New arrivals', style: text.headlineSmall),
+              const SizedBox(height: 12),
+              ProductStrip(products: _store!.newArrivals),
+            ],
+          ],
         ],
       ),
     );
@@ -180,9 +201,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.greeting});
+  const _Header({required this.greeting, this.firstName});
 
   final String greeting;
+  final String? firstName;
 
   @override
   Widget build(BuildContext context) {
@@ -204,7 +226,10 @@ class _Header extends StatelessWidget {
                   color: t.sub,
                 ),
               ),
-              Text('Welcome back', style: text.headlineLarge),
+              Text(
+                firstName == null ? 'Welcome back' : 'Hi, $firstName',
+                style: text.headlineLarge,
+              ),
             ],
           ),
         ),
@@ -227,15 +252,41 @@ class _Header extends StatelessWidget {
   }
 }
 
-/// The prototype's dark hero. Until appointments.php is wired this prompts
-/// the user to book rather than inventing a fake upcoming visit.
+/// The prototype's dark hero: the real next visit from `home.php`, or a
+/// prompt to book when there is none.
 class _NextAppointmentCard extends StatelessWidget {
-  const _NextAppointmentCard();
+  const _NextAppointmentCard({this.summary});
+
+  final HomeSummary? summary;
 
   @override
   Widget build(BuildContext context) {
     final t = AppTokens.of(context);
-    final onBrand = AppColorsLight.onBrand;
+    const onBrand = AppColorsLight.onBrand;
+    final next = summary?.nextAppointment;
+    final pending = summary?.pendingRequests ?? 0;
+
+    final eyebrow = TextStyle(
+      fontFamily: kFontBody,
+      fontSize: 10.5,
+      fontWeight: FontWeight.w800,
+      letterSpacing: 0.12 * 10.5,
+      color: onBrand.withValues(alpha: 0.7),
+    );
+    final title = TextStyle(
+      fontFamily: kFontHeading,
+      fontSize: 19,
+      height: 1.3,
+      fontWeight: FontWeight.w700,
+      color: onBrand,
+    );
+    final body = TextStyle(
+      fontFamily: kFontBody,
+      fontSize: 12.5,
+      height: 1.5,
+      fontWeight: FontWeight.w600,
+      color: onBrand.withValues(alpha: 0.75),
+    );
 
     return Container(
       decoration: t.heroDecoration(),
@@ -243,62 +294,118 @@ class _NextAppointmentCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'YOUR NEXT VISIT',
-            style: TextStyle(
-              fontFamily: kFontBody,
-              fontSize: 10.5,
-              fontWeight: FontWeight.w800,
-              letterSpacing: 0.12 * 10.5,
-              color: onBrand.withValues(alpha: 0.7),
-            ),
-          ),
+          Text('YOUR NEXT VISIT', style: eyebrow),
           const SizedBox(height: 8),
-          Text(
-            'No upcoming appointments',
-            style: TextStyle(
-              fontFamily: kFontHeading,
-              fontSize: 19,
-              height: 1.3,
-              fontWeight: FontWeight.w700,
-              color: onBrand,
+          if (next == null) ...[
+            Text('No upcoming appointments', style: title),
+            const SizedBox(height: 6),
+            Text(
+              pending > 0
+                  ? 'You have $pending request${pending == 1 ? '' : 's'} '
+                      'waiting for a clinic to confirm.'
+                  : 'Book a doctor and your token, timing and clinic details '
+                      'will show up here.',
+              style: body,
             ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            'Book a doctor and your token, timing and clinic details will '
-            'show up here.',
-            style: TextStyle(
-              fontFamily: kFontBody,
-              fontSize: 12.5,
-              height: 1.5,
-              fontWeight: FontWeight.w600,
-              color: onBrand.withValues(alpha: 0.75),
+          ] else
+            Row(
+              children: [
+                Container(
+                  width: 46,
+                  height: 46,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(AppRadii.md),
+                  ),
+                  child: Text(
+                    next.initials,
+                    style: title.copyWith(fontSize: 15, fontWeight: FontWeight.w800),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(next.title, style: title.copyWith(fontSize: 16)),
+                      Text(next.whenLabel, style: body),
+                      if (next.clinicName != null && next.clinicName != next.title)
+                        Text(next.clinicName!, style: body),
+                    ],
+                  ),
+                ),
+                if (next.tokenNumber != null)
+                  Column(
+                    children: [
+                      Text('TOKEN', style: eyebrow.copyWith(fontSize: 10)),
+                      Text(
+                        '${next.tokenNumber}',
+                        style: title.copyWith(fontSize: 22, fontWeight: FontWeight.w800),
+                      ),
+                    ],
+                  ),
+              ],
             ),
-          ),
           const SizedBox(height: 16),
-          GestureDetector(
-            onTap: () => context.go('/doctors'),
-            behavior: HitTestBehavior.opaque,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(AppRadii.sm + 1),
-              ),
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              alignment: Alignment.center,
-              child: Text(
-                'Find a doctor',
-                style: TextStyle(
-                  fontFamily: kFontBody,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w800,
-                  color: AppColorsLight.brandDeep,
+          Row(
+            children: [
+              Expanded(
+                child: _HeroButton(
+                  label: next == null ? 'Find a doctor' : 'Track my token',
+                  primary: true,
+                  onTap: () => next == null
+                      ? context.go('/doctors')
+                      : context.push('/queue?appointment_id=${next.id}'),
                 ),
               ),
-            ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _HeroButton(
+                  label: 'My visits',
+                  onTap: () => context.push('/appointments'),
+                ),
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _HeroButton extends StatelessWidget {
+  const _HeroButton({
+    required this.label,
+    required this.onTap,
+    this.primary = false,
+  });
+
+  final String label;
+  final VoidCallback onTap;
+  final bool primary;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        decoration: BoxDecoration(
+          color: primary ? Colors.white : Colors.white.withValues(alpha: 0.12),
+          borderRadius: BorderRadius.circular(AppRadii.sm + 1),
+        ),
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        alignment: Alignment.center,
+        child: Text(
+          label,
+          style: TextStyle(
+            fontFamily: kFontBody,
+            fontSize: 13,
+            fontWeight: FontWeight.w800,
+            color: primary ? AppColorsLight.brandDeep : AppColorsLight.onBrand,
+          ),
+        ),
       ),
     );
   }
@@ -383,7 +490,9 @@ class _TestModeBanner extends StatelessWidget {
       ),
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       child: Text(
-        'Test mode: phone-only login. Booking needs WhatsApp OTP.',
+        'Test mode: phone-only login, so there is no server session. The '
+        'shop and doctor search work; visits, records, profile, orders and '
+        'checkout need a real WhatsApp OTP sign-in.',
         style: TextStyle(
           fontFamily: kFontBody,
           fontSize: 12,

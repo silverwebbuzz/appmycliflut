@@ -63,4 +63,52 @@ class DoctorsRepository {
         ApiFailure(error: error, statusCode: statusCode, message: message),
     };
   }
+
+  /// Saved doctors (`doctors.php?action=saved`). Capped at [SavedDoctors.max].
+  Future<ApiResult<SavedDoctors>> saved() async {
+    final result = await _api.get(
+      '/doctors.php',
+      queryParameters: {'action': 'saved'},
+    );
+    return switch (result) {
+      ApiSuccess(:final value) => ApiSuccess(SavedDoctors.fromJson(value)),
+      ApiFailure(:final error, :final statusCode, :final message) =>
+        ApiFailure(error: error, statusCode: statusCode, message: message),
+    };
+  }
+
+  /// Saves or unsaves; returns the new `in_wishlist` state.
+  /// `limit_reached` (409) when saving past the cap.
+  Future<ApiResult<bool>> setSaved(int doctorId, {required bool saved}) async {
+    final result = await _api.post(
+      '/doctors.php',
+      queryParameters: {'action': saved ? 'save' : 'unsave'},
+      data: {'doctor_id': doctorId},
+    );
+    return switch (result) {
+      ApiSuccess(:final value) => ApiSuccess(value['in_wishlist'] == true),
+      ApiFailure(:final error, :final statusCode, :final message) =>
+        ApiFailure(error: error, statusCode: statusCode, message: message),
+    };
+  }
+}
+
+class SavedDoctors {
+  const SavedDoctors({this.items = const [], this.max = 5});
+
+  final List<Doctor> items;
+  final int max;
+
+  factory SavedDoctors.fromJson(Map<String, dynamic> json) {
+    final raw = json['items'];
+    return SavedDoctors(
+      items: raw is List
+          ? raw
+              .whereType<Map>()
+              .map((e) => Doctor.fromJson(Map<String, dynamic>.from(e)))
+              .toList()
+          : const [],
+      max: json['max'] is int ? json['max'] as int : 5,
+    );
+  }
 }

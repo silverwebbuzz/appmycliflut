@@ -1,0 +1,877 @@
+{
+  "/Users/apple/appmycliflut/android/app/build.gradle.kts": {
+    "mtime": 1783678463.1872294,
+    "ast_hash": "0132188aa02b26fe0df442a20b564343",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java": {
+    "mtime": 1791263792.11172,
+    "ast_hash": "4a05be8a5716538a2001b26f5993c02b",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/kotlin/com/eclinicpro/eclinicpro_patient/MainActivity.kt": {
+    "mtime": 1783678463.19283,
+    "ast_hash": "1d3e4cbb8f27c61a4775b42678febd2c",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/build.gradle.kts": {
+    "mtime": 1783678463.1837733,
+    "ast_hash": "f11f360aed44d4f6871b398346af14f0",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/gradlew": {
+    "mtime": 1783678463.2528274,
+    "ast_hash": "7f1cd7eb3f75a1dc85cd37753972a6e2",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/settings.gradle.kts": {
+    "mtime": 1783678463.144792,
+    "ast_hash": "4440672748462857e9bdbbf5fd06fe1a",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/design/ios-frame.jsx": {
+    "mtime": 1790235642.889497,
+    "ast_hash": "6da939543e70e48b202355746c930d92",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/design/support.js": {
+    "mtime": 1790235642.890147,
+    "ast_hash": "951ae391b8ae72ef12e671c2fad23353",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Flutter/ephemeral/Packages/.packages/FlutterFramework/Package.swift": {
+    "mtime": 1791264938.7037475,
+    "ast_hash": "0be97e7c440958734803cc9f1f14cd7f",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Flutter/ephemeral/Packages/.packages/FlutterFramework/Sources/FlutterFramework/FlutterFramework.swift": {
+    "mtime": 1791264938.697448,
+    "ast_hash": "e6366d8685ad56268730656aa0a6e00c",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift": {
+    "mtime": 1791264938.7093587,
+    "ast_hash": "7362fbfa716e25ffe0946582261d763c",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Sources/FlutterGeneratedPluginSwiftPackage/FlutterGeneratedPluginSwiftPackage.swift": {
+    "mtime": 1783678464.5903895,
+    "ast_hash": "e6366d8685ad56268730656aa0a6e00c",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Flutter/ephemeral/flutter_lldb_helper.py": {
+    "mtime": 1783678464.3651667,
+    "ast_hash": "98fc75412162af387e2e3461e4e58094",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Flutter/flutter_export_environment.sh": {
+    "mtime": 1791264723.0371244,
+    "ast_hash": "5de8cdaf4e3da661d03b9d0db4b56cb9",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/AppDelegate.swift": {
+    "mtime": 1783620868.0,
+    "ast_hash": "2bd8469f2a4b701ff582f6574e58b13c",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json": {
+    "mtime": 1783620868.0,
+    "ast_hash": "c3cdf9688b604d14f2e76a8287e16167",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json": {
+    "mtime": 1783620868.0,
+    "ast_hash": "770f4f65e02ca2fc57f46f4f4148d15d",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/GeneratedPluginRegistrant.h": {
+    "mtime": 1783678464.5514681,
+    "ast_hash": "decb9041b5e91a07e66f4664e5dac408",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/GeneratedPluginRegistrant.m": {
+    "mtime": 1791263792.1201937,
+    "ast_hash": "862467be3558ec51f30ef1406316dcf3",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Runner-Bridging-Header.h": {
+    "mtime": 1783620868.0,
+    "ast_hash": "e07862ac930ed4d8479185d52c6cc66d",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/SceneDelegate.swift": {
+    "mtime": 1783620868.0,
+    "ast_hash": "748d701e783e68faf618c00464257a19",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/RunnerTests/RunnerTests.swift": {
+    "mtime": 1783678462.783209,
+    "ast_hash": "a225a382d14d7b16b6f602a5c1d49331",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/app.dart": {
+    "mtime": 1791263893.3346276,
+    "ast_hash": "da4006ba1fe7a61b8c0aefb0be033f9c",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/config/api_config.dart": {
+    "mtime": 1791203971.289779,
+    "ast_hash": "64b420c638c4be983dda80cc9bf5e1fb",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/files/file_actions.dart": {
+    "mtime": 1791182137.623526,
+    "ast_hash": "4fceae1a2cabb4351b2fb6da58cc49aa",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/format/format.dart": {
+    "mtime": 1791181736.894517,
+    "ast_hash": "c488b9e339e03ecbc6798e44fadd1dad",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/network/api_client.dart": {
+    "mtime": 1791181723.841278,
+    "ast_hash": "f8ac3e86ec2c0222852ec937537d1066",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/network/api_result.dart": {
+    "mtime": 1784088906.915547,
+    "ast_hash": "4b9f570ffcadd3882c35c807dbc5cc4c",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/network/providers.dart": {
+    "mtime": 1784088906.917842,
+    "ast_hash": "47d377a5688d206a53309a495a09d86d",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/router/app_router.dart": {
+    "mtime": 1791203971.2913313,
+    "ast_hash": "aebd4d65712d13464a056cbd152a66d8",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/storage/session_storage.dart": {
+    "mtime": 1791181721.7778702,
+    "ast_hash": "735e8d381391f47f105d078d100ac65f",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/theme/app_assets.dart": {
+    "mtime": 1784088906.917587,
+    "ast_hash": "a16ba522913cbde16416474429bd1c5b",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/theme/app_colors.dart": {
+    "mtime": 1790246206.8234868,
+    "ast_hash": "2807197d8f241c444ee0f393553db37e",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/theme/app_theme.dart": {
+    "mtime": 1790170858.2602282,
+    "ast_hash": "278a6641f2aea76440e55d8c32d745df",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/theme/theme_mode_provider.dart": {
+    "mtime": 1790170879.826216,
+    "ast_hash": "c37609e0904c47487a364c243c8752ff",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/widgets/app_icon.dart": {
+    "mtime": 1791181759.3568518,
+    "ast_hash": "b1960aa2ac0d45f6d84462a9fd1c641f",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/widgets/app_scaffold.dart": {
+    "mtime": 1790171452.2666528,
+    "ast_hash": "ec83a77f15b5a3cc7fbaae0215356ded",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/widgets/app_states.dart": {
+    "mtime": 1790172343.4021893,
+    "ast_hash": "a33ba5213aad7475a71b5f731d11e965",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/core/widgets/app_ui.dart": {
+    "mtime": 1791204181.8790042,
+    "ast_hash": "8c95c36fbb2775921de26721f19ea619",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/appointments/data/appointments_repository.dart": {
+    "mtime": 1791181853.8300457,
+    "ast_hash": "4626236270809adec843f34d2c91176e",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/appointments/domain/appointment.dart": {
+    "mtime": 1791183150.4420135,
+    "ast_hash": "e70b183ba95ac08b82c8abbf5880c36c",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/appointments/presentation/appointments_screen.dart": {
+    "mtime": 1791181882.5864809,
+    "ast_hash": "371850443c6bb222e7aad612081eaaec",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/appointments/presentation/book_appointment_screen.dart": {
+    "mtime": 1790246166.4225926,
+    "ast_hash": "3268e647b42bc4cbf02ef217a70ede78",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/auth/data/auth_providers.dart": {
+    "mtime": 1784088906.917947,
+    "ast_hash": "ff51e1fb0a47f276a42625a1c3c497ae",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/auth/data/auth_repository.dart": {
+    "mtime": 1784088906.9175112,
+    "ast_hash": "2df8feb96495907c4a6f51ed5e377c42",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/auth/domain/patient.dart": {
+    "mtime": 1784088906.587491,
+    "ast_hash": "cb20f811d3e6d6bfdc4e8685a61ea974",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/auth/presentation/login_screen.dart": {
+    "mtime": 1790246166.4208527,
+    "ast_hash": "360cc5b61d212158edf4c35f856ad2b1",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/auth/presentation/otp_screen.dart": {
+    "mtime": 1790246166.421504,
+    "ast_hash": "a4a2276a716c01959924038100afea76",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/auth/presentation/splash_screen.dart": {
+    "mtime": 1790246166.4200764,
+    "ast_hash": "7ed905e096633f563165d76f0dc74c39",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/doctors/data/doctors_providers.dart": {
+    "mtime": 1784088906.9180243,
+    "ast_hash": "26d245518dcba78e598e08140a493989",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/doctors/data/doctors_repository.dart": {
+    "mtime": 1791182470.9943244,
+    "ast_hash": "5ec2674587ce8e9bda348d638782dac3",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/doctors/domain/doctor.dart": {
+    "mtime": 1784088906.9177063,
+    "ast_hash": "5e249833de5c43579ee1304fb300c467",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/doctors/presentation/doctor_detail_screen.dart": {
+    "mtime": 1791182470.995325,
+    "ast_hash": "794d728690c5f1d569caafa9a6c90935",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/doctors/presentation/doctors_search_screen.dart": {
+    "mtime": 1790172286.3088799,
+    "ast_hash": "09affee3ff9fbf67f3fd312adfc41070",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/doctors/presentation/saved_doctors_screen.dart": {
+    "mtime": 1791182476.928945,
+    "ast_hash": "89808315c8b6e8492e8be810b62c4991",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/doctors/presentation/widgets/doctor_card.dart": {
+    "mtime": 1790172479.4619162,
+    "ast_hash": "f35ad384d5ab8fb0dad6c280888f08a2",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/family/data/family_providers.dart": {
+    "mtime": 1790235642.890723,
+    "ast_hash": "45733e4e58ec7afef271173ed70d146e",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/family/data/family_repository.dart": {
+    "mtime": 1791182240.0897906,
+    "ast_hash": "6e41126e1efed0672e485440baa0a068",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/family/domain/family_member.dart": {
+    "mtime": 1790235642.8915315,
+    "ast_hash": "7c80e849cec00d995db5dfd66108e010",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/family/presentation/family_member_screen.dart": {
+    "mtime": 1791183150.4409156,
+    "ast_hash": "59b6000fb2643bf38c8fae8532c5aad1",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/home/presentation/home_screen.dart": {
+    "mtime": 1791204596.6853929,
+    "ast_hash": "68991c2f3841d67b492eb94661f4f7bd",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/labs/presentation/labs_screen.dart": {
+    "mtime": 1790171452.2672906,
+    "ast_hash": "53e218a572ac15059f7f6bb229e6a320",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/more/presentation/more_screen.dart": {
+    "mtime": 1791263893.3356457,
+    "ast_hash": "5521b6078a2508c33ecc5732a8f4a7c8",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/onboarding/presentation/onboarding_screen.dart": {
+    "mtime": 1790246166.4220438,
+    "ast_hash": "25b72fade5ed5dc499b5f3e217a4247f",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/profile/data/profile_providers.dart": {
+    "mtime": 1790235642.892046,
+    "ast_hash": "47a85d3d5f83ba67d5c5ab951031a13e",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/profile/data/profile_repository.dart": {
+    "mtime": 1791198411.3547916,
+    "ast_hash": "f1f89bee9ef01435003e9e9b82c271c4",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/profile/domain/patient_profile.dart": {
+    "mtime": 1791198411.3527415,
+    "ast_hash": "a094c0d69f3781253198ff6db9c141bc",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/profile/presentation/profile_avatar.dart": {
+    "mtime": 1791182341.6378186,
+    "ast_hash": "6e115c4b638f9af14ed1f1c85ea5f34b",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/profile/presentation/profile_edit_screen.dart": {
+    "mtime": 1791182429.941852,
+    "ast_hash": "a227e76b22136016cdfa16a5c4b634f1",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/queue/data/queue_providers.dart": {
+    "mtime": 1790235642.8935766,
+    "ast_hash": "068d32f635159dcffaf779d714e8b178",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/queue/data/queue_repository.dart": {
+    "mtime": 1790235642.894045,
+    "ast_hash": "8bea52b4966cf519302a7a66393eb456",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/queue/domain/queue_status.dart": {
+    "mtime": 1790235642.8945441,
+    "ast_hash": "7a9909c70ff27792b7689e2cae52f978",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/queue/presentation/queue_screen.dart": {
+    "mtime": 1791181911.0527031,
+    "ast_hash": "176e64757cc5776313750b653be6c524",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/records/data/records_providers.dart": {
+    "mtime": 1790235642.8950024,
+    "ast_hash": "84beab5544f307046791232ce394ff0e",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/records/data/records_repository.dart": {
+    "mtime": 1790235642.8954732,
+    "ast_hash": "458a9b49d8dd90ef2504e4d4d3aa5f65",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/records/domain/medical_record.dart": {
+    "mtime": 1790235642.8960748,
+    "ast_hash": "56aec1f7bc078c1e27feeefd6eaba4aa",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/records/presentation/record_detail_screen.dart": {
+    "mtime": 1791182178.9885447,
+    "ast_hash": "0f1cf2f2f939d1a8eb8e8995454a27b8",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/records/presentation/record_form_screen.dart": {
+    "mtime": 1791183150.4398482,
+    "ast_hash": "e8630a1977236ae30240c249af931c1e",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/records/presentation/records_screen.dart": {
+    "mtime": 1791182158.245586,
+    "ast_hash": "f50ac08ba22b0a1356c4bb65752617dc",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shell/presentation/main_shell.dart": {
+    "mtime": 1791203971.2906501,
+    "ast_hash": "d8636f9f442570d9d28fda89f1ff12bc",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/data/cart_controller.dart": {
+    "mtime": 1791182635.0294588,
+    "ast_hash": "66e36935b0b979f6ff6bc207e6235a44",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/data/payment_flow.dart": {
+    "mtime": 1791263828.9967108,
+    "ast_hash": "6985f0c0c6278a284660021eb122c927",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/data/store_repository.dart": {
+    "mtime": 1791198411.3511062,
+    "ast_hash": "497ac672b548c521b3a61daadb1e3a9e",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/domain/store_models.dart": {
+    "mtime": 1791198411.349325,
+    "ast_hash": "b1cdb3539dcb96d3fbf745aa50e43330",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/presentation/address_screens.dart": {
+    "mtime": 1791198456.7826102,
+    "ast_hash": "026c735579beed72dbd45a5477abd5b7",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/presentation/cart_screen.dart": {
+    "mtime": 1791182819.3929486,
+    "ast_hash": "9becebbcb0b36b287b54681496e31f06",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/presentation/checkout_screen.dart": {
+    "mtime": 1791182912.8433948,
+    "ast_hash": "0e185da8c519524cf79bbc90c1d3c0ff",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/presentation/invoice_screen.dart": {
+    "mtime": 1791183028.4403293,
+    "ast_hash": "814b12a2c5bab80d25577ccfcb2dd839",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/presentation/listing_screen.dart": {
+    "mtime": 1791183150.4442475,
+    "ast_hash": "d064e8f6606bf8e19129a9be041cdad6",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/presentation/order_detail_screen.dart": {
+    "mtime": 1791204218.4719765,
+    "ast_hash": "acd2040afc03d8dcbc0d123b3465830a",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/presentation/orders_screen.dart": {
+    "mtime": 1791182933.8688447,
+    "ast_hash": "fec015515ef114cbfdda2ebb3a9004cb",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/presentation/product_screen.dart": {
+    "mtime": 1791183150.445144,
+    "ast_hash": "16064ec337d71d732c506819192423ea",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/presentation/shop_screen.dart": {
+    "mtime": 1791204596.6834254,
+    "ast_hash": "57c8dd33b13500efa3b8db335b5c55e3",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/presentation/shop_widgets.dart": {
+    "mtime": 1791204637.1684747,
+    "ast_hash": "30aa86eab4cc64c69b8ad6155c4001c7",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/shop/presentation/wishlist_screen.dart": {
+    "mtime": 1791183018.8533967,
+    "ast_hash": "33209e674045bfe1d53b4dba0822e70a",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/main.dart": {
+    "mtime": 1784088906.917768,
+    "ast_hash": "1bad6c6a5eb4cb68a57821ba005299af",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/test/api_contract_test.dart": {
+    "mtime": 1791198506.9210644,
+    "ast_hash": "0946fec9feb5ad9a37767fa3591049a7",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/test/store_contract_test.dart": {
+    "mtime": 1791198506.9199674,
+    "ast_hash": "e312216ed64a455a6bb59a41c076b31b",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/test/widget_test.dart": {
+    "mtime": 1784088906.9171758,
+    "ast_hash": "dc9d0886ab479da44ed0e81ad23e6464",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/web/manifest.json": {
+    "mtime": 1783678462.9996004,
+    "ast_hash": "8e30096c1e003b4311638be142be8e3e",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/README.md": {
+    "mtime": 1783678463.201731,
+    "ast_hash": "2dbddf4122e5857da72db407d1fdc89e",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/analysis_options.yaml": {
+    "mtime": 1783678463.2112055,
+    "ast_hash": "66d03d7647c8e438164feaf5b922d44a",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/01-product-overview.md": {
+    "mtime": 1784088906.946821,
+    "ast_hash": "bc834397eee25db61a9617113de0be4a",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/02-user-flows.md": {
+    "mtime": 1784088906.917842,
+    "ast_hash": "bd8a433c41541f532af90c72e5612dd4",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/03-screen-map.md": {
+    "mtime": 1784088906.9179955,
+    "ast_hash": "7d3d77ebdb86fb6676fd95b963570d1b",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/04-architecture.md": {
+    "mtime": 1784088906.9171438,
+    "ast_hash": "2e92e851f96884f4fd160aec895a4c78",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/05-api-contract.md": {
+    "mtime": 1784088906.8156612,
+    "ast_hash": "9fb31fec45ea90de095509a9f4487ff8",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/06-ui-ux-states.md": {
+    "mtime": 1784088906.9155097,
+    "ast_hash": "c9fd26490d33941ffad5e2f02a9d8bf6",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/07-feature-modules.md": {
+    "mtime": 1784088906.9178061,
+    "ast_hash": "ed5da1fab42a504ea858f68507aa213b",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/08-recommendations.md": {
+    "mtime": 1784088906.9154472,
+    "ast_hash": "11aeea2cea49755b30c65140193110ac",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/09-beginner-execution-guide.md": {
+    "mtime": 1784088906.9176373,
+    "ast_hash": "1e87add7899dc51ad2e4b5468652d325",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/10-backend-api-mapping.md": {
+    "mtime": 1783680012.7913635,
+    "ast_hash": "b3172047634c2e97192362fdc02beae4",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/11-mobile-api-reference.md": {
+    "mtime": 1791206042.2010448,
+    "ast_hash": "6d89dea4befbe63927cd80f891669444",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/12-store-api-reference.md": {
+    "mtime": 1791198327.107247,
+    "ast_hash": "cc0cb722fa1ced6e70e06bd7856fa3e1",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/README.md": {
+    "mtime": 1790666506.8576186,
+    "ast_hash": "799e30d7272181bb290796abfc674e25",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/design/Patient App.dc.html": {
+    "mtime": 1790235642.8885849,
+    "ast_hash": "0100b359bfa758de63df62121b6f51bc",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/document/design/github.md": {
+    "mtime": 1790235642.8890877,
+    "ast_hash": "81c3bb91bcb6bd96e097f8d8003eee70",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md": {
+    "mtime": 1783620868.0,
+    "ast_hash": "e175e436acacf76c814d83532d0b662c",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/pubspec.yaml": {
+    "mtime": 1791263789.6707418,
+    "ast_hash": "f43f69be90a4628064214d49ab9ab190",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/web/index.html": {
+    "mtime": 1783678462.9954474,
+    "ast_hash": "33cd1a0481217e800f4c7a7f54f51716",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/mipmap-hdpi/ic_launcher.png": {
+    "mtime": 1783620868.0,
+    "ast_hash": "13e9c72ec37fac220397aa819fa1ef2d",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/mipmap-mdpi/ic_launcher.png": {
+    "mtime": 1783620868.0,
+    "ast_hash": "6270344430679711b81476e29878caa7",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png": {
+    "mtime": 1783620868.0,
+    "ast_hash": "a0a8db5985280b3679d99a820ae2db79",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png": {
+    "mtime": 1783620868.0,
+    "ast_hash": "afe1b655b9f32da22f9a4301bb8e6ba8",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png": {
+    "mtime": 1783620868.0,
+    "ast_hash": "57838d52c318faff743130c3fcfae0c6",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/brand/app_icon.png": {
+    "mtime": 1783693512.9411583,
+    "ast_hash": "66eadfe398a37818b5a09ac0256790e2",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/brand/logo.png": {
+    "mtime": 1783693512.8987334,
+    "ast_hash": "244f9880726d8fadddc8f393de457d4e",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/brand/logo_mark.png": {
+    "mtime": 1783693512.9280813,
+    "ast_hash": "d1e3f16f406e795c49552ed1a1b5e95d",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/brand/logo_on_dark.png": {
+    "mtime": 1783693512.914995,
+    "ast_hash": "2f1a5b6c1d256fe065de7e4c136faf7b",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/clinic_placeholder.jpg": {
+    "mtime": 1783693512.9713638,
+    "ast_hash": "2fec5c7c3d91fe1cc9df49b9a32f7092",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/doctor_avatar.png": {
+    "mtime": 1783693512.9859583,
+    "ast_hash": "8ac45589e277075ddcca989ee6f3247d",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/logo.png": {
+    "mtime": 1783693513.1585274,
+    "ast_hash": "244f9880726d8fadddc8f393de457d4e",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/logo_mark.png": {
+    "mtime": 1783693513.1734962,
+    "ast_hash": "d1e3f16f406e795c49552ed1a1b5e95d",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/onboarding/better_care.png": {
+    "mtime": 1783693513.1402338,
+    "ast_hash": "15972c52c1adbb73e30a126691b6d2e6",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/onboarding/easy_booking.png": {
+    "mtime": 1783693513.027543,
+    "ast_hash": "80bff54f0b2f11992b71547e73bf4278",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/onboarding/find_doctors.png": {
+    "mtime": 1783693512.9567597,
+    "ast_hash": "23fb4b569433705a104dbf15b87eba3b",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/assets/images/onboarding/health_locker.png": {
+    "mtime": 1783693513.002349,
+    "ast_hash": "f7e7613f93b48f4c9e9ad2b04b727936",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png": {
+    "mtime": 1783678417.127304,
+    "ast_hash": "c785f8932297af4acd5f5ccb7630f01c",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png": {
+    "mtime": 1783678417.1278675,
+    "ast_hash": "a2f8558fb1d42514111fbbb19fb67314",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png": {
+    "mtime": 1783678417.1261694,
+    "ast_hash": "2247a840b6ee72b8a069208af170e5b1",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png": {
+    "mtime": 1783678417.1289518,
+    "ast_hash": "1b3b1538136316263c7092951e923e9d",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png": {
+    "mtime": 1783678417.1305091,
+    "ast_hash": "be8887071dd7ec39cb754d236aa9584f",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png": {
+    "mtime": 1783678417.1238437,
+    "ast_hash": "043119ef4faa026ff82bd03f241e5338",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png": {
+    "mtime": 1783678417.1284177,
+    "ast_hash": "2b1452c4c1bda6177b4fbbb832df217f",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png": {
+    "mtime": 1783678417.1244915,
+    "ast_hash": "2247a840b6ee72b8a069208af170e5b1",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png": {
+    "mtime": 1783678417.1299353,
+    "ast_hash": "8245359312aea1b0d2412f79a07b0ca5",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png": {
+    "mtime": 1783678417.125087,
+    "ast_hash": "5b3c0902200ce596e9848f22e1f0fe0e",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png": {
+    "mtime": 1783678417.126673,
+    "ast_hash": "5b3c0902200ce596e9848f22e1f0fe0e",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png": {
+    "mtime": 1783678417.1232708,
+    "ast_hash": "e419d22a37bc40ba185aca1acb6d4ac6",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png": {
+    "mtime": 1783678417.1256292,
+    "ast_hash": "36c0d7a7132bdde18898ffdfcfcdc4d2",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png": {
+    "mtime": 1783678417.13113,
+    "ast_hash": "643842917530acf4c5159ae851b0baf2",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png": {
+    "mtime": 1783678417.129463,
+    "ast_hash": "665cb5e3c5729da6d639d26eff47a503",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png": {
+    "mtime": 1783678417.122302,
+    "ast_hash": "978c1bee49d7ad5fc1a4d81099b13e18",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png": {
+    "mtime": 1783678417.1214447,
+    "ast_hash": "978c1bee49d7ad5fc1a4d81099b13e18",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png": {
+    "mtime": 1783678417.1204152,
+    "ast_hash": "978c1bee49d7ad5fc1a4d81099b13e18",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/web/favicon.png": {
+    "mtime": 1783620868.0,
+    "ast_hash": "5dcef449791fa27946b3d35ad8803796",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/web/icons/Icon-192.png": {
+    "mtime": 1783620868.0,
+    "ast_hash": "ac9a721a12bbc803b44f645561ecb1e1",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/web/icons/Icon-512.png": {
+    "mtime": 1783620868.0,
+    "ast_hash": "96e752610906ba2a93c65f8abe1645f1",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/web/icons/Icon-maskable-192.png": {
+    "mtime": 1783678417.175904,
+    "ast_hash": "c457ef57daa1d16f64b27b786ec2ea3c",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/web/icons/Icon-maskable-512.png": {
+    "mtime": 1783678417.1748922,
+    "ast_hash": "301a7604d45b3e739efc881eb04896ea",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/.claude/settings.local.json": {
+    "mtime": 1791194717.8545108,
+    "ast_hash": "ba3cf9f98753f5a1e34364d14e2a1fd7",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Pods/Local Podspecs/Flutter.podspec.json": {
+    "mtime": 1791188228.3307602,
+    "ast_hash": "fe280d163daf413e8f14344a8401bbbb",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Pods/Local Podspecs/open_filex.podspec.json": {
+    "mtime": 1791188228.3411016,
+    "ast_hash": "6252736061df0e960249d15a54e6a3e0",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-dummy.m": {
+    "mtime": 1791188252.717613,
+    "ast_hash": "d3f88e6bc5bffb456bd31d3ae36c9256",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh": {
+    "mtime": 1791188252.6611147,
+    "ast_hash": "28a0b6dece05033d5e57a41df65630a9",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-umbrella.h": {
+    "mtime": 1791188252.6281881,
+    "ast_hash": "557db06615837593f7d130a79167db5c",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Pods/Target Support Files/Pods-RunnerTests/Pods-RunnerTests-dummy.m": {
+    "mtime": 1791188252.902857,
+    "ast_hash": "097dfaf08332f413805fcca47157791c",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Pods/Target Support Files/Pods-RunnerTests/Pods-RunnerTests-umbrella.h": {
+    "mtime": 1791188252.816732,
+    "ast_hash": "b7effd136883324d64ca181e91aba30c",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Pods/Target Support Files/open_filex/open_filex-dummy.m": {
+    "mtime": 1791188252.5217955,
+    "ast_hash": "6cdff590f0333fbec6b1e0a46699cd44",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/ios/Pods/Target Support Files/open_filex/open_filex-umbrella.h": {
+    "mtime": 1791188252.3609629,
+    "ast_hash": "07c20ceaeb6d163f362af503b25d5102",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/.claude/settings.json": {
+    "mtime": 1791264935.6912029,
+    "ast_hash": "2a6594ca9a92f32802c5181ffe279a11",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/app_update/data/app_update_repository.dart": {
+    "mtime": 1791264668.6595814,
+    "ast_hash": "facfbb4bbd39385499f0decbe34b8994",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/app_update/domain/app_update.dart": {
+    "mtime": 1791263805.1304336,
+    "ast_hash": "92f362f931999527229b19a67de57a54",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/lib/features/app_update/presentation/app_update_gate.dart": {
+    "mtime": 1791263864.6594002,
+    "ast_hash": "85b280bfd638e5610fcae8f68997dcc8",
+    "semantic_hash": ""
+  },
+  "/Users/apple/appmycliflut/test/app_update_test.dart": {
+    "mtime": 1791263930.4590926,
+    "ast_hash": "16a2fba5f9bee1b9b5d50c528a7f1cae",
+    "semantic_hash": ""
+  }
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../config/api_config.dart';
 import '../../features/appointments/presentation/appointments_screen.dart';
 import '../../features/appointments/presentation/book_appointment_screen.dart';
 import '../../features/auth/presentation/login_screen.dart';
@@ -9,12 +10,29 @@ import '../../features/auth/presentation/splash_screen.dart';
 import '../../features/doctors/domain/doctor.dart';
 import '../../features/doctors/presentation/doctor_detail_screen.dart';
 import '../../features/doctors/presentation/doctors_search_screen.dart';
+import '../../features/doctors/presentation/saved_doctors_screen.dart';
+import '../../features/family/presentation/family_member_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/labs/presentation/labs_screen.dart';
 import '../../features/more/presentation/more_screen.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
+import '../../features/profile/presentation/profile_edit_screen.dart';
+import '../../features/queue/presentation/queue_screen.dart';
+import '../../features/records/presentation/record_detail_screen.dart';
+import '../../features/records/presentation/record_form_screen.dart';
 import '../../features/records/presentation/records_screen.dart';
 import '../../features/shell/presentation/main_shell.dart';
+import '../../features/shop/domain/store_models.dart';
+import '../../features/shop/presentation/address_screens.dart';
+import '../../features/shop/presentation/cart_screen.dart';
+import '../../features/shop/presentation/checkout_screen.dart';
+import '../../features/shop/presentation/invoice_screen.dart';
+import '../../features/shop/presentation/listing_screen.dart';
+import '../../features/shop/presentation/order_detail_screen.dart';
+import '../../features/shop/presentation/orders_screen.dart';
+import '../../features/shop/presentation/product_screen.dart';
+import '../../features/shop/presentation/shop_screen.dart';
+import '../../features/shop/presentation/wishlist_screen.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -55,7 +73,7 @@ GoRouter createAppRouter() {
           return MainShell(navigationShell: navigationShell);
         },
         branches: [
-          // Tab order must match ShellTab in main_shell.dart.
+          // Tab order must match ShellTab.visible in main_shell.dart.
           StatefulShellBranch(
             routes: [
               GoRoute(
@@ -72,11 +90,21 @@ GoRouter createAppRouter() {
               ),
             ],
           ),
+          // Hidden until labs launch; see kLabsEnabled.
+          if (kLabsEnabled)
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: '/labs',
+                  builder: (context, state) => const LabsScreen(),
+                ),
+              ],
+            ),
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/labs',
-                builder: (context, state) => const LabsScreen(),
+                path: '/shop',
+                builder: (context, state) => const ShopScreen(),
               ),
             ],
           ),
@@ -112,6 +140,128 @@ GoRouter createAppRouter() {
           final id = int.tryParse(state.pathParameters['id'] ?? '') ?? 0;
           return DoctorDetailScreen(doctorId: id);
         },
+      ),
+      GoRoute(
+        path: '/saved-doctors',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const SavedDoctorsScreen(),
+      ),
+      GoRoute(
+        path: '/queue',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => QueueScreen(
+          appointmentId:
+              int.tryParse(state.uri.queryParameters['appointment_id'] ?? ''),
+        ),
+      ),
+
+      // Records. `new` is matched before `:id`.
+      GoRoute(
+        path: '/records/:kind/new',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => RecordFormScreen(
+          kind: RecordKindRoute.fromSlug(state.pathParameters['kind']),
+        ),
+      ),
+      GoRoute(
+        path: '/records/:kind/:id',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => RecordDetailScreen(
+          kind: RecordKindRoute.fromSlug(state.pathParameters['kind']),
+          id: int.tryParse(state.pathParameters['id'] ?? '') ?? 0,
+        ),
+      ),
+
+      // Profile & family.
+      GoRoute(
+        path: '/profile/edit',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const ProfileEditScreen(),
+      ),
+      GoRoute(
+        path: '/family/new',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const FamilyMemberScreen(),
+      ),
+      GoRoute(
+        path: '/family/:id',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => FamilyMemberScreen(
+          memberId: int.tryParse(state.pathParameters['id'] ?? ''),
+        ),
+      ),
+
+      // Shop, above the tabs.
+      GoRoute(
+        path: '/shop/list',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => ListingScreen(
+          query: ListingQuery.fromParams(state.uri.queryParameters),
+        ),
+      ),
+      GoRoute(
+        path: '/shop/categories',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const CategoriesScreen(),
+      ),
+      GoRoute(
+        path: '/shop/p/:slug',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) =>
+            ProductScreen(slug: state.pathParameters['slug'] ?? ''),
+      ),
+      GoRoute(
+        path: '/shop/cart',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const CartScreen(),
+      ),
+      GoRoute(
+        path: '/shop/checkout',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const CheckoutScreen(),
+      ),
+      GoRoute(
+        path: '/shop/orders',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const OrdersScreen(),
+      ),
+      GoRoute(
+        path: '/shop/orders/:orderNo',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => OrderDetailScreen(
+          orderNo: state.pathParameters['orderNo'] ?? '',
+          payResult: state.uri.queryParameters['pay'],
+        ),
+      ),
+      GoRoute(
+        path: '/shop/wishlist',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const WishlistScreen(),
+      ),
+      GoRoute(
+        path: '/shop/addresses',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const AddressesScreen(),
+      ),
+      GoRoute(
+        path: '/shop/addresses/new',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const AddressFormScreen(),
+      ),
+      GoRoute(
+        path: '/shop/addresses/edit',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => AddressFormScreen(
+          existing: state.extra is Address ? state.extra as Address : null,
+        ),
+      ),
+      GoRoute(
+        path: '/shop/invoice',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => InvoiceScreen(
+          url: state.uri.queryParameters['url'] ?? '',
+          title: state.uri.queryParameters['title'],
+        ),
       ),
       GoRoute(
         path: '/book/:doctorId',

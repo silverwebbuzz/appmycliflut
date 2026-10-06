@@ -24,6 +24,7 @@ This folder is the source of truth for what we will build before writing Flutter
 | 09 | [Beginner Execution Guide](./09-beginner-execution-guide.md) | Setup, where config/images/theme go, run & test screen-by-screen |
 | 10 | [Backend API Mapping](./10-backend-api-mapping.md) | Maps the app's needs onto the real eClinicPro PHP APIs, flags gaps, prioritised backend build list |
 | 11 | [Mobile API Reference](./11-mobile-api-reference.md) | **Frozen v1 contract — code the app against this.** The built `/api/mobile/v1` façade: exact request/response JSON + curl smoke tests |
+| 12 | [Store API Reference](./12-store-api-reference.md) | Shop tab: the eClinicPro Store (marketplace) endpoints — catalog, guest cart, checkout + Razorpay, orders/returns/invoices, wishlist |
 
 ---
 

@@ -55,13 +55,14 @@ class FamilyRepository {
       data: {
         'member_id': ?memberId,
         'name': name,
-        // `save` is a partial write: only keys present are stored, so null
-        // fields are omitted rather than sent as an explicit null.
-        'relation': ?relation,
-        'dob': ?dob,
-        'gender': ?gender,
-        'blood_group': ?bloodGroup,
-        'abha_id': ?abhaId,
+        // NOT a partial write (unlike profile.php): `ecp_fam_save_member`
+        // rewrites every column, so an omitted field is cleared and an
+        // omitted relation becomes `other`. Always send the whole form.
+        'relation': relation ?? '',
+        'dob': dob ?? '',
+        'gender': gender ?? '',
+        'blood_group': bloodGroup ?? '',
+        'abha_id': abhaId ?? '',
       },
     );
 

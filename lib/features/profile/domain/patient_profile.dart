@@ -4,25 +4,33 @@
 /// blanked. The primary phone is read-only here: it is the verified account
 /// key, and changing it runs through an OTP flow that v1 does not expose.
 /// Sending `phone` to `save` is silently ignored by the server.
+///
+/// Field names mirror the DB columns exactly (`address_city`,
+/// `emergency_contact_name`, …). The server's save whitelist
+/// (`ecp_profile_map_fields`) silently drops any other key, so a guessed
+/// name would "save" successfully and change nothing.
 class PatientProfile {
   const PatientProfile({
     required this.name,
     this.initials,
     this.phone,
+    this.phoneAlt,
     this.email,
     this.dob,
     this.age,
     this.gender,
     this.bloodGroup,
-    this.address,
+    this.vegType,
+    this.allergies,
+    this.chronicConditions,
+    this.addressLine1,
+    this.addressLine2,
     this.city,
     this.state,
     this.pincode,
     this.emergencyName,
     this.emergencyPhone,
-    this.medicalNotes,
-    this.allergies,
-    this.vegType,
+    this.emergencyRelation,
     this.abhaId,
     this.hasPhoto = false,
     this.photoUrl,
@@ -30,6 +38,7 @@ class PatientProfile {
     this.phoneVerified = false,
     this.emailVerified = false,
     this.phoneEditable = false,
+    this.waOptIn = true,
   });
 
   final String name;
@@ -37,22 +46,27 @@ class PatientProfile {
 
   /// Read-only in v1 — see [phoneEditable].
   final String? phone;
+  final String? phoneAlt;
   final String? email;
   final String? dob;
   final int? age;
+
+  /// `M` | `F` | `Other`.
   final String? gender;
   final String? bloodGroup;
-  final String? address;
+
+  /// `veg` | `nonveg` | `vegan` | `eggetarian`.
+  final String? vegType;
+  final String? allergies;
+  final String? chronicConditions;
+  final String? addressLine1;
+  final String? addressLine2;
   final String? city;
   final String? state;
   final String? pincode;
   final String? emergencyName;
   final String? emergencyPhone;
-  final String? medicalNotes;
-  final String? allergies;
-
-  /// `veg` | `nonveg` | `vegan` | `eggetarian`.
-  final String? vegType;
+  final String? emergencyRelation;
   final String? abhaId;
 
   final bool hasPhoto;
@@ -68,6 +82,21 @@ class PatientProfile {
   final bool emailVerified;
   final bool phoneEditable;
 
+  /// "WhatsApp updates" switch. Applies to the login number: off stops all
+  /// WhatsApp messages (reminders, booking and order updates) but never the
+  /// OTP. Defaults to on.
+  final bool waOptIn;
+
+  /// "29 · B+ · Ahmedabad" — whichever parts exist.
+  String get summary {
+    final parts = <String>[
+      if (age != null) '$age yrs',
+      ?bloodGroup,
+      ?city,
+    ];
+    return parts.join(' · ');
+  }
+
   static int? _asInt(Object? v) =>
       v == null ? null : (v is int ? v : int.tryParse(v.toString()));
 
@@ -81,20 +110,26 @@ class PatientProfile {
       name: _asString(json['name']) ?? '',
       initials: _asString(json['initials']),
       phone: _asString(json['phone']),
+      phoneAlt: _asString(json['phone_alt']),
       email: _asString(json['email']),
-      dob: _asString(json['dob']),
+      // The DB can hold a zero date; treat it as unset.
+      dob: (_asString(json['dob'])?.startsWith('0000') ?? false)
+          ? null
+          : _asString(json['dob']),
       age: _asInt(json['age']),
       gender: _asString(json['gender']),
       bloodGroup: _asString(json['blood_group']),
-      address: _asString(json['address']),
-      city: _asString(json['city']),
-      state: _asString(json['state']),
-      pincode: _asString(json['pincode']),
-      emergencyName: _asString(json['emergency_name']),
-      emergencyPhone: _asString(json['emergency_phone']),
-      medicalNotes: _asString(json['medical_notes']),
-      allergies: _asString(json['allergies']),
       vegType: _asString(json['veg_type']),
+      allergies: _asString(json['allergies']),
+      chronicConditions: _asString(json['chronic_conditions']),
+      addressLine1: _asString(json['address_line1']),
+      addressLine2: _asString(json['address_line2']),
+      city: _asString(json['address_city']),
+      state: _asString(json['address_state']),
+      pincode: _asString(json['address_postal_code']),
+      emergencyName: _asString(json['emergency_contact_name']),
+      emergencyPhone: _asString(json['emergency_contact_phone']),
+      emergencyRelation: _asString(json['emergency_contact_relation']),
       abhaId: _asString(json['abha_id']),
       hasPhoto: json['has_photo'] == true,
       photoUrl: _asString(json['photo_url']),
@@ -102,6 +137,7 @@ class PatientProfile {
       phoneVerified: json['phone_verified'] == true,
       emailVerified: json['email_verified'] == true,
       phoneEditable: json['phone_editable'] == true,
+      waOptIn: json['wa_opt_in'] != false,
     );
   }
 }
@@ -130,3 +166,18 @@ class ProfileOptions {
     );
   }
 }
+
+/// Human labels for the profile/family enums.
+String genderLabel(String g) => switch (g) {
+      'M' => 'Male',
+      'F' => 'Female',
+      _ => g,
+    };
+
+String vegLabel(String v) => switch (v) {
+      'veg' => 'Vegetarian',
+      'nonveg' => 'Non-veg',
+      'vegan' => 'Vegan',
+      'eggetarian' => 'Eggetarian',
+      _ => v,
+    };

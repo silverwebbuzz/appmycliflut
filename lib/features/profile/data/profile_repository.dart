@@ -23,48 +23,18 @@ class ProfileRepository {
     };
   }
 
-  /// Partial save: only the keys passed are written, so a single field can be
-  /// updated without resending the whole form.
+  /// Partial save: only the keys in [fields] are written, so a single field
+  /// can be updated without resending the whole form. An empty string clears
+  /// a field (the server stores it as NULL); `name` can never be blanked.
   ///
-  /// `phone` is deliberately absent — it is read-only in v1 and the server
-  /// silently ignores it.
-  Future<ApiResult<PatientProfile>> save({
-    String? name,
-    String? email,
-    String? dob,
-    String? gender,
-    String? bloodGroup,
-    String? address,
-    String? city,
-    String? state,
-    String? pincode,
-    String? emergencyName,
-    String? emergencyPhone,
-    String? medicalNotes,
-    String? allergies,
-    String? vegType,
-    String? abhaId,
-  }) async {
+  /// Keys must be the DB column names the server whitelists — see
+  /// [ProfileFields]. `phone` is deliberately absent: it is read-only in v1
+  /// and the server silently ignores it.
+  Future<ApiResult<PatientProfile>> save(Map<String, Object> fields) async {
     final result = await _api.post(
       '/profile.php',
       queryParameters: {'action': 'save'},
-      data: {
-        'name': ?name,
-        'email': ?email,
-        'dob': ?dob,
-        'gender': ?gender,
-        'blood_group': ?bloodGroup,
-        'address': ?address,
-        'city': ?city,
-        'state': ?state,
-        'pincode': ?pincode,
-        'emergency_name': ?emergencyName,
-        'emergency_phone': ?emergencyPhone,
-        'medical_notes': ?medicalNotes,
-        'allergies': ?allergies,
-        'veg_type': ?vegType,
-        'abha_id': ?abhaId,
-      },
+      data: fields,
     );
 
     return switch (result) {
@@ -143,6 +113,32 @@ class ProfileRepository {
       PatientProfile.fromJson(Map<String, dynamic>.from(profile)),
     );
   }
+}
+
+/// The save keys `ecp_profile_map_fields` accepts. Anything else is dropped
+/// without an error, so use these rather than typing keys by hand.
+abstract final class ProfileFields {
+  static const name = 'name';
+  static const email = 'email';
+  static const phoneAlt = 'phone_alt';
+  static const dob = 'dob';
+  static const gender = 'gender';
+  static const bloodGroup = 'blood_group';
+  static const vegType = 'veg_type';
+  static const allergies = 'allergies';
+  static const chronicConditions = 'chronic_conditions';
+  static const addressLine1 = 'address_line1';
+  static const addressLine2 = 'address_line2';
+  static const city = 'address_city';
+  static const state = 'address_state';
+  static const pincode = 'address_postal_code';
+  static const emergencyName = 'emergency_contact_name';
+  static const emergencyPhone = 'emergency_contact_phone';
+  static const emergencyRelation = 'emergency_contact_relation';
+  static const abhaId = 'abha_id';
+
+  /// Bool. Stored in the messaging opt-out list, not the profile row.
+  static const waOptIn = 'wa_opt_in';
 }
 
 class ProfileResult {

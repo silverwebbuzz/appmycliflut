@@ -25,6 +25,20 @@ class SessionStorage {
 
   Future<void> clearToken() => _storage.delete(key: kSessionTokenKey);
 
+  Future<bool> hasToken() async {
+    final token = await readToken();
+    return token != null && token.isNotEmpty;
+  }
+
+  /// Guest store cart. Kept until the server has merged it into the
+  /// signed-in patient's cart.
+  Future<String?> readCartToken() => _storage.read(key: kCartTokenKey);
+
+  Future<void> saveCartToken(String token) =>
+      _storage.write(key: kCartTokenKey, value: token);
+
+  Future<void> clearCartToken() => _storage.delete(key: kCartTokenKey);
+
   Future<bool> isOnboardingDone() async {
     final prefs = await _ensurePrefs();
     return prefs.getBool(kOnboardingDoneKey) ?? false;
@@ -61,6 +75,7 @@ class SessionStorage {
 
   Future<void> clearAllSession() async {
     await clearToken();
+    await clearCartToken();
     await clearTestSession();
   }
 }

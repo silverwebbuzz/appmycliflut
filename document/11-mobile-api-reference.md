@@ -344,13 +344,27 @@ except `name`, which may be updated but never blanked.
 
 ### `GET ?action=get`  *(Bearer)* → `{ profile, options }`
 `profile` carries the identity columns plus derived `initials`, `age`,
-`has_photo`, `photo_url`, `phone_verified`, `email_verified`, `phone_editable`.
+`has_photo`, `photo_url`, `phone_verified`, `email_verified`, `phone_editable`,
+and **`wa_opt_in`** (bool, see below).
 `options` = `genders` · `blood_groups` · `veg_types` (`veg|nonveg|vegan|eggetarian`).
 
 ### `POST ?action=save`  *(Bearer)* — JSON, **partial**
 Only keys present in the body are written, so a single field can be PATCHed
 without resending the form. → `{ profile }`.
-Errors: `name_required` 400 · `email_in_use` 409 · `db_unavailable` 503.
+Errors: `name_required` 400 · `email_in_use` 409 · `db_unavailable` 503 ·
+`invalid_wa_opt_in` 400 · `save_failed` 503 (WhatsApp switch not saved).
+
+**"WhatsApp reminders" switch: `wa_opt_in`** (added 2026-10-05). Save it like any
+other key: `{ "wa_opt_in": false }`. It accepts `true/false`, `1/0`, `"on"/"off"`.
+- It applies to the account's **phone number**, not the profile row: the server
+  stores it in the messaging opt-out list that every WhatsApp send checks.
+- **Off** stops all WhatsApp messages to that number: clinic appointment and
+  follow-up reminders, booking messages and Shop order updates. Those messages
+  are skipped, not sent by SMS instead. Email still goes. The WhatsApp **OTP**
+  is not affected, so login keeps working.
+- **On** removes the block. If the person had replied STOP on WhatsApp earlier,
+  turning it on re-enables WhatsApp only (SMS stays blocked).
+- Default for everyone is `true` (on).
 
 ### `POST ?action=photo`  *(Bearer)* — **multipart**, file part **`file`**
 Max **4 MB**; JPEG/PNG/WebP. → `{ has_photo, photo_url, photo_tag }`.
@@ -358,6 +372,50 @@ Max **4 MB**; JPEG/PNG/WebP. → `{ has_photo, photo_url, photo_tag }`.
 Errors: `no_file` 400 · `file_too_large` 413 · `file_type_not_allowed` 415.
 ### `GET ?action=photo`  *(Bearer)* → raw image bytes (authed; not public).
 ### `POST ?action=photo_remove`  *(Bearer)* → `{ has_photo: false }`.
+
+---
+
+## App update check — `app_version.php` (public, added 2026-10-05)
+
+Call it on every app start (and when the app comes back to the foreground after
+a few hours). No token needed.
+
+### `GET ?platform=android|ios&build=7`
+`build` is the app's **integer build number**: the `7` in Flutter's `1.2.0+7`
+(`PackageInfo.buildNumber`). Compare builds only, never version strings.
+```json
+{ "ok": true,
+  "platform": "android",
+  "update": "optional",
+  "latest_version": "1.2.0",
+  "latest_build": 7,
+  "min_build": 5,
+  "store_url": "https://play.google.com/store/apps/details?id=com.eclinicpro.eclinicpro_patient",
+  "title": "Update available",
+  "message": "A new version of eClinicPro is available with improvements and fixes.",
+  "notes": ["Faster checkout", "Bug fixes"] }
+```
+| `update` | When | App does |
+|----------|------|----------|
+| `"required"` | `build < min_build` | Blocking dialog: `title`, `message`, `notes`, one **Update** button → open `store_url`. No way to dismiss. |
+| `"optional"` | `build < latest_build` | Dismissible dialog: **Update** / **Later**. Don't show again for the same `latest_build` once dismissed. |
+| `"none"` | otherwise | Nothing. |
+
+- When `update` is `"none"`, `title` and `message` are `null`.
+- When nothing is set up for the platform (no latest build or no store link on
+  `/admin/app-versions`), the answer is `"none"` with `latest_version`,
+  `latest_build`, `min_build` and `store_url` all `null` and `notes: []`. The app
+  must never block in that case.
+- `min_build` is `null` when admin set no minimum. `notes` can be `[]`.
+- If `title`/`message` were left empty in admin, the server sends defaults
+  ("Update available" / "Update required" and a standard sentence).
+- **Fail open:** on a network error, timeout or any non-`ok` response, show
+  nothing and let the user carry on.
+- Responses carry `Cache-Control: public, max-age=300`, so an admin change reaches
+  every app within about 5 minutes.
+
+Errors: `400 build_required` + `message` (missing, `0`, negative, or not a whole
+number) · `400 invalid_platform` + `message` · `405 method_not_allowed` (not GET).
 
 ---
 
@@ -409,6 +467,17 @@ curl -s "$BASE/profile.php?action=get"           -H "$A"
 curl -s -X POST "$BASE/profile.php?action=save"  -H "$A" \
   -H 'Content-Type: application/json' -d '{"address_city":"Ahmedabad"}'
 
+# ---- 6. WhatsApp switch (added 2026-10-05) ----
+curl -s -X POST "$BASE/profile.php?action=save"  -H "$A" \
+  -H 'Content-Type: application/json' -d '{"wa_opt_in":false}'     # expect profile.wa_opt_in:false
+curl -s "$BASE/profile.php?action=get" -H "$A" | grep -o '"wa_opt_in":[a-z]*'   # false
+curl -s -X POST "$BASE/profile.php?action=save"  -H "$A" \
+  -H 'Content-Type: application/json' -d '{"wa_opt_in":"maybe"}'   # 400 invalid_wa_opt_in
+curl -s -X POST "$BASE/profile.php?action=save"  -H "$A" \
+  -H 'Content-Type: application/json' -d '{"wa_opt_in":true}'      # back on
+curl -s -X POST "$BASE/profile.php?action=save" \
+  -H 'Content-Type: application/json' -d '{"wa_opt_in":false}'     # no token → 401 login_required
+
 # multipart upload (note: -F, NOT a JSON body; part name must be "file")
 curl -s -X POST "$BASE/lab_reports.php?action=add" -H "$A" \
   -F 'label=HbA1c — Aug 2026' -F 'lab_name=Thyrocare' \
@@ -423,6 +492,21 @@ curl -s "$BASE/prescriptions.php?action=detail&id=999999" -H "$A"
 
 # no-token check — every authed route must 401 login_required
 curl -s "$BASE/profile.php?action=get"
+
+# ---- 7. app update check (public; added 2026-10-05) ----
+# First set Android on /admin/app-versions: latest version 1.2.0, latest build 7,
+# minimum build 5, a Play Store URL. Leave iOS empty.
+curl -s "$BASE/app_version.php?platform=android&build=7"    # update:"none"     (= latest)
+curl -s "$BASE/app_version.php?platform=android&build=6"    # update:"optional" (< latest)
+curl -s "$BASE/app_version.php?platform=android&build=4"    # update:"required" (< min)
+curl -s "$BASE/app_version.php?platform=ios&build=1"        # update:"none", nulls (iOS not set up)
+curl -s "$BASE/app_version.php?platform=android"            # 400 build_required
+curl -s "$BASE/app_version.php?platform=android&build=abc"  # 400 build_required
+curl -s "$BASE/app_version.php?platform=android&build=0"    # 400 build_required
+curl -s "$BASE/app_version.php?platform=windows&build=7"    # 400 invalid_platform
+curl -s -X POST "$BASE/app_version.php?platform=android&build=7"   # 405 method_not_allowed
+curl -s -o /dev/null -D - "$BASE/app_version.php?platform=android&build=7" | grep -i cache-control
+                                                            # Cache-Control: public, max-age=300
 ```
 
 **What "pass" looks like:** every authed call returns `ok:true` (or a correct
@@ -493,6 +577,8 @@ Single confirmed production value. No dev/staging split for v1. Every request is
 | Profile save | POST | `/profile.php?action=save` |
 | Avatar get / set | GET/POST | `/profile.php?action=photo` |
 | Avatar clear | POST | `/profile.php?action=photo_remove` |
+| Store (Shop tab) | GET/POST | `/store*.php` — full map in [doc 12](./12-store-api-reference.md) |
+| App update check (public) | GET | `/app_version.php?platform=android\|ios&build=…` |
 
 > The app talks to **`/api/mobile/v1/` ONLY**. It must NEVER call the website's
 > older `/api/*.php` files (lead.php, patient_bookings.php, wishlist.php, …) —
