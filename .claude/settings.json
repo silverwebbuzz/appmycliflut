@@ -23,7 +23,8 @@
       "Bash(cd ~/myclinic && grep -rn \"function store_home_banners\" -A25 --include='*.php' . 2>/dev/null | grep -v vendor | head -30; sed -n 40,50p api/mobile/v1/store.php; grep -n \"input\\\\|name=\\\\\"\" app/views/admin/store_banners.php | head -20)",
       "Bash(curl -s \"https://eclinicpro.com/api/mobile/v1/store.php?action=home\")",
       "Bash(python3 -c \"import json,sys;print\\(json.load\\(sys.stdin\\)['banners']\\)\")",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   }
 }
