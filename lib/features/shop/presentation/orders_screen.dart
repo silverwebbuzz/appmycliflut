@@ -8,6 +8,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/app_scaffold.dart';
 import '../../../core/widgets/app_ui.dart';
+import '../data/points_providers.dart';
 import '../data/store_repository.dart';
 import '../domain/store_models.dart';
 
@@ -31,7 +32,9 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
 
   Future<void> _load() async {
     final r = await ref.read(storeRepositoryProvider).orders();
-    if (mounted) setState(() => _result = r);
+    if (!mounted) return;
+    setState(() => _result = r);
+    ref.invalidate(pointsSummaryProvider);
   }
 
   @override

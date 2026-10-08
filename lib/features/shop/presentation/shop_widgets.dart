@@ -695,3 +695,49 @@ class _PromoBannerCarouselState extends State<PromoBannerCarousel> {
     );
   }
 }
+
+/// Bill line for points, e.g. "Welcome points (100 pts)". Null when the
+/// server applied no points. The amount comes from
+/// `summary.points_discount_paise`; nothing is computed here.
+String? pointsDiscountLabel(Cart cart) {
+  if (cart.summary.pointsDiscountPaise <= 0) return null;
+  final p = cart.points;
+  final used = p?.used ?? 0;
+  final name = p?.kind == 'welcome' ? 'Welcome points' : 'eClinicPro Points';
+  return used > 0 ? '$name ($used pts)' : name;
+}
+
+/// Points notes under the bill: how to unlock welcome points, and what this
+/// order earns. Renders nothing for guests or while points are off.
+class CartPointsNotes extends StatelessWidget {
+  const CartPointsNotes({super.key, required this.cart});
+
+  final Cart cart;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = cart.points;
+    if (p == null) return const SizedBox.shrink();
+    final notes = <(String, AppTone)>[
+      if (p.welcomeAddPaise != null && p.welcomeAddPaise! > 0 && p.welcome > 0)
+        (
+          'Add ${formatPaise(p.welcomeAddPaise!)} more to use your ${p.welcome} '
+              'welcome points (₹${p.welcome} off)',
+          AppTone.warn,
+        ),
+      if (p.earns > 0)
+        ('⭐ This order earns ${p.earns} points after delivery', AppTone.brand),
+    ];
+    if (notes.isEmpty) return const SizedBox.shrink();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (final (text, tone) in notes)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: AppNote(text, tone: tone),
+          ),
+      ],
+    );
+  }
+}

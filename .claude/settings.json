@@ -24,7 +24,16 @@
       "Bash(curl -s \"https://eclinicpro.com/api/mobile/v1/store.php?action=home\")",
       "Bash(python3 -c \"import json,sys;print\\(json.load\\(sys.stdin\\)['banners']\\)\")",
       "Bash(git add *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(curl -s -w '  [%{http_code}]\\\\n' https://eclinicpro.com/api/mobile/v1/store_points.php?action=summary)",
+      "Bash(python3 -c \"import json,sys;c=json.load\\(sys.stdin\\)['cart'];print\\('points' in c, c.get\\('points'\\), c['summary'].get\\('points_discount_paise'\\)\\)\")",
+      "Bash(curl -s https://eclinicpro.com/api/mobile/v1/store_cart.php)",
+      "Bash(cd ~/myclinic && ls -la api/mobile/v1/store_points.php api/mobile/v1/store_cart.php api/mobile/v1/app_version.php; grep -rln \"points_discount_paise\" --include=*.php . | head; grep -n \"referral_code\" api/mobile/v1/*.php | head)",
+      "Bash(cd ~/myclinic && grep -rln \"points_discount_paise\" . 2>/dev/null | grep -v node_modules | head)",
+      "Bash(curl -s -i --max-time 15 https://eclinicpro.com/api/mobile/v1/store_points.php?action=summary)",
+      "Bash(python3 -c \"import sys,json;c=json.load\\(sys.stdin\\)['cart'];print\\('points' in c, c.get\\('points'\\)\\);print\\('points_discount_paise' in c['summary']\\)\")",
+      "Bash(grep -o '\"command\":\"[^\"]*\\\\\\(cliclick\\\\|idb \\\\|osascript\\\\\\)[^\"]\\\\{0,120\\\\}' /Users/apple/.claude/projects/-Users-apple-appmycliflut/69de7e4f-9fdb-44fe-8852-2aab96c670f1.jsonl)",
+      "Bash(grep -oE 'osascript[^\\\\\\\\]{0,150}|initialLocation[^\\\\\\\\]{0,100}|simctl openurl[^\\\\\\\\]{0,100}' /Users/apple/.claude/projects/-Users-apple-appmycliflut/69de7e4f-9fdb-44fe-8852-2aab96c670f1.jsonl)"
     ]
   }
 }

@@ -218,6 +218,10 @@ class _CartScreenState extends ConsumerState<CartScreen> {
             if (s.discountPaise > 0)
               AppKeyValue('Coupon discount', '− ${formatPaise(s.discountPaise)}',
                   valueColor: t.brand),
+            if (pointsDiscountLabel(cart) != null)
+              AppKeyValue(pointsDiscountLabel(cart)!,
+                  '− ${formatPaise(s.pointsDiscountPaise)}',
+                  valueColor: t.brand),
             AppKeyValue(
               'Delivery',
               s.shippingPaise == 0 ? 'Free' : formatPaise(s.shippingPaise),
@@ -235,6 +239,8 @@ class _CartScreenState extends ConsumerState<CartScreen> {
           ],
         ),
       ),
+      // Applied automatically by the server: no toggle.
+      CartPointsNotes(cart: cart),
     ];
   }
 }

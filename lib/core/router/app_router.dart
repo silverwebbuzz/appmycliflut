@@ -30,6 +30,7 @@ import '../../features/shop/presentation/invoice_screen.dart';
 import '../../features/shop/presentation/listing_screen.dart';
 import '../../features/shop/presentation/order_detail_screen.dart';
 import '../../features/shop/presentation/orders_screen.dart';
+import '../../features/shop/presentation/points_screen.dart';
 import '../../features/shop/presentation/product_screen.dart';
 import '../../features/shop/presentation/shop_screen.dart';
 import '../../features/shop/presentation/wishlist_screen.dart';
@@ -232,6 +233,11 @@ GoRouter createAppRouter() {
           orderNo: state.pathParameters['orderNo'] ?? '',
           payResult: state.uri.queryParameters['pay'],
         ),
+      ),
+      GoRoute(
+        path: '/shop/points',
+        parentNavigatorKey: rootNavigatorKey,
+        builder: (context, state) => const PointsScreen(),
       ),
       GoRoute(
         path: '/shop/wishlist',

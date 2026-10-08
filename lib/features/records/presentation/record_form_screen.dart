@@ -169,7 +169,7 @@ class _RecordFormScreenState extends ConsumerState<RecordFormScreen> {
         AppSectionLabel(_isRx ? 'Issued on · optional' : 'Report date · optional'),
         AppPickerTile(
           glyph: AppGlyph.calendar,
-          label: _date == null ? 'Pick a date' : formatDate(toIsoDate(_date!)),
+          label: _date == null ? 'Pick a date' : formatDay(_date!),
           onTap: _pickDate,
         ),
         if (_members.isNotEmpty) ...[

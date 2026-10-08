@@ -9,9 +9,11 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_ui.dart';
 import '../data/cart_controller.dart';
 import '../data/payment_flow.dart';
+import '../data/points_providers.dart';
 import '../data/store_repository.dart';
 import '../domain/store_models.dart';
 import 'address_screens.dart';
+import 'shop_widgets.dart';
 
 /// Checkout — `summary` → `place` → `pay_start` → Razorpay → `pay_verify`.
 ///
@@ -121,6 +123,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
     final outcome = await payForOrder(repo, order.orderNo);
     if (!mounted) return;
+    // Placing and paying spends points; show the new balance next time.
+    ref.invalidate(pointsSummaryProvider);
     setState(() => _placing = false);
     if (outcome.message != null) showAppSnack(context, outcome.message!);
     // The order page shows the server's notice and, while unpaid, Pay again.
@@ -217,6 +221,10 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             if (sum.discountPaise > 0)
               AppKeyValue('Coupon discount', '− ${formatPaise(sum.discountPaise)}',
                   valueColor: t.brand),
+            if (pointsDiscountLabel(s.cart) != null)
+              AppKeyValue(pointsDiscountLabel(s.cart)!,
+                  '− ${formatPaise(sum.pointsDiscountPaise)}',
+                  valueColor: t.brand),
             AppKeyValue(
               'Delivery',
               sum.shippingPaise == 0 ? 'Free' : formatPaise(sum.shippingPaise),
@@ -234,6 +242,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           ],
         ),
       ),
+      CartPointsNotes(cart: s.cart),
       const SizedBox(height: 12),
       AppNote(
         'Items are reserved for ${s.paymentWindowMinutes} minutes while you '

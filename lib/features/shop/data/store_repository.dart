@@ -7,6 +7,7 @@ import '../../../core/network/api_client.dart';
 import '../../../core/network/api_result.dart';
 import '../../../core/network/providers.dart';
 import '../../../core/storage/session_storage.dart';
+import '../domain/points_models.dart';
 import '../domain/store_models.dart';
 
 final storeRepositoryProvider = Provider<StoreRepository>((ref) {
@@ -323,6 +324,15 @@ class StoreRepository {
       (j) => (j['message'] ?? 'Return requested.').toString(),
     );
   }
+
+  // ----- points & refer ---------------------------------------------------
+
+  /// `store_points.php?action=summary` (Bearer). `enabled: false` means
+  /// points are off: hide every points surface.
+  Future<ApiResult<PointsSummary>> pointsSummary() async => _map(
+        await _api.get('/store_points.php', queryParameters: {'action': 'summary'}),
+        PointsSummary.fromJson,
+      );
 
   // ----- wishlist ---------------------------------------------------------
 

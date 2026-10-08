@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/config/api_config.dart';
+import '../../../core/format/format.dart';
 import '../../../core/network/api_result.dart';
 import '../../../core/network/providers.dart';
 import '../../../core/theme/app_colors.dart';
@@ -175,14 +176,14 @@ class _BookAppointmentScreenState extends ConsumerState<BookAppointmentScreen> {
           ListTile(
             contentPadding: EdgeInsets.zero,
             title: const Text('Preferred date'),
-            subtitle: Text(_dateStr),
+            subtitle: Text(formatDay(_date)),
             trailing: const Icon(Icons.calendar_today_outlined),
             onTap: _pickDate,
           ),
           ListTile(
             contentPadding: EdgeInsets.zero,
             title: const Text('Preferred time'),
-            subtitle: Text(_timeStr),
+            subtitle: Text(formatTime(DateTime(0, 1, 1, _time.hour, _time.minute))),
             trailing: const Icon(Icons.access_time),
             onTap: _pickTime,
           ),

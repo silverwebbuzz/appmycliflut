@@ -39,31 +39,41 @@ String _groupIndian(int n) {
 }
 
 /// Parses the server's `YYYY-MM-DD` or `YYYY-MM-DD HH:MM:SS` (IST, no zone)
-/// as a local wall-clock time.
+/// as a local wall-clock time. MySQL's zero date counts as no date.
 DateTime? parseServerDate(String? raw) {
   if (raw == null || raw.trim().isEmpty) return null;
+  if (raw.trim().startsWith('0000-00-00')) return null;
   return DateTime.tryParse(raw.trim().replaceFirst(' ', 'T'));
 }
 
-/// "12 Aug 2026".
+// Display shapes match the server's App\Support\IndianDate, so the app and
+// the website print the same thing: always with the year, a two-digit day
+// and hour, and "—" for a missing or unreadable date.
+
+/// Shown for an empty or unparseable date.
+const kNoDate = '—';
+
+/// "06 Oct 2026".
 String formatDate(String? raw) {
   final d = parseServerDate(raw);
-  if (d == null) return raw ?? '';
-  return '${d.day} ${_months[d.month - 1]} ${d.year}';
+  return d == null ? kNoDate : formatDay(d);
 }
 
-/// "12 Aug 2026, 5:40 PM".
+/// "06 Oct 2026, 03:45 PM".
 String formatDateTime(String? raw) {
   final d = parseServerDate(raw);
-  if (d == null) return raw ?? '';
-  return '${formatDate(raw)}, ${formatTime(d)}';
+  return d == null ? kNoDate : '${formatDay(d)}, ${formatTime(d)}';
 }
 
-/// "5:40 PM".
+/// "06 Oct 2026" from a [DateTime].
+String formatDay(DateTime d) =>
+    '${d.day.toString().padLeft(2, '0')} ${_months[d.month - 1]} ${d.year}';
+
+/// "03:45 PM".
 String formatTime(DateTime d) {
   final h = d.hour % 12 == 0 ? 12 : d.hour % 12;
   final m = d.minute.toString().padLeft(2, '0');
-  return '$h:$m ${d.hour < 12 ? 'AM' : 'PM'}';
+  return '${h.toString().padLeft(2, '0')}:$m ${d.hour < 12 ? 'AM' : 'PM'}';
 }
 
 /// `YYYY-MM-DD` for API date fields.

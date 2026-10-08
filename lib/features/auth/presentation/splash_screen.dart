@@ -53,6 +53,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         if (!mounted) return;
         if (value != null) {
           context.go('/home');
+          const devRoute = String.fromEnvironment('DEV_ROUTE'); // TEMP-TEST
+          if (devRoute.isNotEmpty) context.push(devRoute); // TEMP-TEST
         } else {
           await storage.clearToken();
           if (!mounted) return;

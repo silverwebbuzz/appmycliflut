@@ -12,6 +12,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/app_ui.dart';
 import '../data/payment_flow.dart';
+import '../data/points_providers.dart';
 import '../data/store_repository.dart';
 import '../domain/store_models.dart';
 
@@ -70,6 +71,9 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
     final r = await _repo.order(widget.orderNo);
     if (!mounted) return;
     setState(() => _result = r);
+    // Payment, cancellation and returns all move points; every reload here
+    // follows one of them (or a pull-to-refresh).
+    ref.invalidate(pointsSummaryProvider);
 
     if (_confirming) {
       final stillUnpaid = r is ApiSuccess<OrderDetail> && r.value.canPay;
@@ -301,6 +305,12 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
               AppKeyValue(
                 o.couponCode == null ? 'Discount' : 'Coupon ${o.couponCode}',
                 '− ${formatPaise(o.discountPaise)}',
+                valueColor: t.brand,
+              ),
+            if (o.pointsDiscountPaise > 0)
+              AppKeyValue(
+                o.pointsUsed > 0 ? 'Points (${o.pointsUsed} pts)' : 'Points',
+                '− ${formatPaise(o.pointsDiscountPaise)}',
                 valueColor: t.brand,
               ),
             AppKeyValue(

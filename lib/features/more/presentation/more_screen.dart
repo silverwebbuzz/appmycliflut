@@ -17,6 +17,7 @@ import '../../profile/data/profile_providers.dart';
 import '../../profile/data/profile_repository.dart';
 import '../../profile/presentation/profile_avatar.dart';
 import '../../shop/data/cart_controller.dart';
+import '../../shop/data/points_providers.dart';
 
 /// More tab — profile, family, shop and health shortcuts, settings, sign-out.
 ///
@@ -48,6 +49,8 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
     final family = await ref.read(familyRepositoryProvider).list();
     final profile = await profileFuture;
     if (!mounted) return;
+    // Points can change between visits (delivery, expiry).
+    ref.invalidate(pointsSummaryProvider);
     setState(() {
       _profile = profile;
       _family = family;
@@ -104,6 +107,7 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
     await ref.read(sessionStorageProvider).clearAllSession();
     ProfileAvatar.evict();
     ref.invalidate(cartControllerProvider);
+    ref.invalidate(pointsSummaryProvider);
     if (mounted) context.go('/login');
   }
 
@@ -179,6 +183,12 @@ class _MoreScreenState extends ConsumerState<MoreScreen> {
                 label: 'My orders',
                 onTap: () => context.push('/shop/orders'),
               ),
+              // Only while the server has points switched on.
+              if (ref.watch(pointsEntryVisibleProvider))
+                AppGroupRow(
+                  label: 'Points & Refer',
+                  onTap: () => context.push('/shop/points'),
+                ),
               AppGroupRow(
                 label: 'Wishlist',
                 onTap: () => context.push('/shop/wishlist'),

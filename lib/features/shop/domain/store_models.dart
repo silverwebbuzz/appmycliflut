@@ -676,6 +676,7 @@ class CartSummary {
     this.subtotalPaise = 0,
     this.savingsPaise = 0,
     this.discountPaise = 0,
+    this.pointsDiscountPaise = 0,
     this.shippingPaise = 0,
     this.freeShippingAbovePaise,
     this.addForFreeShippingPaise,
@@ -689,7 +690,12 @@ class CartSummary {
   final int savingsPaise;
   final int discountPaise;
 
-  /// One delivery fee per order.
+  /// Taken off by points. Already deducted from [grandTotalPaise]; 0 when
+  /// no points apply (or the server has points off).
+  final int pointsDiscountPaise;
+
+  /// One delivery fee per order. Judged after points, so using points can
+  /// bring it back: always shown as sent, never computed.
   final int shippingPaise;
   final int? freeShippingAbovePaise;
 
@@ -704,6 +710,7 @@ class CartSummary {
         subtotalPaise: _int(j['subtotal_paise']) ?? 0,
         savingsPaise: _int(j['savings_paise']) ?? 0,
         discountPaise: _int(j['discount_paise']) ?? 0,
+        pointsDiscountPaise: _int(j['points_discount_paise']) ?? 0,
         shippingPaise: _int(j['shipping_paise']) ?? 0,
         freeShippingAbovePaise: _int(j['free_shipping_above_paise']),
         addForFreeShippingPaise: _int(j['add_for_free_shipping_paise']),
@@ -724,6 +731,51 @@ class CartCoupon {
   final String? note;
 }
 
+/// The cart's `points` object. Null for guests or while points are off.
+/// Points are applied by the server; there is nothing to toggle.
+class CartPoints {
+  const CartPoints({
+    this.kind,
+    this.used = 0,
+    this.available = 0,
+    this.pending = 0,
+    this.welcome = 0,
+    this.welcomeAddPaise,
+    this.earns = 0,
+  });
+
+  /// Which points this order uses: `welcome`, or another kind; null = none.
+  final String? kind;
+
+  /// Points used on this cart.
+  final int used;
+  final int available;
+  final int pending;
+
+  /// Welcome points the customer holds.
+  final int welcome;
+
+  /// Set → "Add ₹X more to use your welcome points".
+  final int? welcomeAddPaise;
+
+  /// Points this order earns after delivery.
+  final int earns;
+
+  static CartPoints? maybe(Object? v) {
+    if (v is! Map) return null;
+    final j = Map<String, dynamic>.from(v);
+    return CartPoints(
+      kind: _str(j['kind']),
+      used: _int(j['used']) ?? 0,
+      available: _int(j['available']) ?? 0,
+      pending: _int(j['pending']) ?? 0,
+      welcome: _int(j['welcome']) ?? 0,
+      welcomeAddPaise: _int(j['welcome_add_paise']),
+      earns: _int(j['earns']) ?? 0,
+    );
+  }
+}
+
 class Cart {
   const Cart({
     this.cartToken,
@@ -732,6 +784,7 @@ class Cart {
     this.summary = const CartSummary(),
     this.coupon,
     this.couponError,
+    this.points,
     this.hasProblems = false,
     this.pricesChanged = false,
     this.canCheckout = false,
@@ -748,6 +801,7 @@ class Cart {
 
   /// Set when a saved coupon stopped being usable.
   final String? couponError;
+  final CartPoints? points;
   final bool hasProblems;
   final bool pricesChanged;
   final bool canCheckout;
@@ -774,6 +828,7 @@ class Cart {
               note: _str(c['note']),
             ),
       couponError: _str(j['coupon_error']),
+      points: CartPoints.maybe(j['points']),
       hasProblems: j['has_problems'] == true,
       pricesChanged: j['prices_changed'] == true,
       canCheckout: j['can_checkout'] == true,
@@ -1199,6 +1254,8 @@ class OrderDetail {
     this.itemsPaise = 0,
     this.discountPaise = 0,
     this.couponCode,
+    this.pointsUsed = 0,
+    this.pointsDiscountPaise = 0,
     this.shippingPaise = 0,
     this.taxIncludedPaise = 0,
     this.grandTotalPaise = 0,
@@ -1225,6 +1282,8 @@ class OrderDetail {
   final int itemsPaise;
   final int discountPaise;
   final String? couponCode;
+  final int pointsUsed;
+  final int pointsDiscountPaise;
   final int shippingPaise;
   final int taxIncludedPaise;
   final int grandTotalPaise;
@@ -1255,6 +1314,8 @@ class OrderDetail {
       itemsPaise: _int(totals['items_paise']) ?? 0,
       discountPaise: _int(totals['discount_paise']) ?? 0,
       couponCode: _str(totals['coupon_code']),
+      pointsUsed: _int(totals['points_used']) ?? 0,
+      pointsDiscountPaise: _int(totals['points_discount_paise']) ?? 0,
       shippingPaise: _int(totals['shipping_paise']) ?? 0,
       taxIncludedPaise: _int(totals['tax_included_paise']) ?? 0,
       grandTotalPaise: _int(totals['grand_total_paise']) ?? 0,

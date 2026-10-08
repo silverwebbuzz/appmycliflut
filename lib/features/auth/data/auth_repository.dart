@@ -58,6 +58,7 @@ class AuthRepository {
     required String phone,
     required String code,
     String? name,
+    String? referralCode,
   }) async {
     final body = <String, dynamic>{
       'phone': phone,
@@ -65,6 +66,11 @@ class AuthRepository {
     };
     if (name != null && name.trim().isNotEmpty) {
       body['name'] = name.trim();
+    }
+    // Refer & Earn: only for a brand-new account, and only when given. The
+    // server silently ignores an invalid code, so it never blocks sign-up.
+    if (referralCode != null && referralCode.isNotEmpty) {
+      body['referral_code'] = referralCode;
     }
     final result = await _api.post(
       '/auth.php',

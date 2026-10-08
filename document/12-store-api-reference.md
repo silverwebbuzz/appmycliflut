@@ -189,10 +189,12 @@ Every action returns the **whole cart** in the same shape, so re-render from it.
                  "available_qty": 14, "max_qty": 10, "price_paise": 19900, "mrp_paise": 25000,
                  "off_pct": 20, "line_total_paise": 39800, "problem": null, "price_changed": false } ] } ],
   "summary": { "item_count": 3, "seller_count": 1, "subtotal_paise": 39800, "savings_paise": 10200,
-               "discount_paise": 0, "shipping_paise": 4900,
+               "discount_paise": 0, "points_discount_paise": 0, "shipping_paise": 4900,
                "free_shipping_above_paise": 49900, "add_for_free_shipping_paise": 10100,
                "tax_included_paise": 4264, "grand_total_paise": 44700 },
   "coupon": null, "coupon_error": null,
+  "points": { "kind": null, "used": 0, "available": 0, "pending": 0, "welcome": 100,
+              "welcome_add_paise": 10200, "earns": 39 },
   "has_problems": false, "prices_changed": false, "can_checkout": true,
   "signed_in": true, "max_qty_per_line": 10 } }
 ```
@@ -209,6 +211,15 @@ Every action returns the **whole cart** in the same shape, so re-render from it.
 - Qty picker: 1…`max_qty`; values above `available_qty` disabled.
 - `coupon.applied: false` + `coupon.note` → the code is saved but doesn't apply
   (for example, a minimum order isn't met). Show the note.
+- **Points** (added 2026-10-07; `points` is `null` for guests or while points are off).
+  Points are applied **automatically by the server**; there is nothing to toggle.
+  - `summary.points_discount_paise > 0` → show a line under Coupon:
+    `kind == "welcome"` → "Welcome points (`used` pts) −₹X", else "eClinicPro Points (`used` pts) −₹X".
+  - `points.welcome_add_paise` set → "Add ₹X more to use your `welcome` welcome points (₹`welcome` off)".
+  - `points.earns > 0` → "⭐ This order earns `earns` points after delivery".
+  - `grand_total_paise` already has the points taken off. Free delivery is judged
+    **after** points, so using points can bring delivery back: always show
+    `shipping_paise` from the response, never compute it.
 - Checkout button: signed out → "Sign in to check out" (OTP flow); signed in and
   `can_checkout` → go to Checkout.
 
@@ -443,6 +454,60 @@ Heart tap while signed out → OTP flow, then toggle.
 
 ---
 
+## Points & Refer — `store_points.php` (Bearer, added 2026-10-07)
+
+Read-only. Points are earned and spent by the server (checkout, delivery, cron).
+**Wording rule:** always "points" (1 point = ₹1 off), never "money", "cash",
+"wallet" or "balance in ₹": the T&C (`/terms#points`) say points have no cash value.
+
+### `GET ?action=summary`
+```json
+{ "ok": true, "enabled": true,
+  "balance": { "available": 150, "pending": 200, "welcome": 100, "standard": 50 },
+  "lots": [
+    { "kind": "welcome",  "status": "available", "points": 100, "note": "Welcome points",
+      "available_at": null, "expires_at": "2027-04-05 10:12:00" },
+    { "kind": "referral", "status": "pending",   "points": 100,
+      "note": "Waiting for Priya's first order to be delivered", "available_at": null, "expires_at": null },
+    { "kind": "loyalty",  "status": "pending",   "points": 50,
+      "note": "Available after the return window", "available_at": "2026-10-14 18:00:00", "expires_at": null } ],
+  "history": [ { "type": "spend", "kind": "welcome", "points": -100, "note": null,
+                 "order_no": "ECS261006-7K3MQ", "at": "2026-10-06 11:02:41" } ],
+  "rules": { "welcome_points": 100, "welcome_min_order_paise": 50000, "referral_points": 100,
+             "redeem_cap_pct": 10, "loyalty_pct": 10, "expiry_days": 180, "return_window_days": 7 },
+  "referral": { "code": "ECP-RAHUL7K", "active": true, "link": "https://eclinicpro.com/r/ECP-RAHUL7K",
+                "friends": [ { "name": "Priya", "status": "signed_up", "joined_at": "2026-10-03 09:00:00" } ],
+                "rewarded": 0 },
+  "share_text": "Join me on eClinicPro! Sign up with my code ECP-RAHUL7K and get 100 welcome points …" }
+```
+- `enabled: false` (and nothing else) → hide the Points screen and the entry point.
+- **Header:** `balance.available` "points ready to use" + `balance.pending` "points pending".
+- **Lots:** chip by `kind` (Welcome / Referral / Loyalty / Bonus for `admin`).
+  `status: "available"` → "Ready to use · Expires `expires_at`".
+  `status: "pending"` → "Pending · `note`" (+ "· from `available_at`" when set; `null` = waiting on an event, e.g. a delivery).
+- **Rules line** from `rules` (don't hard-code numbers, admin can change them):
+  "Welcome points are used together on an order of ₹`welcome_min_order_paise/100` or more.
+  Referral and loyalty points cover up to `redeem_cap_pct`% of an order. An order that uses
+  no points earns `loyalty_pct`% back `return_window_days` days after delivery."
+- **Refer & Earn card:** `referral.active: false` → 🔒 "Your referral code unlocks after your
+  first store order is delivered." `true` → show `code`, a Share button (OS share sheet with
+  `share_text`) and Copy link (`link`).
+- **Friends:** `status` `signed_up` "Waiting for first order" · `qualified` "Delivered · in return
+  window" · `rewarded` "Points given" · `rejected` "Not eligible".
+- **History** (last 30): `type` `earn` / `available` "Ready to use" / `spend` "Used on order" /
+  `refund` "Returned" / `expire` / `reverse` "Cancelled" / `adjust`.
+
+### Sign-up with a code
+Send `referral_code` with `auth.php?action=verify_otp` (doc 11). Deep link (optional):
+`https://eclinicpro.com/r/{code}` opens the website sign-up; if the app handles that URL
+(Android App Links / iOS Universal Links), prefill the Referral code field with `{code}`.
+
+### Orders
+`store_orders.php?action=detail` → `totals` now has `points_used` and `points_discount_paise`;
+show "Points (`points_used` pts) −₹X" under Coupon when > 0.
+
+---
+
 ## Order updates on WhatsApp (server-side, nothing for the app to call)
 
 The customer gets these on the order's **contact phone** (`contact_phone` sent with
@@ -614,6 +679,7 @@ Team eClinicPro Store
 | Order actions | POST | `/store_orders.php?action=cancel · cancel_items · review · return` |
 | Invoice (HTML) | GET | `/store_orders.php?action=invoice&order_no=…&doc=…` |
 | Wishlist | GET/POST | `/store_wishlist.php?action=list · toggle` |
+| Points & Refer | GET | `/store_points.php?action=summary` |
 
 Orders placed from the app are stored with `source = 'mobile'` (the website
 stores `web`), so admin can tell the channels apart.
@@ -691,6 +757,14 @@ curl -s -H "$P" -H "$J" -X POST -d '{"address_id":<id>}' "$B/store_checkout.php?
 curl -s -H "$P" -H "$J" -X POST -d '{"address_id":<id>}' "$B/store_checkout.php?action=address_set_default"
 # past orders keep their address: order detail must still show the OLD landmark
 curl -s -H "$P" -H "$T" "$B/store_orders.php?action=detail&order_no=<an ECS… placed before the edit>"
+
+# ---- 8. added 2026-10-07: Points & Refer (run 2026_10_07_store_points.sql, then switch points on
+#          at /admin/store/rewards with a launch date) ----
+curl -s -H "$P" -H "$T" "$B/store_points.php?action=summary"   # enabled:true, balance, referral.code
+curl -s -H "$P" "$B/store_points.php?action=summary"           # no token → 401
+curl -s -H "$P" -H "$T" "$B/store_cart.php?action=get"         # cart.points + summary.points_discount_paise
+# sign-up with a code (a NEW phone number): send referral_code with auth.php?action=verify_otp,
+# then the referrer's summary shows the friend under referral.friends (status signed_up) and a pending lot
 
 # WhatsApp order updates: no API call. On /admin/store/email → "Customer WhatsApp updates":
 #   send a test of each template to your own number, then place + pay a sandbox order

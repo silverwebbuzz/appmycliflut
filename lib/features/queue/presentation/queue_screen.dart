@@ -289,7 +289,7 @@ class _ClinicCard extends StatelessWidget {
                   Text(a.clinicName!, style: text.bodySmall),
                 if (when != null)
                   Text(
-                    '${formatDate(toIsoDate(when))} · ${formatTime(when)}',
+                    '${formatDay(when)}, ${formatTime(when)}',
                     style: text.bodySmall,
                   ),
               ],

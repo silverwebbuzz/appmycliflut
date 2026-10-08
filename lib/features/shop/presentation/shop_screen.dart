@@ -7,6 +7,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_icon.dart';
 import '../../../core/widgets/app_scaffold.dart';
 import '../../../core/widgets/app_ui.dart';
+import '../data/points_providers.dart';
 import '../data/store_repository.dart';
 import '../domain/store_models.dart';
 import 'shop_widgets.dart';
@@ -164,6 +165,11 @@ class _ShopScreenState extends ConsumerState<ShopScreen> {
             label: 'My orders',
             onTap: () => context.push('/shop/orders'),
           ),
+          if (ref.watch(pointsEntryVisibleProvider))
+            AppGroupRow(
+              label: 'Points & Refer',
+              onTap: () => context.push('/shop/points'),
+            ),
           AppGroupRow(
             label: 'Wishlist',
             last: true,

@@ -74,8 +74,12 @@ Body: `{ "phone": "9374249829", "intent": "signin"|"signup"|"" }`
   `invalid_phone`(400), `resend_too_soon`/`otp_locked`(429), `db_unavailable`(503).
 
 ### `POST ?action=verify_otp`
-Body: `{ "phone": "9374249829", "code": "123456", "name": "Ravi" }`
+Body: `{ "phone": "9374249829", "code": "123456", "name": "Ravi", "referral_code": "ECP-RAHUL7K" }`
 `name` is used only when creating a brand-new identity.
+`referral_code` (optional, added 2026-10-07) is Refer & Earn: show an optional
+"Referral code" field on the **sign-up** step only (when `send_otp` said
+`exists: false`). It's attached only to a brand-new account and is silently
+ignored if it isn't valid, so never block sign-up on it. See doc 12 → Points.
 
 ```json
 { "ok": true, "token": "<64-hex>", "is_new": false,

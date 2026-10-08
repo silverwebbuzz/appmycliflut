@@ -29,6 +29,7 @@ class OtpScreen extends ConsumerStatefulWidget {
 class _OtpScreenState extends ConsumerState<OtpScreen> {
   final _codeController = TextEditingController();
   final _nameController = TextEditingController();
+  final _referralController = TextEditingController();
   bool _loading = false;
   String? _error;
 
@@ -47,6 +48,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
   void dispose() {
     _codeController.dispose();
     _nameController.dispose();
+    _referralController.dispose();
     super.dispose();
   }
 
@@ -69,10 +71,14 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
       _error = null;
     });
 
-    final result = await ref.read(authRepositoryProvider).verifyOtp(
+    final referral = _referralController.text.trim();
+    final result = await ref
+        .read(authRepositoryProvider)
+        .verifyOtp(
           phone: widget.phone,
           code: code,
           name: needsName ? name : null,
+          referralCode: needsName && referral.isNotEmpty ? referral : null,
         );
 
     if (!mounted) return;
@@ -109,82 +115,115 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
         ),
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Verify WhatsApp',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Enter the 6-digit code from WhatsApp.\nSent to +91 ${widget.phone}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 28),
-              TextField(
-                controller: _codeController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(6),
-                ],
-                decoration: const InputDecoration(
-                  labelText: 'WhatsApp code',
-                  hintText: '••••••',
-                ),
-              ),
-              if (needsName) ...[
-                const SizedBox(height: 16),
-                TextField(
-                  controller: _nameController,
-                  textCapitalization: TextCapitalization.words,
-                  decoration: const InputDecoration(
-                    labelText: 'Your name',
-                    hintText: 'As on clinic records',
-                  ),
-                ),
-              ],
-              if (widget.devCode != null) ...[
-                const SizedBox(height: 12),
-                Text(
-                  'Dev mode code prefilled: ${widget.devCode}',
-                  style: TextStyle(
-                    color: AppTokens.of(context).sub,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-              if (_error != null) ...[
-                const SizedBox(height: 12),
-                Text(
-                  _error!,
-                  style: TextStyle(
-                    color: AppTokens.of(context).red,
-                    fontSize: 13,
-                  ),
-                ),
-              ],
-              const Spacer(),
-              FilledButton(
-                onPressed: _loading ? null : _verify,
-                child: _loading
-                    ? const SizedBox(
-                        height: 22,
-                        width: 22,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
+        // Scrolls when the keyboard is up on a small phone; otherwise the
+        // button still sits at the bottom.
+        child: LayoutBuilder(
+          builder: (context, box) => SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: box.maxHeight - 48),
+              child: IntrinsicHeight(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      'Verify WhatsApp',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Enter the 6-digit code from WhatsApp.\nSent to +91 ${widget.phone}',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 28),
+                    TextField(
+                      controller: _codeController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(6),
+                      ],
+                      decoration: const InputDecoration(
+                        labelText: 'WhatsApp code',
+                        hintText: '••••••',
+                      ),
+                    ),
+                    if (needsName) ...[
+                      const SizedBox(height: 16),
+                      TextField(
+                        controller: _nameController,
+                        textCapitalization: TextCapitalization.words,
+                        decoration: const InputDecoration(
+                          labelText: 'Your name',
+                          hintText: 'As on clinic records',
                         ),
-                      )
-                    : const Text('Verify & continue'),
+                      ),
+                      const SizedBox(height: 16),
+                      // Refer & Earn: new accounts only, never required.
+                      TextField(
+                        controller: _referralController,
+                        textCapitalization: TextCapitalization.characters,
+                        autocorrect: false,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                          _UpperCaseFormatter(),
+                          LengthLimitingTextInputFormatter(20),
+                        ],
+                        decoration: const InputDecoration(
+                          labelText: 'Referral code (optional)',
+                          hintText: 'From a friend, e.g. ECP-…',
+                        ),
+                      ),
+                    ],
+                    if (widget.devCode != null) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        'Dev mode code prefilled: ${widget.devCode}',
+                        style: TextStyle(
+                          color: AppTokens.of(context).sub,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                    if (_error != null) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        _error!,
+                        style: TextStyle(
+                          color: AppTokens.of(context).red,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                    const Spacer(),
+                    FilledButton(
+                      onPressed: _loading ? null : _verify,
+                      child: _loading
+                          ? const SizedBox(
+                              height: 22,
+                              width: 22,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Text('Verify & continue'),
+                    ),
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
+}
+
+class _UpperCaseFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue old,
+    TextEditingValue next,
+  ) => next.copyWith(text: next.text.toUpperCase());
 }
